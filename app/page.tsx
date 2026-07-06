@@ -41,13 +41,12 @@ export default function Home() {
       </header>
       <main className="pt-10 px-48 ">
         <form action="/" method="post">
-        <ImovelDataSection
-        subtitle="SEÇÃO 01"
-        title="Dados do Imóvel"
-        icon="Home" 
-        fields={propertyFields}
-      />
-          
+          <ImovelDataSection
+            subtitle="SEÇÃO 01"
+            title="Dados do Imóvel"
+            icon="Home"
+            fields={propertyFields}
+          />
         </form>
       </main>
     </div>

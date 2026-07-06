@@ -63,7 +63,7 @@ const ImovelDataSection: FC<FormSectionProps> = ({
         </div>
       </div>
 
-      <hr className="border-t border-blue-950 mb-8" />
+      <hr className="border-t-2 border-blue-950 mb-8" />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-6">
         {fields.map((field, index) => {
