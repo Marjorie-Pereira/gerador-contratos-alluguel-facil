@@ -1,0 +1,60 @@
+import { FormFieldProps } from "@/types/formTypes";
+import BRAZIL_STATES from "./states";
+import { propertyTypes } from "@/types/propertyTypes";
+
+export const propertyFields: FormFieldProps[] = [
+    {
+      label: 'Endereço (Logradouro e Número)',
+      type: 'input',
+      required: true,
+      placeholder: 'Ex: Rua das Acácias, 245',
+      inputProps: { name: 'address' },
+      wrapperClassName: 'md:col-span-3', // Replicates full-width row
+    },
+    {
+      label: 'Bairro',
+      type: 'input',
+      required: true,
+      placeholder: 'Bairro',
+      inputProps: { name: 'bairro' },
+      // Natural 2nd column placement in the grid
+    },
+    {
+      label: 'Cidade',
+      type: 'input',
+      required: true,
+      placeholder: 'Cidade',
+      inputProps: { name: 'cidade' },
+      // Natural 2nd column placement
+    },
+    {
+      label: 'Estado',
+      type: 'select',
+      required: true,
+      placeholder: 'Selecione',
+      selectProps: {
+        options: BRAZIL_STATES,
+        nativeSelectProps: { name: 'estado', defaultValue:'RS' },
+      },
+      // Natural 1st column placement on its row
+    },
+    {
+      label: 'CEP',
+      type: 'input',
+      placeholder: '00000-000',
+      inputProps: { name: 'cep', maxLength: 9 },
+      // Natural 2nd column placement
+    },
+    {
+      label: 'Tipo de Imóvel',
+      type: 'select',
+      required: true,
+      placeholder: 'Selecione o tipo',
+      wrapperClassName: 'md:col-span-2',
+      selectProps: {
+        options: propertyTypes,
+        nativeSelectProps: { name: 'tipo_imovel' },
+      },
+      // Natural 1st column placement, spans only 1 column as standard
+    },
+  ];
