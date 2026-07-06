@@ -14,7 +14,7 @@ import {
   SelectSeparator,
 } from "@/components/ui/select";
 import ImovelDataSection from "./ui/components/FormSection";
-import { ownerFields, propertyFields } from "@/lib/constants/formFields";
+import { ownerFields, propertyFields, renterFields } from "@/lib/constants/formFields";
 
 export default function Home() {
   return (
@@ -53,6 +53,13 @@ export default function Home() {
             title="Dados do Locador (Proprietário)"
             icon="User"
             fields={ownerFields}
+          />
+
+          <ImovelDataSection
+            subtitle="SEÇÃO 03"
+            title="Dados do Locatário (Inquilino)"
+            icon="User"
+            fields={renterFields}
           />
         </form>
       </main>

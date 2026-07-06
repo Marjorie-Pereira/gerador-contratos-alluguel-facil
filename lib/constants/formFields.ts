@@ -115,3 +115,58 @@ export const ownerFields: FormFieldProps[] = [
     toggleProps: {name: 'locador'}
   },
 ];
+
+export const renterFields: FormFieldProps[] = [
+  {
+    label: "Nome Completo",
+    type: "input",
+    required: true,
+    placeholder: "Nome completo",
+    inputProps: {
+      name: "locatarioNome",
+    },
+    wrapperClassName: "md:col-span-3",
+  },
+  {
+    label: "Gênero",
+    type: "select",
+    required: true,
+    placeholder: "Selecione",
+    selectProps: {
+      options: genderTypes,
+      nativeSelectProps: {
+        name: "locatarioGenero",
+      },
+    },
+  },
+  {
+    label: "Estado Civil",
+    type: "select",
+    required: true,
+    placeholder: "Selecione",
+    selectProps: {
+      options: civilStateTypes,
+      nativeSelectProps: {
+        name: "locatarioEstadoCivil",
+      },
+    },
+  },
+  {
+    label: "Profissão",
+    type: "input",
+    required: true,
+    placeholder: "Ex.: Advogado",
+    inputProps: { name: "locatarioProfissao" },
+  },
+  {
+    label: "Tipo de Documento",
+    type: "toggle",
+    required: true,
+    toggleOptions: [
+      { value: "cpf", label: "CPF" },
+      { value: "rg", label: "RG" },
+    ],
+    wrapperClassName: 'md:col-span-3 flex',
+    toggleProps: {name: 'locatario'}
+  },
+];
