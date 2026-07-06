@@ -1,7 +1,8 @@
 import { InputHTMLAttributes, SelectHTMLAttributes } from "react";
 import * as LucideIcons from "lucide-react";
+import { ToggleOption } from "@/app/ui/components/DocumentToggle";
 
-export type FieldType = "input" | "select";
+export type FieldType = "input" | "select" | "toggle";
 
 export interface FormFieldProps {
   id?: string;
@@ -12,9 +13,10 @@ export interface FormFieldProps {
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   selectProps?: {
     options: { value: string; label: string }[];
-
     nativeSelectProps?: SelectHTMLAttributes<HTMLSelectElement>;
   };
+  toggleOptions?: ToggleOption[];
+  toggleProps?: InputHTMLAttributes<HTMLInputElement>;
   wrapperClassName?: string;
 }
 
