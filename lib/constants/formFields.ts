@@ -111,8 +111,50 @@ export const ownerFields: FormFieldProps[] = [
       { value: "cpf", label: "CPF" },
       { value: "rg", label: "RG" },
     ],
-    wrapperClassName: 'md:col-span-3 flex',
-    toggleProps: {name: 'locador'}
+    wrapperClassName: "md:col-span-3 flex",
+    toggleProps: { name: "locador" },
+  },
+  {
+    label: "Endereço (Logradouro e número)",
+    type: "input",
+    required: true,
+    inputProps: { name: "locadorEndereco" },
+    placeholder: "Ex.: Rua das Camélias, 3442",
+    wrapperClassName: "md:col-span-3",
+  },
+  {
+    label: "Bairro",
+    type: "input",
+    required: true,
+    inputProps: { name: "locadorBairro" },
+    placeholder: "Ex.: Capão Novo",
+    wrapperClassName: "md:col-span-1",
+  },
+  {
+    label: "Cidade",
+    type: "input",
+    required: true,
+    inputProps: { name: "locadorCidade" },
+    placeholder: "Ex.: Capão da Canoa",
+    wrapperClassName: "md:col-span-1",
+  },
+  {
+    label: "Estado",
+    type: "select",
+    required: true,
+    placeholder: "Selecione",
+    selectProps: {
+      options: BRAZIL_STATES,
+      nativeSelectProps: { name: "estado", defaultValue: "RS" },
+    },
+  },
+  {
+    label: "CEP",
+    type: "input",
+    required: true,
+    inputProps: { name: "locadorCep", type: "number", maxLength: 8 },
+    placeholder: "00000-000",
+    wrapperClassName: "md:col-span-1",
   },
 ];
 
@@ -166,7 +208,65 @@ export const renterFields: FormFieldProps[] = [
       { value: "cpf", label: "CPF" },
       { value: "rg", label: "RG" },
     ],
-    wrapperClassName: 'md:col-span-3 flex',
-    toggleProps: {name: 'locatario'}
+    wrapperClassName: "md:col-span-3 flex",
+    toggleProps: { name: "locatario" },
+  },
+  {
+    label: "Endereço (Logradouro e número)",
+    type: "input",
+    required: true,
+    inputProps: { name: "locadorEndereco" },
+    placeholder: "Ex.: Rua das Camélias, 3442",
+    wrapperClassName: "md:col-span-3",
+  },
+  {
+    label: "Bairro",
+    type: "input",
+    required: true,
+    inputProps: { name: "locadorBairro" },
+    placeholder: "Ex.: Capão Novo",
+    wrapperClassName: "md:col-span-1",
+  },
+  {
+    label: "Cidade",
+    type: "input",
+    required: true,
+    inputProps: { name: "locadorCidade" },
+    placeholder: "Ex.: Capão da Canoa",
+    wrapperClassName: "md:col-span-1",
+  },
+  {
+    label: "Estado",
+    type: "select",
+    required: true,
+    placeholder: "Selecione",
+    selectProps: {
+      options: BRAZIL_STATES,
+      nativeSelectProps: { name: "estado", defaultValue: "RS" },
+    },
+  },
+  {
+    label: "CEP",
+    type: "input",
+    required: true,
+    inputProps: { name: "locadorCep", type: "number", maxLength: 8 },
+    placeholder: "00000-000",
+    wrapperClassName: "md:col-span-1",
+  },
+];
+
+export const financialDateFields: FormFieldProps[] = [
+  {
+    label: "Valor Mensal do Aluguel (R$)",
+    type: "input",
+    required: true,
+    inputProps: {
+      name: "valorAluguel",
+      type: "number",
+      step: "0.01",
+      min: "0",
+    },
+    wrapperClassName: "md:col-span-1",
+    placeholder: "Ex: 1.500,00",
   },
 ];
