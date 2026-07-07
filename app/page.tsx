@@ -20,6 +20,7 @@ import {
   propertyFields,
   renterFields,
 } from "@/lib/constants/formFields";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -42,7 +43,10 @@ export default function Home() {
             Preencha todos os campos obrigatórios para gerar o contrato
           </p>
         </div>
-        <User size={28} className="mt-6 mr-6" />
+        <Link href={"/login"}>
+          {" "}
+          <User size={28} className="mt-6 mr-6" />
+        </Link>
       </header>
       <main className="pt-10 px-48 ">
         <form action="/" method="post">
