@@ -303,7 +303,7 @@ export const financialDateFields: FormFieldProps[] = [
    
   },
    {
-    label: "Final do Contrato",
+    label: "Término do Contrato",
     type: "input",
     required: true,
     inputProps: {
