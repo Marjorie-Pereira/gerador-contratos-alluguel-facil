@@ -3,6 +3,7 @@ import BRAZIL_STATES from "./states";
 import { propertyTypes } from "@/types/propertyTypes";
 import { genderTypes } from "@/types/genderTypes";
 import { civilStateTypes } from "@/types/ownerRenterTypes";
+import { paymentDayOptions, securityDepositOptions } from "./paymentDayOptions";
 
 export const propertyFields: FormFieldProps[] = [
   {
@@ -268,5 +269,47 @@ export const financialDateFields: FormFieldProps[] = [
     },
     wrapperClassName: "md:col-span-1",
     placeholder: "Ex: 1.500,00",
+  },
+  {
+    label: "Dia de Vencimento",
+    type: "select",
+    required: true,
+    placeholder: "Selecione",
+    selectProps: {
+      options: paymentDayOptions,
+      nativeSelectProps: { name: "vencimento", defaultValue: "5" },
+    },
+    wrapperClassName: "md:col-span-1",
+  },
+  {
+    label: "Caução",
+    type: "select",
+    required: true,
+    placeholder: "Selecione",
+    selectProps: {
+      options: securityDepositOptions,
+      nativeSelectProps: { name: "caucao", defaultValue: "3" },
+    },
+    wrapperClassName: "md:col-span-1",
+  },
+  {
+    label: "Início do Contrato",
+    type: "input",
+    required: true,
+    inputProps: {
+      name: "inicioContrato",
+      type: "date",
+    },
+   
+  },
+   {
+    label: "Final do Contrato",
+    type: "input",
+    required: true,
+    inputProps: {
+      name: "fimContrato",
+      type: "date",
+    },
+    
   },
 ];
