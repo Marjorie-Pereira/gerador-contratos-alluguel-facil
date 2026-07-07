@@ -1,27 +1,14 @@
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { FormInput } from "../ui/components/FormInput";
+import { FormInput } from "../../ui/components/FormInput";
 import { ArrowRight } from "lucide-react";
-import { PasswordInput } from "../ui/components/PasswordInput";
+import { PasswordInput } from "../../ui/components/PasswordInput";
+import Link from "next/link";
 
 export default function Login() {
   return (
-    <div className="bg-zinc-100 min-h-screen">
-      <header className="bg-blue-950 border-b-3 border-yellow-600 p-6 mb-10">
-        <div className="flex items-center gap-3">
-          <Image
-            src={"/logoo.svg"}
-            width={640}
-            height={640}
-            alt={"Logo Alluguel Fácil"}
-            className="w-15"
-          />
-          <div className="uppercase text-white">
-            <p>Alluguel Fácil</p>
-            <p>Gestão de contratos</p>
-          </div>
-        </div>
-      </header>
+    <div className="bg-zinc-100 min-h-screen pt-10">
+     
       <main>
         <div className="m-auto bg-white max-w-1/3 shadow-md p-10 border-b border-zinc-300">
           <p className="text-sm uppercase text-yellow-600 font-semibold">
@@ -83,9 +70,9 @@ export default function Login() {
          
           <p className="text-sm text-blue-950 text-center py-4">
             Não possui uma conta?{" "}
-            <a href="#" className="text-yellow-600 font-semibold">
+            <Link href="/register" className="text-yellow-600 font-semibold">
               Cadastre-se
-            </a>
+            </Link>
           </p>
         </div>
       </main>
