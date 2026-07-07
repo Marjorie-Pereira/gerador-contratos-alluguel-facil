@@ -68,6 +68,10 @@ export default function Home() {
             icon="DollarSign"
             fields={financialDateFields}
           />
+          <div className="flex justify-between mb-20">
+            <p>Campos obrigatórios marcados com <span className="text-amber-800">*</span></p>
+            <button type="submit" className="text-white uppercase text-base font-bold bg-blue-950 py-4 px-8 hover:opacity-80 ">Gerar Contrato</button>
+          </div>
         </form>
       </main>
     </div>
