@@ -14,30 +14,35 @@ import {
   SelectSeparator,
 } from "@/components/ui/select";
 import ImovelDataSection from "./ui/components/FormSection";
-import { financialDateFields, ownerFields, propertyFields, renterFields } from "@/lib/constants/formFields";
+import {
+  financialDateFields,
+  ownerFields,
+  propertyFields,
+  renterFields,
+} from "@/lib/constants/formFields";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-stone-100">
-      <header className="bg-sky-950 pt-2 pb-8 text-white border-b-4 border-yellow-600">
-        <div className="relative">
+      <header className="flex bg-sky-950  text-white border-b-4 border-yellow-600">
+        <div className="w-48 p-10">
           <Image
             src={"/logoo.svg"}
             width={640}
             height={640}
             alt={"Logo Alluguel Fácil"}
-            className="w-15 h-auto m-auto"
+            className="w-auto"
           />
-          <User size={28} className="absolute top-0 right-5" />
         </div>
-        <div className="mt-5 px-48">
+        <div className="mt-5 flex-1 pt-10 pb-8">
           <h1 className="font-bold text-3xl mb-2">
             Contrato de Locação de Imóvel
           </h1>
-          <p className="text-sm">
+          <p className="text-lg">
             Preencha todos os campos obrigatórios para gerar o contrato
           </p>
         </div>
+        <User size={28} className="mt-6 mr-6" />
       </header>
       <main className="pt-10 px-48 ">
         <form action="/" method="post">
@@ -62,15 +67,23 @@ export default function Home() {
             fields={renterFields}
           />
 
-           <ImovelDataSection
+          <ImovelDataSection
             subtitle="SEÇÃO 04"
             title="Condições Financeiras e Vigência"
             icon="DollarSign"
             fields={financialDateFields}
           />
           <div className="flex justify-between mb-20">
-            <p>Campos obrigatórios marcados com <span className="text-amber-800">*</span></p>
-            <button type="submit" className="text-white uppercase text-base font-bold bg-blue-950 py-4 px-8 hover:opacity-80 ">Gerar Contrato</button>
+            <p>
+              Campos obrigatórios marcados com{" "}
+              <span className="text-amber-800">*</span>
+            </p>
+            <button
+              type="submit"
+              className="text-white uppercase text-base font-bold bg-blue-950 py-4 px-8 hover:opacity-80 "
+            >
+              Gerar Contrato
+            </button>
           </div>
         </form>
       </main>
