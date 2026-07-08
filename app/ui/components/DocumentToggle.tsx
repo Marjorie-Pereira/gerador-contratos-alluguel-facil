@@ -1,20 +1,18 @@
 import React, { FC } from "react";
 import clsx from "clsx";
 
-// Interface para as opções do seletor
 export interface ToggleOption {
   value: string;
   label: string;
 }
 
-// Interface das props do componente
 export interface DocumentToggleProps {
-  label: string; // Título do campo (ex: 'TIPO DE DOCUMENTO')
-  required?: boolean; // Se exibe o asterisco de obrigatório
-  options: ToggleOption[]; // Lista de opções para renderizar
-  value: string; // Valor atualmente selecionado
-  onChange: (value: string) => void; // Função disparada ao trocar a seleção
-  className?: string; // Classes extras para o wrapper externo
+  label: string; 
+  required?: boolean; 
+  options: ToggleOption[];
+  value: string;
+  onChange: (value: string) => void; 
+  className?: string;
 }
 
 const DocumentToggle: FC<DocumentToggleProps> = ({
