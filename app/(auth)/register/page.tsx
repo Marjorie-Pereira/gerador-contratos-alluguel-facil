@@ -10,26 +10,41 @@ export default function Register() {
       <main>
         <div className="m-auto bg-white max-w-1/3 shadow-md p-10 border-b border-zinc-300">
           <p className="text-sm uppercase text-yellow-600 font-semibold">
-            acesso ao sistema
+            novo usuário
           </p>
           <h1 className="text-blue-950 text-2xl font-semibold">
-            Bem-vindo de volta
+            Crie sua conta
           </h1>
           <p className="text-blue-950">
-            Acesse o painel de gestão de contratos
+            Preencha os dados para criar seu acesso
           </p>
           <Separator className="my-6" />
-          <form
-            action="
-          "
-          >
+          <form action="/process-info" method="post">
+            <FormInput
+              id="nome-completo"
+              inputProps={{ name: "user-name" }}
+              label="Nome completo"
+              required={true}
+              placeholder="Seu nome completo"
+              icon="User"
+              className="mb-4"
+            />
             <FormInput
               id="email"
-              inputProps={{ name: "user-email" }}
+              inputProps={{ name: "user-email", type: "email" }}
               label="e-mail"
               required={true}
               placeholder="seu@email.com.br"
               icon="Mail"
+              className="mb-4"
+            />
+            <FormInput
+              id="phone"
+              inputProps={{ name: "user-phone", type: "tel" }}
+              label="Telefone / whatsapp"
+              required={true}
+              placeholder="(00) 00000-0000"
+              icon="Phone"
               className="mb-4"
             />
             <PasswordInput
@@ -40,41 +55,54 @@ export default function Register() {
               icon={true}
               className="mb-4"
             />
+            <PasswordInput
+              id="confirmar"
+              label="confirmar senha"
+              required={true}
+              icon={true}
+              className="mb-4"
+            />
 
-            <label htmlFor="keepLogged" className="flex items-center">
+            <label htmlFor="keepLogged" className="flex items-center text-sm">
               <input
                 id="keepLogged"
                 type="checkbox"
                 className="w-4 h-4 mr-2 accent-blue-950 "
               />
-              Mantenha-me conectado por 30 dias
+              <p>
+                Li e aceito
+                <span className="text-yellow-600 font-semibold ">
+                  {" "}
+                  Termos de Uso
+                </span>{" "}
+                e a{" "}
+                <span className="text-yellow-600 font-semibold ">
+                  {" "}
+                  Política de Privacidade
+                </span>
+              </p>
             </label>
 
-            <Link href="/">
+            <Link href="/login">
               <button
                 type="submit"
                 className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
               >
-                entrar no sistema
+                criar minha conta
                 <ArrowRight />
               </button>
             </Link>
           </form>
         </div>
-        <div className="bg-stone-100 w-1/3 m-auto mb-10 shadow-md ">
+        <div className="bg-stone-100 w-1/3 m-auto mb-10 shadow-md py-4 ">
           <p className="text-sm text-blue-950 text-center py-4">
-            Esqueceu sua senha?{" "}
-            <a href="#" className="text-yellow-600 font-semibold">
-              Clique aqui
-            </a>
+            Já possui uma conta?{" "}
+            <Link href="/login" className="text-yellow-600 font-semibold">
+              ENTRAR
+            </Link>
           </p>
 
-          <p className="text-sm text-blue-950 text-center py-4">
-            Não possui uma conta?{" "}
-            <a href="#" className="text-yellow-600 font-semibold">
-              Cadastre-se
-            </a>
-          </p>
+          
         </div>
       </main>
       <p className="text-center text-sm text-zinc-500 py-4">
