@@ -47,7 +47,7 @@ export const PasswordInput: FC<{
 
         {icon && (
           <span
-            className="absolute right-4 cursor-pointer"
+            className="absolute right-4 cursor-pointer text-slate-400"
             onClick={() => setShowPassword(!showPassword)}
           >
             {iconNode}

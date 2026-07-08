@@ -25,7 +25,7 @@ export const FormInput: FC<{
       }>;
       return (
         <LucideIcon
-          className="h-6 w-6 cursor-pointer absolute right-4"
+          className="h-6 w-6 cursor-pointer absolute right-4 text-slate-400"
          
         />
       );
