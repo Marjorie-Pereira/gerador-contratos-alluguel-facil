@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { User } from "lucide-react";
 import ImovelDataSection from "./ui/components/FormSection";
@@ -8,8 +9,17 @@ import {
   renterFields,
 } from "@/lib/constants/formFields";
 import Link from "next/link";
+import LoadingOverlay from "./ui/components/LoadingOverlay";
+import { useState } from "react";
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsLoading(true);
+
+    setTimeout(() => setIsLoading(false), 5000);
+  }
   return (
     <div className="min-h-screen bg-stone-100">
       <header className="flex bg-sky-950  text-white border-b-4 border-yellow-600">
@@ -36,7 +46,7 @@ export default function Home() {
         </Link>
       </header>
       <main className="pt-10 px-48 ">
-        <form action="/" method="post">
+        <form action="/" method="post" onSubmit={handleSubmit}>
           <ImovelDataSection
             subtitle="SEÇÃO 01"
             title="Dados do Imóvel"
@@ -78,6 +88,10 @@ export default function Home() {
           </div>
         </form>
       </main>
+      <LoadingOverlay
+        isOpen={isLoading}
+        message="Gerando documento, aguarde por favor."
+      />
     </div>
   );
 }
