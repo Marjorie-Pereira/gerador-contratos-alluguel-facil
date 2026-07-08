@@ -43,8 +43,6 @@ export default function Register() {
               inputProps={{
                 name: "user-phone",
                 type: "tel",
-                pattern:
-                  "^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$",
               }}
               label="Telefone / whatsapp"
               required={true}
