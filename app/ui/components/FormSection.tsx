@@ -127,7 +127,6 @@ const ImovelDataSection: FC<FormSectionProps> = ({
                     required={field.required}
                     inputProps={{
                       name: `${field.toggleProps?.name}Cpf`,
-                      pattern: "^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$",
                     }}
                     placeholder={"000.000.00-00"}
                     className="flex-1"
@@ -139,7 +138,6 @@ const ImovelDataSection: FC<FormSectionProps> = ({
                     required={field.required}
                     inputProps={{
                       name: `${field.toggleProps?.name}Rg`,
-                      pattern: "^\d{1,2}\.?\d{3}\.?\d{3}-?[\dXx]$",
                     }}
                     placeholder={"Digite apenas os números"}
                     className="flex-1"
