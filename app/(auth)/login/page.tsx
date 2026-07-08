@@ -19,10 +19,7 @@ export default function Login() {
             Acesse o painel de gestão de contratos
           </p>
           <Separator className="my-6" />
-          <form
-            action="
-          "
-          >
+          <form action="/" method="get">
             <FormInput
               id="email"
               inputProps={{ name: "user-email" }}
@@ -49,15 +46,13 @@ export default function Login() {
               />
               Mantenha-me conectado por 30 dias
             </label>
-            <Link href="/">
-              <button
-                type="submit"
-                className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
-              >
-                entrar no sistema
-                <ArrowRight />
-              </button>
-            </Link>
+            <button
+              type="submit"
+              className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
+            >
+              entrar no sistema
+              <ArrowRight />
+            </button>
           </form>
         </div>
         <div className="bg-stone-100 w-1/3 m-auto mb-10 shadow-md ">

@@ -19,7 +19,7 @@ export default function Register() {
             Preencha os dados para criar seu acesso
           </p>
           <Separator className="my-6" />
-          <form action="/process-info" method="post">
+          <form action="/" method="get">
             <FormInput
               id="nome-completo"
               inputProps={{ name: "user-name" }}
@@ -40,7 +40,12 @@ export default function Register() {
             />
             <FormInput
               id="phone"
-              inputProps={{ name: "user-phone", type: "tel" }}
+              inputProps={{
+                name: "user-phone",
+                type: "tel",
+                pattern:
+                  "^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$",
+              }}
               label="Telefone / whatsapp"
               required={true}
               placeholder="(00) 00000-0000"
@@ -49,7 +54,7 @@ export default function Register() {
             />
             <PasswordInput
               id="senha"
-              inputProps={{ name: "user-password" }}
+              inputProps={{ name: "user-password", minLength: 8 }}
               label="senha"
               required={true}
               icon={true}
@@ -58,6 +63,7 @@ export default function Register() {
             <PasswordInput
               id="confirmar"
               label="confirmar senha"
+              inputProps={{ minLength: 8 }}
               required={true}
               icon={true}
               className="mb-4"
@@ -67,6 +73,7 @@ export default function Register() {
               <input
                 id="keepLogged"
                 type="checkbox"
+                required={true}
                 className="w-4 h-4 mr-2 accent-blue-950 "
               />
               <p>
@@ -83,15 +90,13 @@ export default function Register() {
               </p>
             </label>
 
-            <Link href="/login">
-              <button
-                type="submit"
-                className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
-              >
-                criar minha conta
-                <ArrowRight />
-              </button>
-            </Link>
+            <button
+              type="submit"
+              className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
+            >
+              criar minha conta
+              <ArrowRight />
+            </button>
           </form>
         </div>
         <div className="bg-stone-100 w-1/3 m-auto mb-10 shadow-md py-4 ">
@@ -101,8 +106,6 @@ export default function Register() {
               ENTRAR
             </Link>
           </p>
-
-          
         </div>
       </main>
       <p className="text-center text-sm text-zinc-500 py-4">
