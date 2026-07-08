@@ -1,18 +1,5 @@
 import Image from "next/image";
-import { User, Building } from "lucide-react";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import BRAZIL_STATES from "@/lib/constants/states";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectLabel,
-  SelectItem,
-  SelectSeparator,
-} from "@/components/ui/select";
+import { User } from "lucide-react";
 import ImovelDataSection from "./ui/components/FormSection";
 import {
   financialDateFields,
