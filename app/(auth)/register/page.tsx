@@ -1,13 +1,12 @@
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
 import { FormInput } from "../../ui/components/FormInput";
 import { ArrowRight } from "lucide-react";
 import { PasswordInput } from "../../ui/components/PasswordInput";
+import Link from "next/link";
 
 export default function Register() {
   return (
     <div className="bg-zinc-100 min-h-screen pt-10">
-      
       <main>
         <div className="m-auto bg-white max-w-1/3 shadow-md p-10 border-b border-zinc-300">
           <p className="text-sm uppercase text-yellow-600 font-semibold">
@@ -51,12 +50,15 @@ export default function Register() {
               Mantenha-me conectado por 30 dias
             </label>
 
-            <button
-              type="submit"
-              className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
-            >
-              <p>entrar no sistema</p> <ArrowRight />
-            </button>
+            <Link href="/">
+              <button
+                type="submit"
+                className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
+              >
+                entrar no sistema
+                <ArrowRight />
+              </button>
+            </Link>
           </form>
         </div>
         <div className="bg-stone-100 w-1/3 m-auto mb-10 shadow-md ">
@@ -66,7 +68,7 @@ export default function Register() {
               Clique aqui
             </a>
           </p>
-         
+
           <p className="text-sm text-blue-950 text-center py-4">
             Não possui uma conta?{" "}
             <a href="#" className="text-yellow-600 font-semibold">
