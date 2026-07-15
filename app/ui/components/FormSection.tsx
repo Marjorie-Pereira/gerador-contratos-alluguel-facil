@@ -1,19 +1,12 @@
 "use client";
-import React, {
-  FC,
-  InputHTMLAttributes,
-  SelectHTMLAttributes,
-  useId,
-  useState,
-} from "react";
+import React, { FC, useId, useState } from "react";
 import * as LucideIcons from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FieldWrapper } from "@/app/ui/components/FieldWrapper";
 import { FormSectionProps } from "@/types/formTypes";
 import { FormSelect } from "./FormSelect";
 import { FormInput } from "./FormInput";
-import { documentOptions } from "@/lib/constants/documentOptions";
 import DocumentToggle from "./DocumentToggle";
+import InputField from "@/components/ui/InputField";
 
 const ImovelDataSection: FC<FormSectionProps> = ({
   icon,
@@ -83,7 +76,7 @@ const ImovelDataSection: FC<FormSectionProps> = ({
 
           if (field.type === "input") {
             return (
-              <FormInput
+              <InputField
                 key={uniqueId}
                 id={uniqueId}
                 label={field.label}
@@ -115,7 +108,6 @@ const ImovelDataSection: FC<FormSectionProps> = ({
                     options={field.toggleOptions}
                     value={docType}
                     onChange={(newValue) => setDocType(newValue)}
-                    
                   />
                 </div>
 
