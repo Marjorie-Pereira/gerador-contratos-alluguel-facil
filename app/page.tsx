@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import LoadingOverlay from "./ui/components/LoadingOverlay";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -79,12 +80,8 @@ export default function Home() {
               Campos obrigatórios marcados com{" "}
               <span className="text-amber-800">*</span>
             </p>
-            <button
-              type="submit"
-              className="text-white uppercase text-base font-bold bg-blue-950 py-4 px-8 hover:opacity-80 "
-            >
-              Gerar Contrato
-            </button>
+
+            <Button type="submit">gerar contrato</Button>
           </div>
         </form>
       </main>
