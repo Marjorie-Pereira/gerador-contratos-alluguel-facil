@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
+import InputGroupField from "@/components/ui/InputGroupField";
+import PasswordInputField from "@/components/ui/PasswordInputField";
 import { Separator } from "@/components/ui/separator";
-import { FormInput } from "../../ui/components/FormInput";
-import { ArrowRight } from "lucide-react";
-import { PasswordInput } from "../../ui/components/PasswordInput";
+import { ArrowRight, Lock, Mail } from "lucide-react";
 import Link from "next/link";
 
 export default function Login() {
@@ -20,7 +21,7 @@ export default function Login() {
           </p>
           <Separator className="my-6" />
           <form action="/" method="get">
-            <FormInput
+            {/* <FormInput
               id="email"
               inputProps={{ name: "user-email" }}
               label="e-mail"
@@ -36,6 +37,23 @@ export default function Login() {
               required={true}
               icon={true}
               className="mb-4"
+            /> */}
+            <InputGroupField
+              icon={<Mail />}
+              id="email"
+              inputProps={{ name: "user-email" }}
+              label="e-mail"
+              required={true}
+              placeholder="seu@email.com.br"
+              className="mb-4"
+            />
+            <PasswordInputField
+              icon={<Lock />}
+              id="password"
+              inputProps={{ name: "user-password" }}
+              label="senha"
+              placeholder="Senha forte com 8 caracteres"
+              className="mb-4"
             />
 
             <label htmlFor="keepLogged" className="flex items-center">
@@ -46,13 +64,10 @@ export default function Login() {
               />
               Mantenha-me conectado por 30 dias
             </label>
-            <button
-              type="submit"
-              className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
-            >
+            <Button type="submit" className="w-full mt-10">
               entrar no sistema
               <ArrowRight />
-            </button>
+            </Button>
           </form>
         </div>
         <div className="bg-stone-100 w-1/3 m-auto mb-10 shadow-md ">

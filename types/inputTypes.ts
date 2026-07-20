@@ -1,4 +1,3 @@
-import * as LucideIcons from "lucide-react";
 import { InputHTMLAttributes } from "react";
 
 type FieldProps = {
@@ -15,7 +14,7 @@ type InputFieldProps = FieldProps & {
 };
 
 type InputGroupFieldProps = InputFieldProps & {
-  icon: keyof typeof LucideIcons | React.ReactNode;
+  icon?: React.ReactNode;
 };
 
 type SelectFieldProps = FieldProps & {
