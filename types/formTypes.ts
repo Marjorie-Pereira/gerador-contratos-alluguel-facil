@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, SelectHTMLAttributes } from "react";
+import { InputHTMLAttributes } from "react";
 import * as LucideIcons from "lucide-react";
 import { ToggleOption } from "@/app/ui/components/DocumentToggle";
 
@@ -13,7 +13,7 @@ export interface FormFieldProps {
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   selectProps?: {
     options: { value: string; label: string }[];
-    nativeSelectProps?: SelectHTMLAttributes<HTMLSelectElement>;
+    nativeSelectProps?: { name: string; defaultValue?: string };
   };
   toggleOptions?: ToggleOption[];
   toggleProps?: InputHTMLAttributes<HTMLInputElement>;

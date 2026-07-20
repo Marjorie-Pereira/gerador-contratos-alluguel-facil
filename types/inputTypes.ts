@@ -1,5 +1,5 @@
 import * as LucideIcons from "lucide-react";
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, SelectHTMLAttributes } from "react";
 
 type FieldProps = {
   label: string;
@@ -18,4 +18,11 @@ type InputGroupFieldProps = InputFieldProps & {
   icon: keyof typeof LucideIcons | React.ReactNode;
 };
 
-export type { InputFieldProps, InputGroupFieldProps };
+type SelectFieldProps = FieldProps & {
+  selectProps: {
+    options: { value: string; label: string }[];
+    nativeSelectProps?: { name: string; defaultValue?: string };
+  };
+};
+
+export type { InputFieldProps, InputGroupFieldProps, SelectFieldProps };

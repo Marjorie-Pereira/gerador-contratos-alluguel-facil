@@ -3,10 +3,9 @@ import React, { FC, useId, useState } from "react";
 import * as LucideIcons from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FormSectionProps } from "@/types/formTypes";
-import { FormSelect } from "./FormSelect";
-import { FormInput } from "./FormInput";
 import DocumentToggle from "./DocumentToggle";
 import InputField from "@/components/ui/InputField";
+import SelectField from "@/components/ui/SelectField";
 
 const ImovelDataSection: FC<FormSectionProps> = ({
   icon,
@@ -88,7 +87,7 @@ const ImovelDataSection: FC<FormSectionProps> = ({
             );
           } else if (field.type === "select" && field.selectProps) {
             return (
-              <FormSelect
+              <SelectField
                 key={uniqueId}
                 id={uniqueId}
                 label={field.label}
@@ -113,25 +112,21 @@ const ImovelDataSection: FC<FormSectionProps> = ({
 
                 {/* Exemplo de renderização condicional baseada no seletor */}
                 {docType === "cpf" ? (
-                  <FormInput
+                  <InputField
                     id={`${field.toggleProps?.name}Cpf`}
-                    label={"CPF"}
+                    label="CPF"
                     required={field.required}
-                    inputProps={{
-                      name: `${field.toggleProps?.name}Cpf`,
-                    }}
-                    placeholder={"000.000.00-00"}
+                    inputProps={{ name: `${field.toggleProps?.name}Cpf` }}
+                    placeholder="000.000.000-00"
                     className="flex-1"
                   />
                 ) : (
-                  <FormInput
-                    id={`${field.toggleProps?.name}Rg`}
-                    label={"RG"}
+                  <InputField
+                    id={`${field.toggleProps?.name}RG`}
+                    label="RG"
                     required={field.required}
-                    inputProps={{
-                      name: `${field.toggleProps?.name}Rg`,
-                    }}
-                    placeholder={"Digite apenas os números"}
+                    inputProps={{ name: `${field.toggleProps?.name}RG` }}
+                    placeholder="Apenas numeros"
                     className="flex-1"
                   />
                 )}
