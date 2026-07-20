@@ -1,13 +1,16 @@
 import * as LucideIcons from "lucide-react";
 import { InputHTMLAttributes } from "react";
 
-type InputFieldProps = {
+type FieldProps = {
   label: string;
   placeholder?: string;
   id: string;
   required?: boolean;
   className?: string;
   invalid?: boolean;
+};
+
+type InputFieldProps = FieldProps & {
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
 };
 
