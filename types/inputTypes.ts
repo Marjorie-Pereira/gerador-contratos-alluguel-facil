@@ -1,5 +1,5 @@
 import * as LucideIcons from "lucide-react";
-import { InputHTMLAttributes, SelectHTMLAttributes } from "react";
+import { InputHTMLAttributes } from "react";
 
 type FieldProps = {
   label: string;

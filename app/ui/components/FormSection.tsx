@@ -3,9 +3,9 @@ import React, { FC, useId, useState } from "react";
 import * as LucideIcons from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FormSectionProps } from "@/types/formTypes";
-import DocumentToggle from "./DocumentToggle";
 import InputField from "@/components/ui/InputField";
 import SelectField from "@/components/ui/SelectField";
+import ToggleGroupField from "@/components/ui/ToggleGroupField";
 
 const ImovelDataSection: FC<FormSectionProps> = ({
   icon,
@@ -101,8 +101,9 @@ const ImovelDataSection: FC<FormSectionProps> = ({
             return (
               <div key={uniqueId} className="flex gap-6 md:col-span-3">
                 <div className="w-1/2 ">
-                  <DocumentToggle
+                  <ToggleGroupField
                     label={field.label}
+                    labelFor={`${field.toggleProps?.name}Document`}
                     required={field.required}
                     options={field.toggleOptions}
                     value={docType}
@@ -113,7 +114,7 @@ const ImovelDataSection: FC<FormSectionProps> = ({
                 {/* Exemplo de renderização condicional baseada no seletor */}
                 {docType === "cpf" ? (
                   <InputField
-                    id={`${field.toggleProps?.name}Cpf`}
+                    id={`${field.toggleProps?.name}Document`}
                     label="CPF"
                     required={field.required}
                     inputProps={{ name: `${field.toggleProps?.name}Cpf` }}
@@ -122,10 +123,10 @@ const ImovelDataSection: FC<FormSectionProps> = ({
                   />
                 ) : (
                   <InputField
-                    id={`${field.toggleProps?.name}RG`}
+                    id={`${field.toggleProps?.name}Document`}
                     label="RG"
                     required={field.required}
-                    inputProps={{ name: `${field.toggleProps?.name}RG` }}
+                    inputProps={{ name: `${field.toggleProps?.name}Rg` }}
                     placeholder="Apenas numeros"
                     className="flex-1"
                   />
