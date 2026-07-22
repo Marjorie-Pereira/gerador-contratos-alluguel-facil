@@ -1,19 +1,11 @@
 "use client";
-import React, {
-  FC,
-  InputHTMLAttributes,
-  SelectHTMLAttributes,
-  useId,
-  useState,
-} from "react";
+import React, { FC, useId, useState } from "react";
 import * as LucideIcons from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FieldWrapper } from "@/app/ui/components/FieldWrapper";
 import { FormSectionProps } from "@/types/formTypes";
-import { FormSelect } from "./FormSelect";
-import { FormInput } from "./FormInput";
-import { documentOptions } from "@/lib/constants/documentOptions";
-import DocumentToggle from "./DocumentToggle";
+import InputField from "@/components/ui/InputField";
+import SelectField from "@/components/ui/SelectField";
+import ToggleGroupField from "@/components/ui/ToggleGroupField";
 
 const ImovelDataSection: FC<FormSectionProps> = ({
   icon,
@@ -83,7 +75,7 @@ const ImovelDataSection: FC<FormSectionProps> = ({
 
           if (field.type === "input") {
             return (
-              <FormInput
+              <InputField
                 key={uniqueId}
                 id={uniqueId}
                 label={field.label}
@@ -95,7 +87,7 @@ const ImovelDataSection: FC<FormSectionProps> = ({
             );
           } else if (field.type === "select" && field.selectProps) {
             return (
-              <FormSelect
+              <SelectField
                 key={uniqueId}
                 id={uniqueId}
                 label={field.label}
@@ -109,37 +101,33 @@ const ImovelDataSection: FC<FormSectionProps> = ({
             return (
               <div key={uniqueId} className="flex gap-6 md:col-span-3">
                 <div className="w-1/2 ">
-                  <DocumentToggle
+                  <ToggleGroupField
                     label={field.label}
+                    labelFor={`${field.toggleProps?.name}Document`}
                     required={field.required}
                     options={field.toggleOptions}
                     value={docType}
                     onChange={(newValue) => setDocType(newValue)}
-                    
                   />
                 </div>
 
                 {/* Exemplo de renderização condicional baseada no seletor */}
                 {docType === "cpf" ? (
-                  <FormInput
-                    id={`${field.toggleProps?.name}Cpf`}
-                    label={"CPF"}
+                  <InputField
+                    id={`${field.toggleProps?.name}Document`}
+                    label="CPF"
                     required={field.required}
-                    inputProps={{
-                      name: `${field.toggleProps?.name}Cpf`,
-                    }}
-                    placeholder={"000.000.00-00"}
+                    inputProps={{ name: `${field.toggleProps?.name}Cpf` }}
+                    placeholder="000.000.000-00"
                     className="flex-1"
                   />
                 ) : (
-                  <FormInput
-                    id={`${field.toggleProps?.name}Rg`}
-                    label={"RG"}
+                  <InputField
+                    id={`${field.toggleProps?.name}Document`}
+                    label="RG"
                     required={field.required}
-                    inputProps={{
-                      name: `${field.toggleProps?.name}Rg`,
-                    }}
-                    placeholder={"Digite apenas os números"}
+                    inputProps={{ name: `${field.toggleProps?.name}Rg` }}
+                    placeholder="Apenas numeros"
                     className="flex-1"
                   />
                 )}
