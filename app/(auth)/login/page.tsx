@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Field, FieldLabel } from "@/components/ui/field";
 import InputGroupField from "@/components/ui/InputGroupField";
 import PasswordInputField from "@/components/ui/PasswordInputField";
 import { Separator } from "@/components/ui/separator";
@@ -21,50 +23,34 @@ export default function Login() {
           </p>
           <Separator className="my-6" />
           <form action="/" method="get">
-            {/* <FormInput
-              id="email"
-              inputProps={{ name: "user-email" }}
-              label="e-mail"
-              required={true}
-              placeholder="seu@email.com.br"
-              icon="Mail"
-              className="mb-4"
-            />
-            <PasswordInput
-              id="senha"
-              inputProps={{ name: "user-password" }}
-              label="senha"
-              required={true}
-              icon={true}
-              className="mb-4"
-            /> */}
+           
             <InputGroupField
               icon={<Mail />}
               id="email"
-              inputProps={{ name: "user-email" }}
+              inputProps={{ name: "user-email", type:"email" }}
               label="e-mail"
               required={true}
               placeholder="seu@email.com.br"
               className="mb-4"
+              
             />
             <PasswordInputField
               icon={<Lock />}
               id="password"
-              inputProps={{ name: "user-password" }}
+              inputProps={{ name: "user-password", minLength:8 }}
               label="senha"
               placeholder="Senha forte com 8 caracteres"
               className="mb-4"
             />
 
-            <label htmlFor="keepLogged" className="flex items-center">
-              <input
-                id="keepLogged"
-                type="checkbox"
-                className="w-4 h-4 mr-2 accent-blue-950 "
-              />
-              Mantenha-me conectado por 30 dias
-            </label>
-            <Button type="submit" className="w-full mt-10">
+            <Field orientation="horizontal">
+              <Checkbox id="keepLogged" name="terms-checkbox-basic" className="data-[state=checked]:bg-blue-950 data-[state=checked]:border-blue-950 " />
+              <FieldLabel htmlFor="keepLogged">
+                Mantenha-me conectado por 30 dias
+              </FieldLabel>
+            </Field>
+
+            <Button type="submit" className="w-full mt-4">
               entrar no sistema
               <ArrowRight />
             </Button>
