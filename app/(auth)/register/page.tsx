@@ -1,7 +1,11 @@
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Field, FieldLabel } from "@/components/ui/field";
+import InputField from "@/components/ui/InputField";
+import InputGroupField from "@/components/ui/InputGroupField";
+import PasswordInputField from "@/components/ui/PasswordInputField";
 import { Separator } from "@/components/ui/separator";
-import { FormInput } from "../../ui/components/FormInput";
-import { ArrowRight } from "lucide-react";
-import { PasswordInput } from "../../ui/components/PasswordInput";
+import { ArrowRight, Lock, Mail, Phone, User } from "lucide-react";
 import Link from "next/link";
 
 export default function Register() {
@@ -20,25 +24,27 @@ export default function Register() {
           </p>
           <Separator className="my-6" />
           <form action="/" method="get">
-            <FormInput
+            <InputGroupField
               id="nome-completo"
               inputProps={{ name: "user-name" }}
               label="Nome completo"
               required={true}
               placeholder="Seu nome completo"
-              icon="User"
+              icon={<User />}
               className="mb-4"
             />
-            <FormInput
+
+            <InputGroupField
               id="email"
               inputProps={{ name: "user-email", type: "email" }}
               label="e-mail"
               required={true}
               placeholder="seu@email.com.br"
-              icon="Mail"
+              icon={<Mail />}
               className="mb-4"
             />
-            <FormInput
+
+            <InputGroupField
               id="phone"
               inputProps={{
                 name: "user-phone",
@@ -47,54 +53,54 @@ export default function Register() {
               label="Telefone / whatsapp"
               required={true}
               placeholder="(00) 00000-0000"
-              icon="Phone"
+              icon={<Phone />}
               className="mb-4"
             />
-            <PasswordInput
+
+            <PasswordInputField
               id="senha"
               inputProps={{ name: "user-password", minLength: 8 }}
               label="senha"
               required={true}
-              icon={true}
+              icon={<Lock />}
               className="mb-4"
-            />
-            <PasswordInput
-              id="confirmar"
-              label="confirmar senha"
-              inputProps={{ minLength: 8 }}
-              required={true}
-              icon={true}
-              className="mb-4"
+              placeholder="Deve ter no mínimo 8 caracteres"
             />
 
-            <label htmlFor="keepLogged" className="flex items-center text-sm">
-              <input
-                id="keepLogged"
-                type="checkbox"
-                required={true}
-                className="w-4 h-4 mr-2 accent-blue-950 "
+            <PasswordInputField
+              id="confirmar"
+              inputProps={{ name: "user-password", minLength: 8 }}
+              label="confirmar senha"
+              required={true}
+              icon={<Lock />}
+              className="mb-4"
+              placeholder="Repita a senha"
+            />
+
+            <Field orientation="horizontal">
+              <Checkbox
+                id="acceptTerms"
+                className="data-[state=checked]:bg-blue-950 data-[state=checked]:border-blue-950 "
               />
-              <p>
-                Li e aceito
+              <FieldLabel htmlFor="acceptTerms">
+                Li e aceito os
                 <span className="text-yellow-600 font-semibold ">
-                  {" "}
                   Termos de Uso
-                </span>{" "}
-                e a{" "}
+                </span>
+                e a
                 <span className="text-yellow-600 font-semibold ">
-                  {" "}
                   Política de Privacidade
                 </span>
-              </p>
-            </label>
+              </FieldLabel>
+            </Field>
 
-            <button
+            <Button
               type="submit"
               className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
             >
               criar minha conta
               <ArrowRight />
-            </button>
+            </Button>
           </form>
         </div>
         <div className="bg-stone-100 w-1/3 m-auto mb-10 shadow-md py-4 ">
