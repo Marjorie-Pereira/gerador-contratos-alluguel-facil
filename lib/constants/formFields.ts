@@ -248,9 +248,9 @@ export const renterFields: FormFieldProps[] = [
   },
   {
     label: "CEP",
-    type: "input",
+    type: "pattern",
     required: true,
-    inputProps: { name: "locadorCep", maxLength: 8 },
+    patternProps: { name: "locadorCep", format: "#####-###" },
     placeholder: "00000-000",
     wrapperClassName: "md:col-span-1",
   },
