@@ -259,16 +259,19 @@ export const renterFields: FormFieldProps[] = [
 export const financialDateFields: FormFieldProps[] = [
   {
     label: "Valor Mensal do Aluguel (R$)",
-    type: "input",
+    type: "numeric",
     required: true,
-    inputProps: {
+    numericProps: {
       name: "valorAluguel",
-      type: "number",
-      step: "0.01",
-      min: "0",
+      thousandSeparator: ".",
+      decimalSeparator: ",",
+      prefix: "R$ ",
+      decimalScale: 2,
+      fixedDecimalScale: true,
+      allowNegative: false,
+      placeholder: "R$ 0,00",
     },
     wrapperClassName: "md:col-span-1",
-    placeholder: "Ex: 1.500,00",
   },
   {
     label: "Dia de Vencimento",
@@ -300,9 +303,8 @@ export const financialDateFields: FormFieldProps[] = [
       name: "inicioContrato",
       type: "date",
     },
-   
   },
-   {
+  {
     label: "Término do Contrato",
     type: "input",
     required: true,
@@ -310,6 +312,5 @@ export const financialDateFields: FormFieldProps[] = [
       name: "fimContrato",
       type: "date",
     },
-    
   },
 ];

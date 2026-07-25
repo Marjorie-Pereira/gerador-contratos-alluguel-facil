@@ -1,9 +1,9 @@
 import { InputHTMLAttributes } from "react";
 import * as LucideIcons from "lucide-react";
 import { ToggleOption } from "./toggleTypes";
-import { PatternFormatProps } from "react-number-format";
+import { NumericFormatProps, PatternFormatProps } from "react-number-format";
 
-export type FieldType = "input" | "select" | "toggle" | "pattern";
+export type FieldType = "input" | "select" | "toggle" | "pattern" | "numeric";
 
 export interface FormFieldProps {
   id?: string;
@@ -19,6 +19,7 @@ export interface FormFieldProps {
   toggleOptions?: ToggleOption[];
   toggleProps?: InputHTMLAttributes<HTMLInputElement>;
   patternProps?: PatternFormatProps;
+  numericProps?: NumericFormatProps;
   wrapperClassName?: string;
 }
 

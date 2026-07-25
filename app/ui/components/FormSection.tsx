@@ -7,6 +7,8 @@ import InputField from "@/components/ui/InputField";
 import SelectField from "@/components/ui/SelectField";
 import ToggleGroupField from "@/components/ui/ToggleGroupField";
 import PatternInputField from "@/components/ui/PatternInputField";
+import { NumericFormat } from "react-number-format";
+import NumericInputField from "@/components/ui/NumericInputField";
 
 const ImovelDataSection: FC<FormSectionProps> = ({
   icon,
@@ -108,6 +110,17 @@ const ImovelDataSection: FC<FormSectionProps> = ({
                 patternProps={field.patternProps ?? { format: "" }}
                 placeholder={field.placeholder}
                 className={wrapperClasses}
+              />
+            );
+          } else if (field.type === "numeric") {
+            return (
+              <NumericInputField
+                key={uniqueId}
+                id={uniqueId}
+                label={field.label}
+                required={field.required}
+                className={wrapperClasses}
+                numericProps={field.numericProps!}
               />
             );
           } else if (field.type === "toggle" && field.toggleOptions) {

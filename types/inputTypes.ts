@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from "react";
-import { InputAttributes, PatternFormatProps } from "react-number-format";
+import { InputAttributes, NumericFormatProps, PatternFormatProps } from "react-number-format";
 
 type FieldProps = {
   label: string;
@@ -22,6 +22,10 @@ type PatternFieldProps = FieldProps & {
   patternProps: PatternFormatProps;
 };
 
+type NumericFieldProps = FieldProps & {
+  numericProps: NumericFormatProps;
+};
+
 type SelectFieldProps = FieldProps & {
   selectProps: {
     options: { value: string; label: string }[];
@@ -29,4 +33,4 @@ type SelectFieldProps = FieldProps & {
   };
 };
 
-export type { InputFieldProps, InputGroupFieldProps, SelectFieldProps, PatternFieldProps };
+export type { InputFieldProps, InputGroupFieldProps, SelectFieldProps, PatternFieldProps, NumericFieldProps };
