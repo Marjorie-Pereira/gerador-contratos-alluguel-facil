@@ -6,6 +6,7 @@ import { FormSectionProps } from "@/types/formTypes";
 import InputField from "@/components/ui/InputField";
 import SelectField from "@/components/ui/SelectField";
 import ToggleGroupField from "@/components/ui/ToggleGroupField";
+import PatternInputField from "@/components/ui/PatternInputField";
 
 const ImovelDataSection: FC<FormSectionProps> = ({
   icon,
@@ -93,6 +94,18 @@ const ImovelDataSection: FC<FormSectionProps> = ({
                 label={field.label}
                 required={field.required}
                 selectProps={field.selectProps}
+                placeholder={field.placeholder}
+                className={wrapperClasses}
+              />
+            );
+          } else if (field.type === "pattern") {
+            return (
+              <PatternInputField
+                key={uniqueId}
+                id={uniqueId}
+                label={field.label}
+                required={field.required}
+                patternProps={field.patternProps ?? { format: "" }}
                 placeholder={field.placeholder}
                 className={wrapperClasses}
               />

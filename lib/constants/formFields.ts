@@ -43,9 +43,9 @@ export const propertyFields: FormFieldProps[] = [
   },
   {
     label: "CEP",
-    type: "input",
+    type: "pattern",
     placeholder: "00000-000",
-    inputProps: { name: "cep", maxLength: 9 },
+    patternProps: { name: "cep", format: "#####-###" },
     // Natural 2nd column placement
   },
   {

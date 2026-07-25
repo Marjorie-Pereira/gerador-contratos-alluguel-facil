@@ -12,6 +12,9 @@ import Link from "next/link";
 import LoadingOverlay from "./ui/components/LoadingOverlay";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import FormSection from "./ui/components/FormSectionCard";
+import { PatternFormat } from "react-number-format";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -75,6 +78,7 @@ export default function Home() {
             icon="DollarSign"
             fields={financialDateFields}
           />
+
           <div className="flex justify-between mb-20">
             <p>
               Campos obrigatórios marcados com{" "}
