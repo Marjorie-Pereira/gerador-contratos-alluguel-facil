@@ -1,11 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 import { Field, FieldLabel } from "./field";
-
-type ToggleOption = {
-  value: string;
-  label: string;
-};
+import { ToggleOption } from "@/types/toggleTypes";
 
 type ToggleGroupFieldProps = {
   label: string;
