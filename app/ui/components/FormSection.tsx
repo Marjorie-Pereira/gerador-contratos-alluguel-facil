@@ -126,20 +126,26 @@ const ImovelDataSection: FC<FormSectionProps> = ({
 
                 {/* Exemplo de renderização condicional baseada no seletor */}
                 {docType === "cpf" ? (
-                  <InputField
+                  <PatternInputField
                     id={`${field.toggleProps?.name}Document`}
                     label="CPF"
                     required={field.required}
-                    inputProps={{ name: `${field.toggleProps?.name}Cpf` }}
+                    patternProps={{
+                      name: `${field.toggleProps?.name}Cpf`,
+                      format: "###.###.###-##",
+                    }}
                     placeholder="000.000.000-00"
                     className="flex-1"
                   />
                 ) : (
-                  <InputField
+                  <PatternInputField
                     id={`${field.toggleProps?.name}Document`}
                     label="RG"
                     required={field.required}
-                    inputProps={{ name: `${field.toggleProps?.name}Rg` }}
+                    patternProps={{
+                      name: `${field.toggleProps?.name}Rg`,
+                      format: "##########",
+                    }}
                     placeholder="Apenas numeros"
                     className="flex-1"
                   />

@@ -151,9 +151,9 @@ export const ownerFields: FormFieldProps[] = [
   },
   {
     label: "CEP",
-    type: "input",
+    type: "pattern",
     required: true,
-    inputProps: { name: "locadorCep"},
+    patternProps: { name: "locadorCep", format: "#####-###" },
     placeholder: "00000-000",
     wrapperClassName: "md:col-span-1",
   },
