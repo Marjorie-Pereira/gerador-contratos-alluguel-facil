@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { Field, FieldError, FieldLabel } from "./field";
-import { Input } from "./input";
+import { Field, FieldError, FieldLabel } from "./ui/field";
+import { Input } from "./ui/input";
 import { InputFieldProps } from "@/types/inputTypes";
 
 export default function InputField({

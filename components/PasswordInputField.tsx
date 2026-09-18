@@ -1,9 +1,13 @@
-import { Field, FieldError, FieldLabel } from "./field";
-import { InputGroup, InputGroupInput, InputGroupAddon } from "./input-group";
+"use client";
+
+import { Field, FieldError, FieldLabel } from "./ui/field";
+import { InputGroup, InputGroupInput, InputGroupAddon } from "./ui/input-group";
 import { InputGroupFieldProps } from "@/types/inputTypes";
 import { cn } from "@/lib/utils";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
-export default function InputGroupField({
+export default function PasswordInputField({
   icon,
   id,
   className,
@@ -13,6 +17,8 @@ export default function InputGroupField({
   inputProps,
   invalid = false,
 }: InputGroupFieldProps) {
+  const [show, setShow] = useState(false);
+
   return (
     <Field className={cn("flex flex-col ", className)}>
       <FieldLabel
@@ -33,9 +39,22 @@ export default function InputGroupField({
           id={id}
           placeholder={placeholder}
           required={required}
+          type={show ? "text" : "password"}
           {...inputProps}
         />
-        <InputGroupAddon align="inline-start">{icon}</InputGroupAddon>
+        {icon && <InputGroupAddon align="inline-start">{icon}</InputGroupAddon>}
+
+        <InputGroupAddon
+          align={"inline-end"}
+          onClick={() => setShow(!show)}
+          className="cursor-pointer "
+        >
+          {show ? (
+            <EyeOff className="w-5! h-5!" />
+          ) : (
+            <Eye className="w-5! h-5!" />
+          )}
+        </InputGroupAddon>
       </InputGroup>
 
       {invalid && <FieldError>Validation message.</FieldError>}

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
-import { Field, FieldLabel } from "./field";
+import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { Field, FieldLabel } from "./ui/field";
 import { ToggleOption } from "@/types/toggleTypes";
 
 type ToggleGroupFieldProps = {

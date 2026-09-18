@@ -1,5 +1,5 @@
 import { SelectFieldProps } from "@/types/inputTypes";
-import { Field, FieldLabel } from "./field";
+import { Field, FieldLabel } from "./ui/field";
 import { cn } from "@/lib/utils";
 import {
   Select,
@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./select";
+} from "./ui/select";
 
 export default function SelectField({
   id,

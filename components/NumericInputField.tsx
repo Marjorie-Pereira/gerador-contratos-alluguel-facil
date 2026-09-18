@@ -1,18 +1,25 @@
 import { cn } from "@/lib/utils";
-import { Field, FieldError, FieldLabel } from "./field";
-import { Input } from "./input";
-import { InputFieldProps, PatternFieldProps } from "@/types/inputTypes";
-import { PatternFormat, PatternFormatProps } from "react-number-format";
+import { Field, FieldError, FieldLabel } from "./ui/field";
+import { Input } from "./ui/input";
+import {
+  InputFieldProps,
+  NumericFieldProps,
+  PatternFieldProps,
+} from "@/types/inputTypes";
+import {
+  NumericFormat,
+  PatternFormat,
+  PatternFormatProps,
+} from "react-number-format";
 
-export default function PatternInputField({
+export default function NumericInputField({
   id,
   label,
-  placeholder,
   required = true,
   className,
-  patternProps,
+  numericProps,
   invalid = false,
-}: PatternFieldProps) {
+}: NumericFieldProps) {
   return (
     <Field className={cn("flex flex-col ", className)}>
       <FieldLabel
@@ -22,16 +29,15 @@ export default function PatternInputField({
         {label}
         {required && <span className="text-amber-800 ">*</span>}
       </FieldLabel>
-      <PatternFormat
+      <NumericFormat
         id={id}
-        placeholder={placeholder}
         required={required}
         className={cn(
           "w-full px-4 py-3 text-base! border border-gray-300 bg-zinc-100 rounded-lg",
           "placeholder-gray-400 focus:ring-2 focus:ring-amber-500! focus:border-amber-500 outline-none transition-all",
-          patternProps?.className,
+          numericProps?.className,
         )}
-        {...patternProps}
+        {...numericProps}
       />
 
       {invalid && <FieldError>Validation message.</FieldError>}
