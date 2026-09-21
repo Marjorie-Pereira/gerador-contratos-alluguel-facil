@@ -27,6 +27,6 @@ export interface FormSectionProps {
   icon?: keyof typeof LucideIcons | React.ReactNode;
   title: string;
   subtitle?: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
   className?: string;
 }

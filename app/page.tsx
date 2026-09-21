@@ -18,9 +18,14 @@ import SelectField from "@/components/SelectField";
 import BRAZIL_STATES from "@/lib/constants/states";
 import PatternInputField from "@/components/PatternInputField";
 import { propertyTypes } from "@/types/propertyTypes";
+import { Separator } from "@/components/ui/separator";
+import { civilStateTypes } from "@/types/ownerRenterTypes";
+import ToggleGroupField from "@/components/ToggleGroupField";
+import { FieldLabel } from "@/components/ui/field";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
+  const [ownerDocument, setOwnerDocument] = useState("CPF");
   function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
@@ -93,6 +98,89 @@ export default function Home() {
             }}
             className="col-span-2"
           />
+        </FormSection>
+
+        <FormSection
+          title="Dados do Locador (Proprietário)"
+          subtitle="seção 02"
+          icon={"User"}
+        >
+          <div className="grid grid-cols-2 gap-5">
+            <InputField
+              label="Nome Completo"
+              placeholder="Nome completo do Locador"
+              className="col-span-2"
+            />
+            <InputField label="Profissão" placeholder="Ex.: Advogado" />
+            <SelectField
+              label="Estado Civil"
+              selectProps={{ options: civilStateTypes }}
+              placeholder="Selecione"
+            />
+            <ToggleGroupField
+              label="Tipo de Documento"
+              labelFor="locadorDocumento"
+              options={[
+                { label: "CPF", value: "CPF" },
+                { label: "RG", value: "RG" },
+              ]}
+              onChange={setOwnerDocument}
+              value={ownerDocument}
+            />
+            {ownerDocument === "CPF" ? (
+              <PatternInputField
+                label="CPF"
+                patternProps={{
+                  name: "locadorDocumento",
+                  format: "###.###.###-##",
+                }}
+                placeholder="000.000.000-00"
+                id="locadorDocumento"
+              />
+            ) : (
+              <PatternInputField
+                label="RG"
+                id="locadorDocumento"
+                patternProps={{
+                  name: "locadorDocumento",
+                  format: "##########",
+                }}
+                placeholder="0000000000"
+              />
+            )}
+          </div>
+
+          <Separator className="my-5" />
+          <p className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1 mb-5">
+            endereço residencial
+          </p>
+          <div className="grid grid-cols-3 gap-5">
+            <InputField
+              label="Logradouro e número"
+              placeholder="Rua, Av., Número"
+              className="col-span-3"
+            />
+            <InputField label="Bairro" placeholder="Ex: Capão Novo" />
+            <InputField
+              label="Cidade"
+              inputProps={{ defaultValue: "Capão da Canoa" }}
+            />
+            <SelectField
+              label="Estado"
+              placeholder="Selecione"
+              selectProps={{
+                options: BRAZIL_STATES,
+                nativeSelectProps: { name: "estado", defaultValue: "RS" },
+              }}
+            />
+            <PatternInputField
+              id={"aas"}
+              label="CEP"
+              required={true}
+              patternProps={{ name: "cep", format: "#####-###" }}
+              placeholder={"00000-000"}
+            />
+          </div>
         </FormSection>
 
         <div className="flex justify-between mb-20">
