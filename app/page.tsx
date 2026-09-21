@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { User } from "lucide-react";
-import ImovelDataSection from "./ui/components/FormSection";
+
 import {
   financialDateFields,
   ownerFields,
@@ -9,13 +9,19 @@ import {
   renterFields,
 } from "@/lib/constants/formFields";
 import Link from "next/link";
-import LoadingOverlay from "./ui/components/LoadingOverlay";
-import { useState } from "react";
+import LoadingOverlay from "../components/LoadingOverlay";
+import { SubmitEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
+import FormSection from "@/components/FormSection";
+import InputField from "@/components/InputField";
+import SelectField from "@/components/SelectField";
+import BRAZIL_STATES from "@/lib/constants/states";
+import PatternInputField from "@/components/PatternInputField";
+import { propertyTypes } from "@/types/propertyTypes";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
 
@@ -47,44 +53,56 @@ export default function Home() {
         </Link>
       </header>
       <main className="pt-10 px-48 ">
-        <form action="/" method="post" onSubmit={handleSubmit}>
-          <ImovelDataSection
-            subtitle="SEÇÃO 01"
-            title="Dados do Imóvel"
-            icon="Home"
-            fields={propertyFields}
+        <FormSection
+          subtitle="SEÇÃO 01"
+          title="Dados do Imóvel"
+          icon="Home"
+          className="grid grid-cols-3 gap-5"
+        >
+          <InputField
+            label="endereço (logradouro e número)"
+            placeholder="Ex: Rua do Amor Perfeito, 123"
+            className="col-span-3"
           />
-
-          <ImovelDataSection
-            subtitle="SEÇÃO 02"
-            title="Dados do Locador (Proprietário)"
-            icon="User"
-            fields={ownerFields}
+          <InputField label="Bairro" placeholder="Ex: Capão Novo" />
+          <InputField
+            label="Cidade"
+            inputProps={{ defaultValue: "Capão da Canoa" }}
           />
-
-          <ImovelDataSection
-            subtitle="SEÇÃO 03"
-            title="Dados do Locatário (Inquilino)"
-            icon="User"
-            fields={renterFields}
+          <SelectField
+            label="Estado"
+            placeholder="Selecione"
+            selectProps={{
+              options: BRAZIL_STATES,
+              nativeSelectProps: { name: "estado", defaultValue: "RS" },
+            }}
           />
-
-          <ImovelDataSection
-            subtitle="SEÇÃO 04"
-            title="Condições Financeiras e Vigência"
-            icon="DollarSign"
-            fields={financialDateFields}
+          <PatternInputField
+            id={"aas"}
+            label="CEP"
+            required={true}
+            patternProps={{ name: "cep", format: "#####-###" }}
+            placeholder={"00000-000"}
           />
+          <SelectField
+            label="Tipo de imóvel"
+            placeholder="Selecione"
+            selectProps={{
+              options: propertyTypes,
+              nativeSelectProps: { name: "tipoImovel" },
+            }}
+            className="col-span-2"
+          />
+        </FormSection>
 
-          <div className="flex justify-between mb-20">
-            <p>
-              Campos obrigatórios marcados com{" "}
-              <span className="text-amber-800">*</span>
-            </p>
+        <div className="flex justify-between mb-20">
+          <p>
+            Campos obrigatórios marcados com{" "}
+            <span className="text-amber-800">*</span>
+          </p>
 
-            <Button type="submit">gerar contrato</Button>
-          </div>
-        </form>
+          <Button type="submit">gerar contrato</Button>
+        </div>
       </main>
       <LoadingOverlay
         isOpen={isLoading}

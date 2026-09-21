@@ -1,10 +1,14 @@
 import { InputHTMLAttributes } from "react";
-import { InputAttributes, NumericFormatProps, PatternFormatProps } from "react-number-format";
+import {
+  InputAttributes,
+  NumericFormatProps,
+  PatternFormatProps,
+} from "react-number-format";
 
 type FieldProps = {
   label: string;
   placeholder?: string;
-  id: string;
+  id?: string;
   required?: boolean;
   className?: string;
   invalid?: boolean;
@@ -33,4 +37,10 @@ type SelectFieldProps = FieldProps & {
   };
 };
 
-export type { InputFieldProps, InputGroupFieldProps, SelectFieldProps, PatternFieldProps, NumericFieldProps };
+export type {
+  InputFieldProps,
+  InputGroupFieldProps,
+  SelectFieldProps,
+  PatternFieldProps,
+  NumericFieldProps,
+};

@@ -1,3 +1,5 @@
+"use client";
+
 import { SelectFieldProps } from "@/types/inputTypes";
 import { Field, FieldLabel } from "./ui/field";
 import { cn } from "@/lib/utils";
@@ -9,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { useId } from "react";
 
 export default function SelectField({
   id,
@@ -18,10 +21,11 @@ export default function SelectField({
   placeholder,
   className,
 }: SelectFieldProps) {
+  const uniqueId = id || useId();
   return (
     <Field className={cn("flex flex-col ", className)}>
       <FieldLabel
-        htmlFor={id}
+        htmlFor={uniqueId}
         className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1"
       >
         {label} {required && <span className="text-amber-800 ">*</span>}
@@ -32,7 +36,7 @@ export default function SelectField({
             "w-full px-4 py-6 text-md border border-gray-300 bg-zinc-100 rounded-lg appearance-none",
             "text-gray-900 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all",
           )}
-          id={id}
+          id={uniqueId}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

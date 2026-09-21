@@ -1,7 +1,10 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Field, FieldError, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { InputFieldProps } from "@/types/inputTypes";
+import { useId } from "react";
 
 export default function InputField({
   id,
@@ -12,17 +15,18 @@ export default function InputField({
   inputProps,
   invalid = false,
 }: InputFieldProps) {
+  const uniqueId = id || useId();
   return (
     <Field className={cn("flex flex-col ", className)}>
       <FieldLabel
-        htmlFor={id}
+        htmlFor={uniqueId}
         className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1"
       >
         {label}
         {required && <span className="text-amber-800 ">*</span>}
       </FieldLabel>
       <Input
-        id={id}
+        id={uniqueId}
         placeholder={placeholder}
         required={required}
         className={cn(
