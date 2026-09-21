@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 
 const PreviewPDFDynamic = dynamic(
-  () => import("@/app/ui/components/PreviewPDFDocument"),
+  () => import("@/components/PreviewPDFDocument"),
   { ssr: false },
 );
 

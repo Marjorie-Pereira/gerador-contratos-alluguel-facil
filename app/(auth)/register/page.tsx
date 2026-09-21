@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldLabel } from "@/components/ui/field";
-import InputField from "@/components/ui/InputField";
-import InputGroupField from "@/components/ui/InputGroupField";
-import PasswordInputField from "@/components/ui/PasswordInputField";
+import InputField from "@/components/InputField";
+import InputGroupField from "@/components/InputGroupField";
+import PasswordInputField from "@/components/PasswordInputField";
 import { Separator } from "@/components/ui/separator";
 import { ArrowRight, Lock, Mail, Phone, User } from "lucide-react";
 import Link from "next/link";
