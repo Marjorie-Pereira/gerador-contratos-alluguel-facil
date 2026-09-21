@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { useId } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function SelectField({
   id,
@@ -20,6 +21,7 @@ export default function SelectField({
   selectProps,
   placeholder,
   className,
+  tip,
 }: SelectFieldProps) {
   const uniqueId = id || useId();
   return (
@@ -29,6 +31,14 @@ export default function SelectField({
         className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1"
       >
         {label} {required && <span className="text-amber-800 ">*</span>}
+        {tip && (
+          <span>
+            <Tooltip>
+              <TooltipTrigger className="inline">(?)</TooltipTrigger>
+              <TooltipContent>{tip}</TooltipContent>
+            </Tooltip>
+          </span>
+        )}
       </FieldLabel>
       <Select {...selectProps.nativeSelectProps} required={required}>
         <SelectTrigger

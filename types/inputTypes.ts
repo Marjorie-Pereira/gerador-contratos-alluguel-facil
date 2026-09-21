@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, JSX } from "react";
 import {
   InputAttributes,
   NumericFormatProps,
@@ -12,6 +12,7 @@ type FieldProps = {
   required?: boolean;
   className?: string;
   invalid?: boolean;
+  tip?: string;
 };
 
 type InputFieldProps = FieldProps & {

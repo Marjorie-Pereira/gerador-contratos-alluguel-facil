@@ -3,8 +3,9 @@ import "./globals.css";
 import { lato } from "@/app/ui/fonts";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Gerador de Contratos Alluguel Facil",
@@ -21,7 +22,7 @@ export default function RootLayout({
       <body
         className={`min-h-full flex flex-col ${lato.className} antialiased`}
       >
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>
   );
