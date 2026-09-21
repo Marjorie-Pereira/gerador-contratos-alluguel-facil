@@ -227,7 +227,7 @@ export default function Home() {
               onChange={setRenterDocument}
               value={renterDocument}
             />
-            {ownerDocument === "CPF" ? (
+            {renterDocument === "CPF" ? (
               <PatternInputField
                 label="CPF"
                 patternProps={{
