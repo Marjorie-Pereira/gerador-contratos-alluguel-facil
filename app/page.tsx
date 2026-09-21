@@ -23,6 +23,11 @@ import { civilStateTypes } from "@/types/ownerRenterTypes";
 import ToggleGroupField from "@/components/ToggleGroupField";
 import { FieldLabel } from "@/components/ui/field";
 import { genderTypes } from "@/types/genderTypes";
+import NumericInputField from "@/components/NumericInputField";
+import {
+  paymentDayOptions,
+  securityDepositOptions,
+} from "@/lib/constants/paymentDayOptions";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -279,6 +284,66 @@ export default function Home() {
               required={true}
               patternProps={{ name: "cep", format: "#####-###" }}
               placeholder={"00000-000"}
+            />
+          </div>
+        </FormSection>
+
+        <FormSection
+          title="Condições Financeiras e Vigência"
+          subtitle="SEÇÃO 04"
+          icon="DollarSign"
+        >
+          <div className="grid grid-cols-3 gap-5">
+            <NumericInputField
+              label="Valor mensal do aluguel (R$)"
+              id={"valorAluguel"}
+              numericProps={{
+                name: "valorAluguel",
+                thousandSeparator: ".",
+                decimalSeparator: ",",
+                prefix: "R$",
+                decimalScale: 2,
+                fixedDecimalScale: true,
+                allowNegative: false,
+                placeholder: "R$1.000,00",
+              }}
+            />
+            <SelectField
+              id="diaVencimento"
+              placeholder="Selecione"
+              selectProps={{
+                options: paymentDayOptions,
+                nativeSelectProps: { name: "diaVencimento", defaultValue: "5" },
+              }}
+              label="Dia de vencimento"
+            />
+            <SelectField
+              id="caucao"
+              placeholder="Selecione"
+              selectProps={{
+                options: securityDepositOptions,
+                nativeSelectProps: {
+                  name: "depositoCaucao",
+                  defaultValue: "3",
+                },
+              }}
+              label="Caução"
+            />
+          </div>
+          <Separator className="my-5" />
+          <p className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1 mb-5">
+            vigência do contrato
+          </p>
+          <div className="grid grid-cols-2 gap-5">
+            <InputField
+              label="início do contrato"
+              id="inicioContrato"
+              inputProps={{ name: "inicioContrato", type: "date" }}
+            />
+            <InputField
+              label="término do contrato"
+              id="terminoContrato"
+              inputProps={{ name: "terminoContrato", type: "date" }}
             />
           </div>
         </FormSection>
