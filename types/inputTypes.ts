@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, JSX } from "react";
+import { InputHTMLAttributes, JSX, SelectHTMLAttributes } from "react";
 import {
   InputAttributes,
   NumericFormatProps,
@@ -34,7 +34,12 @@ type NumericFieldProps = FieldProps & {
 type SelectFieldProps = FieldProps & {
   selectProps: {
     options: { value: string; label: string }[];
-    nativeSelectProps?: { name: string; defaultValue?: string };
+    nativeSelectProps?: {
+      name: string;
+      onValueChange: (value: string) => void;
+      value: string;
+      required?: boolean;
+    };
   };
 };
 

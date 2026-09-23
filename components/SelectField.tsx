@@ -17,7 +17,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 export default function SelectField({
   id,
   label,
-  required,
+  required = true,
   selectProps,
   placeholder,
   className,
@@ -40,7 +40,7 @@ export default function SelectField({
           </span>
         )}
       </FieldLabel>
-      <Select {...selectProps.nativeSelectProps} required={required}>
+      <Select {...selectProps.nativeSelectProps}>
         <SelectTrigger
           className={cn(
             "w-full px-4 py-6 text-md border border-gray-300 bg-zinc-100 rounded-lg appearance-none",
