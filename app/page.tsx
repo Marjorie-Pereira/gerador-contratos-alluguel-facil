@@ -34,6 +34,8 @@ export default function Home() {
       bairro: "",
       cidade: "",
       estado: "RS",
+      cep: "",
+      tipoImovel: "casa",
     },
   });
   // function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
@@ -140,7 +142,7 @@ export default function Home() {
               )}
             />
 
-            {/* <Controller
+            <Controller
               name="cep"
               control={control}
               rules={{ required: true }}
@@ -152,25 +154,25 @@ export default function Home() {
                   placeholder={"00000-000"}
                 />
               )}
-            /> */}
+            />
 
-            {/* <Controller
+            <Controller
               name="tipoImovel"
               control={control}
               rules={{ required: true }}
-              render={({ field }) => (
+              render={({ field: { name, onChange, value } }) => (
                 <SelectField
                   label="Tipo de imóvel"
                   id="tipoImovel"
                   placeholder="Selecione"
                   selectProps={{
                     options: propertyTypes,
-                    nativeSelectProps: { ...field, name: "tipoImovel" },
+                    nativeSelectProps: { name, onValueChange: onChange, value },
                   }}
                   className="col-span-2"
                 />
               )}
-            /> */}
+            />
           </FormSection>
 
           {/* <FormSection
