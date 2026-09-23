@@ -36,6 +36,33 @@ export default function Home() {
       estado: "RS",
       cep: "",
       tipoImovel: "casa",
+      locadorNome: "",
+      locadorGenero: "masculino",
+      locadorDocumento: "",
+      locadorNacionalidade: "",
+      locadorEstadoCivil: "solteiro",
+      locadorProfissao: "",
+      locadorUf: "RS",
+      locadorEndereco: "",
+      locadorBairro: "",
+      locadorCidade: "",
+      locadorCep: "",
+      locatarioNome: "",
+      locatarioGenero: "masculino",
+      locatarioDocumento: "",
+      locatarioNacionalidade: "",
+      locatarioEstadoCivil: "solteiro",
+      locatarioProfissao: "",
+      locatarioUf: "RS",
+      locatarioEndereco: "",
+      locatarioBairro: "",
+      locatarioCidade: "",
+      locatarioCep: "",
+      valorAluguel: "",
+      vencimentoAluguel: "1",
+      caucao: "3",
+      inicioContrato: "",
+      fimContrato: "",
     },
   });
   // function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
@@ -175,31 +202,98 @@ export default function Home() {
             />
           </FormSection>
 
-          {/* <FormSection
+          <FormSection
             title="Dados do Locador (Proprietário)"
             subtitle="seção 02"
             icon={"User"}
           >
             <div className="grid grid-cols-2 gap-5">
-              <InputField
-                label="Nome Completo"
-                placeholder="Nome completo do Locador"
-                className="col-span-2"
-              />
-              <InputField label="Nacionalidade" placeholder="Ex.: Brasileiro" />
-              <SelectField
-                label="Gênero"
-                selectProps={{ options: genderTypes }}
-                placeholder="Selecione"
-                tip="Usado para sintaxe correta do documento"
+              <Controller
+                name="locadorNome"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="nome completo"
+                    placeholder="Nome completo do Locador"
+                    className="col-span-2"
+                    id="locadorNome"
+                    inputProps={{ ...field }}
+                  />
+                )}
               />
 
-              <InputField label="Profissão" placeholder="Ex.: Advogado" />
-              <SelectField
-                label="Estado Civil"
-                selectProps={{ options: civilStateTypes }}
-                placeholder="Selecione"
+              <Controller
+                name="locadorNacionalidade"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="nacionalidade"
+                    placeholder="Ex.: Brasileiro"
+                    id="locadorNacionalidade"
+                    inputProps={{ ...field }}
+                  />
+                )}
               />
+
+              <Controller
+                name="locadorGenero"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { name, onChange, value } }) => (
+                  <SelectField
+                    label="gênero"
+                    id="locadorGenero"
+                    placeholder="Selecione"
+                    selectProps={{
+                      options: genderTypes,
+                      nativeSelectProps: {
+                        name,
+                        onValueChange: onChange,
+                        value,
+                      },
+                    }}
+                    tip="Usado para sintaxe correta do documento"
+                  />
+                )}
+              />
+
+              <Controller
+                name="locadorProfissao"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="profissão"
+                    placeholder="Ex.: Advogado"
+                    id="locadorProfissao"
+                    inputProps={{ ...field }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="locadorEstadoCivil"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { name, onChange, value } }) => (
+                  <SelectField
+                    label="estado civil"
+                    id="locadorEstadoCivil"
+                    placeholder="Selecione"
+                    selectProps={{
+                      options: civilStateTypes,
+                      nativeSelectProps: {
+                        name,
+                        onValueChange: onChange,
+                        value,
+                      },
+                    }}
+                  />
+                )}
+              />
+
               <ToggleGroupField
                 label="Tipo de Documento"
                 labelFor="locadorDocumento"
@@ -211,24 +305,38 @@ export default function Home() {
                 value={ownerDocument}
               />
               {ownerDocument === "CPF" ? (
-                <PatternInputField
-                  label="CPF"
-                  patternProps={{
-                    name: "locadorDocumento",
-                    format: "###.###.###-##",
-                  }}
-                  placeholder="000.000.000-00"
-                  id="locadorDocumento"
+                <Controller
+                  name="locadorDocumento"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <PatternInputField
+                      label="CPF"
+                      patternProps={{
+                        format: "###.###.###-##",
+                        ...field,
+                      }}
+                      placeholder="000.000.000-00"
+                      id="locadorDocumento"
+                    />
+                  )}
                 />
               ) : (
-                <PatternInputField
-                  label="RG"
-                  id="locadorDocumento"
-                  patternProps={{
-                    name: "locadorDocumento",
-                    format: "##########",
-                  }}
-                  placeholder="0000000000"
+                <Controller
+                  name="locadorDocumento"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <PatternInputField
+                      label="RG"
+                      id="locadorDocumento"
+                      patternProps={{
+                        format: "##########",
+                        ...field,
+                      }}
+                      placeholder="0000000000"
+                    />
+                  )}
                 />
               )}
             </div>
@@ -238,30 +346,81 @@ export default function Home() {
               endereço residencial
             </p>
             <div className="grid grid-cols-3 gap-5">
-              <InputField
-                label="Logradouro e número"
-                placeholder="Rua, Av., Número"
-                className="col-span-3"
+              <Controller
+                name="locadorCep"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <PatternInputField
+                    id="locadorCep"
+                    label="CEP"
+                    patternProps={{ format: "#####-###", ...field }}
+                    placeholder={"00000-000"}
+                  />
+                )}
               />
-              <InputField label="Bairro" placeholder="Ex: Capão Novo" />
-              <InputField
-                label="Cidade"
-                inputProps={{ defaultValue: "Capão da Canoa" }}
+              <Controller
+                name="locadorEndereco"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="logradouro e número"
+                    placeholder="Rua, número"
+                    id="locadorEndereco"
+                    inputProps={{ ...field }}
+                    className="col-span-2"
+                  />
+                )}
               />
-              <SelectField
-                label="Estado"
-                placeholder="Selecione"
-                selectProps={{
-                  options: BRAZIL_STATES,
-                  nativeSelectProps: { name: "estado", defaultValue: "RS" },
-                }}
+
+              <Controller
+                name="locadorBairro"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="bairro"
+                    placeholder="Ex.: Capão Novo"
+                    id="locadorBairro"
+                    inputProps={{ ...field }}
+                  />
+                )}
               />
-              <PatternInputField
-                id={"aas"}
-                label="CEP"
-                required={true}
-                patternProps={{ name: "cep", format: "#####-###" }}
-                placeholder={"00000-000"}
+
+              <Controller
+                name="locadorCidade"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="cidade"
+                    placeholder="Cidade "
+                    id="locadorCidade"
+                    inputProps={{ ...field }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="locadorUf"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { name, onChange, value } }) => (
+                  <SelectField
+                    label="estado"
+                    id="locadorUf"
+                    placeholder="Selecione"
+                    selectProps={{
+                      options: BRAZIL_STATES,
+                      nativeSelectProps: {
+                        name,
+                        onValueChange: onChange,
+                        value,
+                      },
+                    }}
+                  />
+                )}
               />
             </div>
           </FormSection>
@@ -272,24 +431,92 @@ export default function Home() {
             icon={"Users"}
           >
             <div className="grid grid-cols-2 gap-5">
-              <InputField
-                label="Nome Completo"
-                placeholder="Nome completo do Locatário"
-                className="col-span-2"
+              <Controller
+                name="locatarioNome"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="nome completo"
+                    placeholder="Nome completo do locatário"
+                    className="col-span-2"
+                    id="locatarioNome"
+                    inputProps={{ ...field }}
+                  />
+                )}
               />
-              <InputField label="Nacionalidade" placeholder="Ex.: Brasileiro" />
-              <SelectField
-                label="Gênero"
-                selectProps={{ options: genderTypes }}
-                placeholder="Selecione"
-                tip="Usado para sintaxe correta do documento"
+
+              <Controller
+                name="locatarioNacionalidade"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="nacionalidade"
+                    placeholder="Ex.: Brasileiro"
+                    id="locatarioNacionalidade"
+                    inputProps={{ ...field }}
+                  />
+                )}
               />
-              <InputField label="Profissão" placeholder="Ex.: Advogado" />
-              <SelectField
-                label="Estado Civil"
-                selectProps={{ options: civilStateTypes }}
-                placeholder="Selecione"
+
+              <Controller
+                name="locatarioGenero"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { name, onChange, value } }) => (
+                  <SelectField
+                    label="gênero"
+                    id="locatarioGenero"
+                    placeholder="Selecione"
+                    selectProps={{
+                      options: genderTypes,
+                      nativeSelectProps: {
+                        name,
+                        onValueChange: onChange,
+                        value,
+                      },
+                    }}
+                    tip="Usado para sintaxe correta do documento"
+                  />
+                )}
               />
+
+              <Controller
+                name="locatarioProfissao"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="profissão"
+                    placeholder="Ex.: Advogado"
+                    id="locatarioProfissao"
+                    inputProps={{ ...field }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="locatarioEstadoCivil"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { name, onChange, value } }) => (
+                  <SelectField
+                    label="estado civil"
+                    id="locatarioEstadoCivil"
+                    placeholder="Selecione"
+                    selectProps={{
+                      options: civilStateTypes,
+                      nativeSelectProps: {
+                        name,
+                        onValueChange: onChange,
+                        value,
+                      },
+                    }}
+                  />
+                )}
+              />
+
               <ToggleGroupField
                 label="Tipo de Documento"
                 labelFor="locatarioDocumento"
@@ -297,28 +524,42 @@ export default function Home() {
                   { label: "CPF", value: "CPF" },
                   { label: "RG", value: "RG" },
                 ]}
-                onChange={setRenterDocument}
-                value={renterDocument}
+                onChange={setOwnerDocument}
+                value={ownerDocument}
               />
-              {renterDocument === "CPF" ? (
-                <PatternInputField
-                  label="CPF"
-                  patternProps={{
-                    name: "locatarioDocumento",
-                    format: "###.###.###-##",
-                  }}
-                  placeholder="000.000.000-00"
-                  id="locatarioDocumento"
+              {ownerDocument === "CPF" ? (
+                <Controller
+                  name="locatarioDocumento"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <PatternInputField
+                      label="CPF"
+                      patternProps={{
+                        format: "###.###.###-##",
+                        ...field,
+                      }}
+                      placeholder="000.000.000-00"
+                      id="locatarioDocumento"
+                    />
+                  )}
                 />
               ) : (
-                <PatternInputField
-                  label="RG"
-                  id="locatarioDocumento"
-                  patternProps={{
-                    name: "locatarioDocumento",
-                    format: "##########",
-                  }}
-                  placeholder="0000000000"
+                <Controller
+                  name="locatarioDocumento"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <PatternInputField
+                      label="RG"
+                      id="locatarioDocumento"
+                      patternProps={{
+                        format: "##########",
+                        ...field,
+                      }}
+                      placeholder="0000000000"
+                    />
+                  )}
                 />
               )}
             </div>
@@ -328,30 +569,81 @@ export default function Home() {
               endereço residencial
             </p>
             <div className="grid grid-cols-3 gap-5">
-              <InputField
-                label="Logradouro e número"
-                placeholder="Rua, Av., Número"
-                className="col-span-3"
+              <Controller
+                name="locatarioCep"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <PatternInputField
+                    id="locatarioCep"
+                    label="CEP"
+                    patternProps={{ format: "#####-###", ...field }}
+                    placeholder={"00000-000"}
+                  />
+                )}
               />
-              <InputField label="Bairro" placeholder="Ex: Capão Novo" />
-              <InputField
-                label="Cidade"
-                inputProps={{ defaultValue: "Capão da Canoa" }}
+              <Controller
+                name="locatarioEndereco"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="logradouro e número"
+                    placeholder="Rua, número"
+                    id="locatarioEndereco"
+                    inputProps={{ ...field }}
+                    className="col-span-2"
+                  />
+                )}
               />
-              <SelectField
-                label="Estado"
-                placeholder="Selecione"
-                selectProps={{
-                  options: BRAZIL_STATES,
-                  nativeSelectProps: { name: "estado", defaultValue: "RS" },
-                }}
+
+              <Controller
+                name="locatarioBairro"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="bairro"
+                    placeholder="Ex.: Capão Novo"
+                    id="locatarioBairro"
+                    inputProps={{ ...field }}
+                  />
+                )}
               />
-              <PatternInputField
-                id={"aas"}
-                label="CEP"
-                required={true}
-                patternProps={{ name: "cep", format: "#####-###" }}
-                placeholder={"00000-000"}
+
+              <Controller
+                name="locatarioCidade"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="cidade"
+                    placeholder="Cidade "
+                    id="locatarioCidade"
+                    inputProps={{ ...field }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="locatarioUf"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { name, onChange, value } }) => (
+                  <SelectField
+                    label="estado"
+                    id="locatarioUf"
+                    placeholder="Selecione"
+                    selectProps={{
+                      options: BRAZIL_STATES,
+                      nativeSelectProps: {
+                        name,
+                        onValueChange: onChange,
+                        value,
+                      },
+                    }}
+                  />
+                )}
               />
             </div>
           </FormSection>
@@ -362,43 +654,68 @@ export default function Home() {
             icon="DollarSign"
           >
             <div className="grid grid-cols-3 gap-5">
-              <NumericInputField
-                label="Valor mensal do aluguel (R$)"
-                id={"valorAluguel"}
-                numericProps={{
-                  name: "valorAluguel",
-                  thousandSeparator: ".",
-                  decimalSeparator: ",",
-                  prefix: "R$",
-                  decimalScale: 2,
-                  fixedDecimalScale: true,
-                  allowNegative: false,
-                  placeholder: "R$1.000,00",
-                }}
+              <Controller
+                name="valorAluguel"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <NumericInputField
+                    label="Valor mensal do aluguel (R$)"
+                    id={"valorAluguel"}
+                    numericProps={{
+                      thousandSeparator: ".",
+                      decimalSeparator: ",",
+                      prefix: "R$",
+                      decimalScale: 2,
+                      fixedDecimalScale: true,
+                      allowNegative: false,
+                      placeholder: "R$1.000,00",
+                      ...field,
+                    }}
+                  />
+                )}
               />
-              <SelectField
-                id="diaVencimento"
-                placeholder="Selecione"
-                selectProps={{
-                  options: paymentDayOptions,
-                  nativeSelectProps: {
-                    name: "diaVencimento",
-                    defaultValue: "5",
-                  },
-                }}
-                label="Dia de vencimento"
+
+              <Controller
+                name="vencimentoAluguel"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { name, onChange, value } }) => (
+                  <SelectField
+                    label="dia de vencimento"
+                    id="vencimentoAluguel"
+                    placeholder="Selecione"
+                    selectProps={{
+                      options: paymentDayOptions,
+                      nativeSelectProps: {
+                        name,
+                        onValueChange: onChange,
+                        value,
+                      },
+                    }}
+                  />
+                )}
               />
-              <SelectField
-                id="caucao"
-                placeholder="Selecione"
-                selectProps={{
-                  options: securityDepositOptions,
-                  nativeSelectProps: {
-                    name: "depositoCaucao",
-                    defaultValue: "3",
-                  },
-                }}
-                label="Caução"
+
+              <Controller
+                name="caucao"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { name, onChange, value } }) => (
+                  <SelectField
+                    label="Caução"
+                    id="caucao"
+                    placeholder="Selecione"
+                    selectProps={{
+                      options: securityDepositOptions,
+                      nativeSelectProps: {
+                        name,
+                        onValueChange: onChange,
+                        value,
+                      },
+                    }}
+                  />
+                )}
               />
             </div>
             <Separator className="my-5" />
@@ -406,18 +723,33 @@ export default function Home() {
               vigência do contrato
             </p>
             <div className="grid grid-cols-2 gap-5">
-              <InputField
-                label="início do contrato"
-                id="inicioContrato"
-                inputProps={{ name: "inicioContrato", type: "date" }}
+              <Controller
+                name="inicioContrato"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="início do contrato"
+                    id="inicioContrato"
+                    inputProps={{ type: "date", ...field }}
+                  />
+                )}
               />
-              <InputField
-                label="término do contrato"
-                id="terminoContrato"
-                inputProps={{ name: "terminoContrato", type: "date" }}
+
+              <Controller
+                name="fimContrato"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputField
+                    label="término do contrato"
+                    id="fimContrato"
+                    inputProps={{ type: "date", ...field }}
+                  />
+                )}
               />
             </div>
-          </FormSection> */}
+          </FormSection>
 
           <div className="flex justify-between mb-20">
             <p>
