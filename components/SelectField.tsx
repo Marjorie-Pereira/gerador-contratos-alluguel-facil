@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useId } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function SelectField({

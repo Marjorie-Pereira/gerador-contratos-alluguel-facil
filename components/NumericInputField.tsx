@@ -1,16 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Field, FieldError, FieldLabel } from "./ui/field";
-import { Input } from "./ui/input";
-import {
-  InputFieldProps,
-  NumericFieldProps,
-  PatternFieldProps,
-} from "@/types/inputTypes";
-import {
-  NumericFormat,
-  PatternFormat,
-  PatternFormatProps,
-} from "react-number-format";
+import { NumericFieldProps } from "@/types/inputTypes";
+import { NumericFormat } from "react-number-format";
 
 export default function NumericInputField({
   id,

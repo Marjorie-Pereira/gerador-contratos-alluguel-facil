@@ -3,8 +3,7 @@ import Image from "next/image";
 import { User } from "lucide-react";
 
 import Link from "next/link";
-import LoadingOverlay from "../components/LoadingOverlay";
-import { SubmitEvent, use, useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FormSection from "@/components/FormSection";
 import InputField from "@/components/InputField";
@@ -23,7 +22,6 @@ import {
 } from "@/lib/constants/paymentDayOptions";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { formInputs } from "@/types/formInputs";
-import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);

@@ -1,10 +1,6 @@
-import { InputHTMLAttributes, JSX, SelectHTMLAttributes } from "react";
+import { InputHTMLAttributes } from "react";
 import { FieldError } from "react-hook-form";
-import {
-  InputAttributes,
-  NumericFormatProps,
-  PatternFormatProps,
-} from "react-number-format";
+import { NumericFormatProps, PatternFormatProps } from "react-number-format";
 
 type FieldProps = {
   label: string;

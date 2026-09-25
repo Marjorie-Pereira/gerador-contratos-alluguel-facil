@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldLabel } from "@/components/ui/field";
-import InputField from "@/components/InputField";
 import InputGroupField from "@/components/InputGroupField";
 import PasswordInputField from "@/components/PasswordInputField";
 import { Separator } from "@/components/ui/separator";
