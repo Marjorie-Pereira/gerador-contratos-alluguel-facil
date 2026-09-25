@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Field, FieldError, FieldLabel } from "./ui/field";
-import { Input } from "./ui/input";
-import { InputFieldProps, PatternFieldProps } from "@/types/inputTypes";
-import { PatternFormat, PatternFormatProps } from "react-number-format";
+import { PatternFieldProps } from "@/types/inputTypes";
+import { PatternFormat } from "react-number-format";
 
 export default function PatternInputField({
   id,
@@ -11,30 +10,31 @@ export default function PatternInputField({
   required = true,
   className,
   patternProps,
-  invalid = false,
+  invalid,
+  errors,
 }: PatternFieldProps) {
   return (
-    <Field className={cn("flex flex-col ", className)}>
+    <Field className={cn("flex flex-col ", className)} data-invalid={invalid}>
       <FieldLabel
         htmlFor={id}
-        className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1"
+        className="text-sm font-medium uppercase tracking-wide m-0 gap-1"
       >
         {label}
         {required && <span className="text-amber-800 ">*</span>}
       </FieldLabel>
       <PatternFormat
+        aria-invalid={invalid}
         id={id}
         placeholder={placeholder}
-        required={required}
         className={cn(
           "w-full px-4 py-3 text-base! border border-gray-300 bg-zinc-100 rounded-lg",
-          "placeholder-gray-400 focus:ring-2 focus:ring-amber-500! focus:border-amber-500 outline-none transition-all",
+          "placeholder-gray-400 focus:ring-2 outline-none transition-all aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
           patternProps?.className,
         )}
         {...patternProps}
       />
 
-      {invalid && <FieldError>Validation message.</FieldError>}
+      {invalid && <FieldError errors={errors} />}
     </Field>
   );
 }

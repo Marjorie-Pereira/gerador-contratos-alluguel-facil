@@ -1,7 +1,5 @@
-"use client";
-
 import { SelectFieldProps } from "@/types/inputTypes";
-import { Field, FieldLabel } from "./ui/field";
+import { Field, FieldError, FieldLabel } from "./ui/field";
 import { cn } from "@/lib/utils";
 import {
   Select,
@@ -22,12 +20,13 @@ export default function SelectField({
   placeholder,
   className,
   tip,
+  errors,
+  invalid,
 }: SelectFieldProps) {
-  const uniqueId = id || useId();
   return (
-    <Field className={cn("flex flex-col ", className)}>
+    <Field className={cn("flex flex-col ", className)} data-invalid={invalid}>
       <FieldLabel
-        htmlFor={uniqueId}
+        htmlFor={id}
         className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1"
       >
         {label} {required && <span className="text-amber-800 ">*</span>}
@@ -46,7 +45,8 @@ export default function SelectField({
             "w-full px-4 py-6 text-md border border-gray-300 bg-zinc-100 rounded-lg appearance-none",
             "text-gray-900 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all",
           )}
-          id={uniqueId}
+          id={id}
+          aria-invalid={invalid}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -60,6 +60,7 @@ export default function SelectField({
           </SelectGroup>
         </SelectContent>
       </Select>
+      {invalid && <FieldError errors={errors} />}
     </Field>
   );
 }

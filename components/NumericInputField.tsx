@@ -18,10 +18,11 @@ export default function NumericInputField({
   required = true,
   className,
   numericProps,
-  invalid = false,
+  invalid,
+  errors,
 }: NumericFieldProps) {
   return (
-    <Field className={cn("flex flex-col ", className)}>
+    <Field className={cn("flex flex-col ", className)} data-invalid={invalid}>
       <FieldLabel
         htmlFor={id}
         className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1"
@@ -31,16 +32,16 @@ export default function NumericInputField({
       </FieldLabel>
       <NumericFormat
         id={id}
-        required={required}
+        aria-invalid={invalid}
         className={cn(
           "w-full px-4 py-3 text-base! border border-gray-300 bg-zinc-100 rounded-lg",
-          "placeholder-gray-400 focus:ring-2 focus:ring-amber-500! focus:border-amber-500 outline-none transition-all",
+          "placeholder-gray-400 focus:ring-2 outline-none transition-all aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
           numericProps?.className,
         )}
         {...numericProps}
       />
 
-      {invalid && <FieldError>Validation message.</FieldError>}
+      {invalid && <FieldError errors={errors} />}
     </Field>
   );
 }

@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, JSX, SelectHTMLAttributes } from "react";
+import { FieldError } from "react-hook-form";
 import {
   InputAttributes,
   NumericFormatProps,
@@ -13,6 +14,7 @@ type FieldProps = {
   className?: string;
   invalid?: boolean;
   tip?: string;
+  errors?: (FieldError | undefined)[];
 };
 
 type InputFieldProps = FieldProps & {

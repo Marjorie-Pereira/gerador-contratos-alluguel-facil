@@ -4,7 +4,7 @@ export type formInputs = {
   cidade: string;
   estado: string;
   cep: string;
-  tipoImovel: "casa" | "apartamento" | "terreno" | "sobrado";
+  tipoImovel: string;
   locadorNome: string;
   locadorGenero: string;
   locadorDocumento: string;
