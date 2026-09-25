@@ -4,7 +4,7 @@ import { User } from "lucide-react";
 
 import Link from "next/link";
 import LoadingOverlay from "../components/LoadingOverlay";
-import { SubmitEvent, useState } from "react";
+import { SubmitEvent, use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import FormSection from "@/components/FormSection";
 import InputField from "@/components/InputField";
@@ -23,6 +23,7 @@ import {
 } from "@/lib/constants/paymentDayOptions";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { formInputs } from "@/types/formInputs";
+import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,12 +36,12 @@ export default function Home() {
       cidade: "",
       estado: "RS",
       cep: "",
-      tipoImovel: "casa",
+      tipoImovel: "",
       locadorNome: "",
-      locadorGenero: "masculino",
+      locadorGenero: "",
       locadorDocumento: "",
       locadorNacionalidade: "",
-      locadorEstadoCivil: "solteiro",
+      locadorEstadoCivil: "",
       locadorProfissao: "",
       locadorUf: "RS",
       locadorEndereco: "",
@@ -48,10 +49,10 @@ export default function Home() {
       locadorCidade: "",
       locadorCep: "",
       locatarioNome: "",
-      locatarioGenero: "masculino",
+      locatarioGenero: "",
       locatarioDocumento: "",
       locatarioNacionalidade: "",
-      locatarioEstadoCivil: "solteiro",
+      locatarioEstadoCivil: "",
       locatarioProfissao: "",
       locatarioUf: "RS",
       locatarioEndereco: "",
@@ -65,16 +66,11 @@ export default function Home() {
       fimContrato: "",
     },
   });
-  // function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-
-  //   setTimeout(() => setIsLoading(false), 5000);
-  // }
 
   const onSubmit: SubmitHandler<formInputs> = (data) => {
     console.log("...");
     console.log(data);
+    reset();
   };
   return (
     <div className="min-h-screen bg-stone-100">
@@ -112,14 +108,16 @@ export default function Home() {
             <Controller
               name="logradouro"
               control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
+              rules={{ required: "campo obrigatório" }}
+              render={({ field, fieldState }) => (
                 <InputField
+                  invalid={fieldState.invalid}
                   label="endereço (logradouro e número)"
                   placeholder="Ex: Rua do Amor Perfeito, 123"
                   className="col-span-3"
-                  id="logradouro"
+                  id={field.name}
                   inputProps={{ ...field }}
+                  errors={[fieldState.error]}
                 />
               )}
             />
@@ -128,13 +126,15 @@ export default function Home() {
               name="bairro"
               defaultValue=""
               control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
+              rules={{ required: "campo obrigatório" }}
+              render={({ field, fieldState }) => (
                 <InputField
+                  invalid={fieldState.invalid}
                   label="bairro"
-                  id="bairro"
+                  id={field.name}
                   placeholder="Ex.: Capão Novo"
                   inputProps={{ ...field }}
+                  errors={[fieldState.error]}
                 />
               )}
             />
@@ -142,12 +142,14 @@ export default function Home() {
             <Controller
               name="cidade"
               control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
+              rules={{ required: "campo obrigatório" }}
+              render={({ field, fieldState }) => (
                 <InputField
+                  invalid={fieldState.invalid}
                   label="cidade"
-                  id="cidade"
+                  id={field.name}
                   inputProps={{ ...field }}
+                  errors={[fieldState.error]}
                 />
               )}
             />
@@ -156,15 +158,17 @@ export default function Home() {
               name="estado"
               control={control}
               rules={{ required: true }}
-              render={({ field: { name, onChange, value } }) => (
+              render={({ field: { name, onChange, value }, fieldState }) => (
                 <SelectField
                   label="Estado"
-                  id="estado"
+                  id={name}
                   placeholder="Selecione"
                   selectProps={{
                     options: BRAZIL_STATES,
                     nativeSelectProps: { name, onValueChange: onChange, value },
                   }}
+                  invalid={fieldState.invalid}
+                  errors={[fieldState.error]}
                 />
               )}
             />
@@ -172,13 +176,15 @@ export default function Home() {
             <Controller
               name="cep"
               control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
+              rules={{ required: "campo obrigatório" }}
+              render={({ field, fieldState }) => (
                 <PatternInputField
-                  id="imovelCep"
+                  id={field.name}
                   label="CEP"
                   patternProps={{ ...field, name: "cep", format: "#####-###" }}
                   placeholder={"00000-000"}
+                  invalid={fieldState.invalid}
+                  errors={[fieldState.error]}
                 />
               )}
             />
@@ -186,17 +192,19 @@ export default function Home() {
             <Controller
               name="tipoImovel"
               control={control}
-              rules={{ required: true }}
-              render={({ field: { name, onChange, value } }) => (
+              rules={{ required: "por favor, selecione o tipo de imóvel" }}
+              render={({ field: { name, onChange, value }, fieldState }) => (
                 <SelectField
                   label="Tipo de imóvel"
-                  id="tipoImovel"
+                  id={name}
                   placeholder="Selecione"
                   selectProps={{
                     options: propertyTypes,
                     nativeSelectProps: { name, onValueChange: onChange, value },
                   }}
                   className="col-span-2"
+                  invalid={fieldState.invalid}
+                  errors={[fieldState.error]}
                 />
               )}
             />
@@ -211,14 +219,16 @@ export default function Home() {
               <Controller
                 name="locadorNome"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="nome completo"
                     placeholder="Nome completo do Locador"
                     className="col-span-2"
-                    id="locadorNome"
+                    id={field.name}
+                    invalid={fieldState.invalid}
                     inputProps={{ ...field }}
+                    errors={[fieldState.error]}
                   />
                 )}
               />
@@ -226,13 +236,15 @@ export default function Home() {
               <Controller
                 name="locadorNacionalidade"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="nacionalidade"
                     placeholder="Ex.: Brasileiro"
-                    id="locadorNacionalidade"
+                    id={field.name}
                     inputProps={{ ...field }}
+                    invalid={fieldState.invalid}
+                    errors={[fieldState.error]}
                   />
                 )}
               />
@@ -240,11 +252,11 @@ export default function Home() {
               <Controller
                 name="locadorGenero"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { name, onChange, value } }) => (
+                rules={{ required: "campo orbigatório" }}
+                render={({ field: { name, onChange, value }, fieldState }) => (
                   <SelectField
                     label="gênero"
-                    id="locadorGenero"
+                    id={name}
                     placeholder="Selecione"
                     selectProps={{
                       options: genderTypes,
@@ -255,6 +267,8 @@ export default function Home() {
                       },
                     }}
                     tip="Usado para sintaxe correta do documento"
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -262,13 +276,15 @@ export default function Home() {
               <Controller
                 name="locadorProfissao"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="profissão"
                     placeholder="Ex.: Advogado"
-                    id="locadorProfissao"
+                    id={field.name}
                     inputProps={{ ...field }}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -276,11 +292,11 @@ export default function Home() {
               <Controller
                 name="locadorEstadoCivil"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { name, onChange, value } }) => (
+                rules={{ required: "por favor, selecione o estado civil" }}
+                render={({ field: { name, onChange, value }, fieldState }) => (
                   <SelectField
                     label="estado civil"
-                    id="locadorEstadoCivil"
+                    id={name}
                     placeholder="Selecione"
                     selectProps={{
                       options: civilStateTypes,
@@ -290,6 +306,8 @@ export default function Home() {
                         value,
                       },
                     }}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -308,8 +326,8 @@ export default function Home() {
                 <Controller
                   name="locadorDocumento"
                   control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
+                  rules={{ required: "campo obrigatório" }}
+                  render={({ field, fieldState }) => (
                     <PatternInputField
                       label="CPF"
                       patternProps={{
@@ -317,7 +335,9 @@ export default function Home() {
                         ...field,
                       }}
                       placeholder="000.000.000-00"
-                      id="locadorDocumento"
+                      id={field.name}
+                      errors={[fieldState.error]}
+                      invalid={fieldState.invalid}
                     />
                   )}
                 />
@@ -325,11 +345,13 @@ export default function Home() {
                 <Controller
                   name="locadorDocumento"
                   control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
+                  rules={{ required: "campo obrigatório" }}
+                  render={({ field, fieldState }) => (
                     <PatternInputField
                       label="RG"
-                      id="locadorDocumento"
+                      id={field.name}
+                      errors={[fieldState.error]}
+                      invalid={fieldState.invalid}
                       patternProps={{
                         format: "##########",
                         ...field,
@@ -349,10 +371,12 @@ export default function Home() {
               <Controller
                 name="locadorCep"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <PatternInputField
-                    id="locadorCep"
+                    id={field.name}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                     label="CEP"
                     patternProps={{ format: "#####-###", ...field }}
                     placeholder={"00000-000"}
@@ -362,12 +386,14 @@ export default function Home() {
               <Controller
                 name="locadorEndereco"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="logradouro e número"
                     placeholder="Rua, número"
-                    id="locadorEndereco"
+                    id={field.name}
+                    invalid={fieldState.invalid}
+                    errors={[fieldState.error]}
                     inputProps={{ ...field }}
                     className="col-span-2"
                   />
@@ -377,13 +403,15 @@ export default function Home() {
               <Controller
                 name="locadorBairro"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="bairro"
                     placeholder="Ex.: Capão Novo"
-                    id="locadorBairro"
+                    id={field.name}
                     inputProps={{ ...field }}
+                    invalid={fieldState.invalid}
+                    errors={[fieldState.error]}
                   />
                 )}
               />
@@ -391,13 +419,15 @@ export default function Home() {
               <Controller
                 name="locadorCidade"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="cidade"
                     placeholder="Cidade "
-                    id="locadorCidade"
+                    id={field.name}
                     inputProps={{ ...field }}
+                    invalid={fieldState.invalid}
+                    errors={[fieldState.error]}
                   />
                 )}
               />
@@ -405,11 +435,11 @@ export default function Home() {
               <Controller
                 name="locadorUf"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { name, onChange, value } }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field: { name, onChange, value }, fieldState }) => (
                   <SelectField
                     label="estado"
-                    id="locadorUf"
+                    id={name}
                     placeholder="Selecione"
                     selectProps={{
                       options: BRAZIL_STATES,
@@ -419,6 +449,8 @@ export default function Home() {
                         value,
                       },
                     }}
+                    invalid={fieldState.invalid}
+                    errors={[fieldState.error]}
                   />
                 )}
               />
@@ -434,13 +466,15 @@ export default function Home() {
               <Controller
                 name="locatarioNome"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="nome completo"
                     placeholder="Nome completo do locatário"
                     className="col-span-2"
-                    id="locatarioNome"
+                    id={field.name}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                     inputProps={{ ...field }}
                   />
                 )}
@@ -449,12 +483,14 @@ export default function Home() {
               <Controller
                 name="locatarioNacionalidade"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="nacionalidade"
                     placeholder="Ex.: Brasileiro"
-                    id="locatarioNacionalidade"
+                    id={field.name}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                     inputProps={{ ...field }}
                   />
                 )}
@@ -463,11 +499,11 @@ export default function Home() {
               <Controller
                 name="locatarioGenero"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { name, onChange, value } }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field: { name, onChange, value }, fieldState }) => (
                   <SelectField
                     label="gênero"
-                    id="locatarioGenero"
+                    id={name}
                     placeholder="Selecione"
                     selectProps={{
                       options: genderTypes,
@@ -478,6 +514,8 @@ export default function Home() {
                       },
                     }}
                     tip="Usado para sintaxe correta do documento"
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -485,13 +523,15 @@ export default function Home() {
               <Controller
                 name="locatarioProfissao"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="profissão"
                     placeholder="Ex.: Advogado"
-                    id="locatarioProfissao"
+                    id={field.name}
                     inputProps={{ ...field }}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -499,11 +539,11 @@ export default function Home() {
               <Controller
                 name="locatarioEstadoCivil"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { name, onChange, value } }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field: { name, onChange, value }, fieldState }) => (
                   <SelectField
                     label="estado civil"
-                    id="locatarioEstadoCivil"
+                    id={name}
                     placeholder="Selecione"
                     selectProps={{
                       options: civilStateTypes,
@@ -513,6 +553,8 @@ export default function Home() {
                         value,
                       },
                     }}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -524,15 +566,15 @@ export default function Home() {
                   { label: "CPF", value: "CPF" },
                   { label: "RG", value: "RG" },
                 ]}
-                onChange={setOwnerDocument}
-                value={ownerDocument}
+                onChange={setRenterDocument}
+                value={renterDocument}
               />
-              {ownerDocument === "CPF" ? (
+              {renterDocument === "CPF" ? (
                 <Controller
                   name="locatarioDocumento"
                   control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
+                  rules={{ required: "campo obrigatório" }}
+                  render={({ field, fieldState }) => (
                     <PatternInputField
                       label="CPF"
                       patternProps={{
@@ -540,7 +582,9 @@ export default function Home() {
                         ...field,
                       }}
                       placeholder="000.000.000-00"
-                      id="locatarioDocumento"
+                      id={field.name}
+                      errors={[fieldState.error]}
+                      invalid={fieldState.invalid}
                     />
                   )}
                 />
@@ -548,16 +592,18 @@ export default function Home() {
                 <Controller
                   name="locatarioDocumento"
                   control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
+                  rules={{ required: "campo obrigatório" }}
+                  render={({ field, fieldState }) => (
                     <PatternInputField
                       label="RG"
-                      id="locatarioDocumento"
+                      id={field.name}
                       patternProps={{
                         format: "##########",
                         ...field,
                       }}
                       placeholder="0000000000"
+                      errors={[fieldState.error]}
+                      invalid={fieldState.invalid}
                     />
                   )}
                 />
@@ -572,27 +618,31 @@ export default function Home() {
               <Controller
                 name="locatarioCep"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <PatternInputField
-                    id="locatarioCep"
+                    id={field.name}
                     label="CEP"
                     patternProps={{ format: "#####-###", ...field }}
                     placeholder={"00000-000"}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
               <Controller
                 name="locatarioEndereco"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="logradouro e número"
                     placeholder="Rua, número"
-                    id="locatarioEndereco"
+                    id={field.name}
                     inputProps={{ ...field }}
                     className="col-span-2"
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -600,12 +650,14 @@ export default function Home() {
               <Controller
                 name="locatarioBairro"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="bairro"
                     placeholder="Ex.: Capão Novo"
-                    id="locatarioBairro"
+                    id={field.name}
+                    invalid={fieldState.invalid}
+                    errors={[fieldState.error]}
                     inputProps={{ ...field }}
                   />
                 )}
@@ -614,12 +666,14 @@ export default function Home() {
               <Controller
                 name="locatarioCidade"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="cidade"
                     placeholder="Cidade "
-                    id="locatarioCidade"
+                    id={field.name}
+                    invalid={fieldState.invalid}
+                    errors={[fieldState.error]}
                     inputProps={{ ...field }}
                   />
                 )}
@@ -628,11 +682,11 @@ export default function Home() {
               <Controller
                 name="locatarioUf"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { name, onChange, value } }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field: { name, onChange, value }, fieldState }) => (
                   <SelectField
                     label="estado"
-                    id="locatarioUf"
+                    id={name}
                     placeholder="Selecione"
                     selectProps={{
                       options: BRAZIL_STATES,
@@ -642,6 +696,8 @@ export default function Home() {
                         value,
                       },
                     }}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -657,11 +713,11 @@ export default function Home() {
               <Controller
                 name="valorAluguel"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field, fieldState }) => (
                   <NumericInputField
                     label="Valor mensal do aluguel (R$)"
-                    id={"valorAluguel"}
+                    id={field.name}
                     numericProps={{
                       thousandSeparator: ".",
                       decimalSeparator: ",",
@@ -672,6 +728,8 @@ export default function Home() {
                       placeholder: "R$1.000,00",
                       ...field,
                     }}
+                    invalid={fieldState.invalid}
+                    errors={[fieldState.error]}
                   />
                 )}
               />
@@ -679,11 +737,11 @@ export default function Home() {
               <Controller
                 name="vencimentoAluguel"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { name, onChange, value } }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field: { name, onChange, value }, fieldState }) => (
                   <SelectField
                     label="dia de vencimento"
-                    id="vencimentoAluguel"
+                    id={name}
                     placeholder="Selecione"
                     selectProps={{
                       options: paymentDayOptions,
@@ -693,6 +751,8 @@ export default function Home() {
                         value,
                       },
                     }}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -700,11 +760,11 @@ export default function Home() {
               <Controller
                 name="caucao"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { name, onChange, value } }) => (
+                rules={{ required: "campo obrigatório" }}
+                render={({ field: { name, onChange, value }, fieldState }) => (
                   <SelectField
                     label="Caução"
-                    id="caucao"
+                    id={name}
                     placeholder="Selecione"
                     selectProps={{
                       options: securityDepositOptions,
@@ -714,6 +774,8 @@ export default function Home() {
                         value,
                       },
                     }}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -726,12 +788,14 @@ export default function Home() {
               <Controller
                 name="inicioContrato"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "campo orbigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="início do contrato"
-                    id="inicioContrato"
+                    id={field.name}
                     inputProps={{ type: "date", ...field }}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                   />
                 )}
               />
@@ -739,11 +803,13 @@ export default function Home() {
               <Controller
                 name="fimContrato"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
+                rules={{ required: "obrigatório" }}
+                render={({ field, fieldState }) => (
                   <InputField
                     label="término do contrato"
-                    id="fimContrato"
+                    id={field.name}
+                    errors={[fieldState.error]}
+                    invalid={fieldState.invalid}
                     inputProps={{ type: "date", ...field }}
                   />
                 )}
@@ -761,10 +827,10 @@ export default function Home() {
           </div>
         </form>
       </main>
-      <LoadingOverlay
-        isOpen={isLoading}
+      {/* <LoadingOverlay
+        isOpen={isSubmitting}
         message="Gerando documento, aguarde por favor."
-      />
+      /> */}
     </div>
   );
 }
