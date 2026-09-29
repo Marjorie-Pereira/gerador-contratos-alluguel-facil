@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { cpf } from "cpf-cnpj-validator";
 
 export const rentalFormSchema = z.object({
   logradouro: z.string().nonempty("Preencha este campo"),
@@ -9,7 +10,15 @@ export const rentalFormSchema = z.object({
   tipoImovel: z.string("Selecione uma opção").nonempty(),
   locadorNome: z.string("Preencha este campo").nonempty(),
   locadorGenero: z.string("Selecione uma opção").nonempty(),
-  locadorDocumento: z.object({ tipo: z.string(), valor: z.string() }),
+  locadorDocumento: z
+    .object({ tipo: z.string(), valor: z.string() })
+    .refine(
+      (value) =>
+        value.tipo === "RG"
+          ? value.valor.length === 10
+          : cpf.isValid(value.valor),
+      { message: "Formato inválido" },
+    ),
   locadorNacionalidade: z.string("Preencha este campo").nonempty(),
   locadorEstadoCivil: z.string("Selecione uma opção").nonempty(),
   locadorProfissao: z.string("Preencha este campo").nonempty(),
@@ -22,7 +31,15 @@ export const rentalFormSchema = z.object({
     .length(8, "Insira o CEP corretamente"),
   locatarioNome: z.string("Preencha este campo").nonempty(),
   locatarioGenero: z.string("Selecione uma opção").nonempty(),
-  locatarioDocumento: z.object({ tipo: z.string(), valor: z.string() }),
+  locatarioDocumento: z
+    .object({ tipo: z.string(), valor: z.string() })
+    .refine(
+      (value) =>
+        value.tipo === "RG"
+          ? value.valor.length === 10
+          : cpf.isValid(value.valor),
+      { message: "Formato inválido" },
+    ),
   locatarioNacionalidade: z.string("Preencha este campo").nonempty(),
   locatarioEstadoCivil: z.string("Selecione uma opção").nonempty(),
   locatarioProfissao: z.string("Preencha este campo").nonempty(),

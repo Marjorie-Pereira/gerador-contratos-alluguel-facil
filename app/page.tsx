@@ -349,7 +349,7 @@ export default function Home() {
                           const inputValue: rentalFormData["locadorDocumento"] =
                             {
                               tipo: ownerDocument,
-                              valor: e.target.value,
+                              valor: e.target.value.trim(),
                             };
                           field.onChange(inputValue);
                         },
@@ -380,7 +380,7 @@ export default function Home() {
                           const inputValue: rentalFormData["locadorDocumento"] =
                             {
                               tipo: ownerDocument,
-                              valor: e.target.value,
+                              valor: e.target.value.trim(),
                             };
                           field.onChange(inputValue);
                         },
@@ -626,7 +626,7 @@ export default function Home() {
                           const inputValue: rentalFormData["locatarioDocumento"] =
                             {
                               tipo: renterDocument,
-                              valor: e.target.value,
+                              valor: e.target.value.trim(),
                             };
                           field.onChange(inputValue);
                         },
@@ -655,7 +655,7 @@ export default function Home() {
                           const inputValue: rentalFormData["locatarioDocumento"] =
                             {
                               tipo: renterDocument,
-                              valor: e.target.value,
+                              valor: e.target.value.trim(),
                             };
                           field.onChange(inputValue);
                         },
