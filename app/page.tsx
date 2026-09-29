@@ -21,13 +21,15 @@ import {
   securityDepositOptions,
 } from "@/lib/constants/paymentDayOptions";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { formInputs } from "@/types/formInputs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { rentalFormData, rentalFormSchema } from "@/schemas/rentalFormSchema";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [ownerDocument, setOwnerDocument] = useState("CPF");
   const [renterDocument, setRenterDocument] = useState("CPF");
-  const { handleSubmit, control, reset } = useForm<formInputs>({
+  const { handleSubmit, control, reset } = useForm<rentalFormData>({
+    resolver: zodResolver(rentalFormSchema),
     defaultValues: {
       logradouro: "",
       bairro: "",
@@ -57,18 +59,17 @@ export default function Home() {
       locatarioBairro: "",
       locatarioCidade: "",
       locatarioCep: "",
-      valorAluguel: "",
-      vencimentoAluguel: "1",
-      caucao: "3",
+      valorAluguel: 1,
+      vencimentoAluguel: "5",
+      caucao: 3,
       inicioContrato: "",
       fimContrato: "",
     },
   });
 
-  const onSubmit: SubmitHandler<formInputs> = (data) => {
-    console.log("...");
+  const onSubmit: SubmitHandler<rentalFormData> = (data) => {
     console.log(data);
-    reset();
+    // reset();
   };
   return (
     <div className="min-h-screen bg-stone-100">
@@ -179,7 +180,15 @@ export default function Home() {
                 <PatternInputField
                   id={field.name}
                   label="CEP"
-                  patternProps={{ ...field, name: "cep", format: "#####-###" }}
+                  patternProps={{
+                    ...field,
+                    name: "cep",
+                    format: "#####-###",
+                    onChange: (e) => {
+                      const formatted = e.target.value.trim().replace("-", "");
+                      field.onChange(formatted);
+                    },
+                  }}
                   placeholder={"00000-000"}
                   invalid={fieldState.invalid}
                   errors={[fieldState.error]}
@@ -376,7 +385,16 @@ export default function Home() {
                     errors={[fieldState.error]}
                     invalid={fieldState.invalid}
                     label="CEP"
-                    patternProps={{ format: "#####-###", ...field }}
+                    patternProps={{
+                      format: "#####-###",
+                      ...field,
+                      onChange: (e) => {
+                        const formatted = e.target.value
+                          .trim()
+                          .replace("-", "");
+                        field.onChange(formatted);
+                      },
+                    }}
                     placeholder={"00000-000"}
                   />
                 )}
@@ -621,7 +639,16 @@ export default function Home() {
                   <PatternInputField
                     id={field.name}
                     label="CEP"
-                    patternProps={{ format: "#####-###", ...field }}
+                    patternProps={{
+                      format: "#####-###",
+                      ...field,
+                      onChange: (e) => {
+                        const formatted = e.target.value
+                          .trim()
+                          .replace("-", "");
+                        field.onChange(formatted);
+                      },
+                    }}
                     placeholder={"00000-000"}
                     errors={[fieldState.error]}
                     invalid={fieldState.invalid}
@@ -725,6 +752,14 @@ export default function Home() {
                       allowNegative: false,
                       placeholder: "R$1.000,00",
                       ...field,
+                      onChange: (e) => {
+                        const formatted = e.target.value
+                          .split("R$")[1]
+                          ?.replace(".", "")
+                          ?.replace(",", ".");
+
+                        field.onChange(formatted);
+                      },
                     }}
                     invalid={fieldState.invalid}
                     errors={[fieldState.error]}
@@ -769,7 +804,7 @@ export default function Home() {
                       nativeSelectProps: {
                         name,
                         onValueChange: onChange,
-                        value,
+                        value: value.toString(),
                       },
                     }}
                     errors={[fieldState.error]}
