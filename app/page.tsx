@@ -28,7 +28,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [ownerDocument, setOwnerDocument] = useState("CPF");
   const [renterDocument, setRenterDocument] = useState("CPF");
-  const { handleSubmit, control, reset } = useForm<rentalFormData>({
+  const { handleSubmit, control, reset, resetField } = useForm<rentalFormData>({
     resolver: zodResolver(rentalFormSchema),
     defaultValues: {
       logradouro: "",
@@ -39,7 +39,7 @@ export default function Home() {
       tipoImovel: "",
       locadorNome: "",
       locadorGenero: "",
-      locadorDocumento: "",
+      locadorDocumento: { tipo: "CPF", valor: "" },
       locadorNacionalidade: "",
       locadorEstadoCivil: "",
       locadorProfissao: "",
@@ -50,7 +50,7 @@ export default function Home() {
       locadorCep: "",
       locatarioNome: "",
       locatarioGenero: "",
-      locatarioDocumento: "",
+      locatarioDocumento: { tipo: "CPF", valor: "" },
       locatarioNacionalidade: "",
       locatarioEstadoCivil: "",
       locatarioProfissao: "",
@@ -69,6 +69,7 @@ export default function Home() {
 
   const onSubmit: SubmitHandler<rentalFormData> = (data) => {
     console.log(data);
+
     // reset();
   };
   return (
@@ -326,7 +327,10 @@ export default function Home() {
                   { label: "CPF", value: "CPF" },
                   { label: "RG", value: "RG" },
                 ]}
-                onChange={setOwnerDocument}
+                onChange={(val) => {
+                  setOwnerDocument(val);
+                  resetField("locadorDocumento");
+                }}
                 value={ownerDocument}
               />
               {ownerDocument === "CPF" ? (
@@ -338,8 +342,17 @@ export default function Home() {
                     <PatternInputField
                       label="CPF"
                       patternProps={{
-                        format: "###.###.###-##",
                         ...field,
+                        format: "###.###.###-##",
+                        value: field.value.valor,
+                        onChange: (e) => {
+                          const inputValue: rentalFormData["locadorDocumento"] =
+                            {
+                              tipo: ownerDocument,
+                              valor: e.target.value,
+                            };
+                          field.onChange(inputValue);
+                        },
                       }}
                       placeholder="000.000.000-00"
                       id={field.name}
@@ -360,8 +373,17 @@ export default function Home() {
                       errors={[fieldState.error]}
                       invalid={fieldState.invalid}
                       patternProps={{
-                        format: "##########",
                         ...field,
+                        format: "##########",
+                        value: field.value.valor,
+                        onChange: (e) => {
+                          const inputValue: rentalFormData["locadorDocumento"] =
+                            {
+                              tipo: ownerDocument,
+                              valor: e.target.value,
+                            };
+                          field.onChange(inputValue);
+                        },
                       }}
                       placeholder="0000000000"
                     />
@@ -582,7 +604,10 @@ export default function Home() {
                   { label: "CPF", value: "CPF" },
                   { label: "RG", value: "RG" },
                 ]}
-                onChange={setRenterDocument}
+                onChange={(val) => {
+                  setRenterDocument(val);
+                  resetField("locatarioDocumento");
+                }}
                 value={renterDocument}
               />
               {renterDocument === "CPF" ? (
@@ -594,8 +619,17 @@ export default function Home() {
                     <PatternInputField
                       label="CPF"
                       patternProps={{
-                        format: "###.###.###-##",
                         ...field,
+                        format: "###.###.###-##",
+                        value: field.value.valor,
+                        onChange: (e) => {
+                          const inputValue: rentalFormData["locatarioDocumento"] =
+                            {
+                              tipo: renterDocument,
+                              valor: e.target.value,
+                            };
+                          field.onChange(inputValue);
+                        },
                       }}
                       placeholder="000.000.000-00"
                       id={field.name}
@@ -614,8 +648,17 @@ export default function Home() {
                       label="RG"
                       id={field.name}
                       patternProps={{
-                        format: "##########",
                         ...field,
+                        format: "##########",
+                        value: field.value.valor,
+                        onChange: (e) => {
+                          const inputValue: rentalFormData["locatarioDocumento"] =
+                            {
+                              tipo: renterDocument,
+                              valor: e.target.value,
+                            };
+                          field.onChange(inputValue);
+                        },
                       }}
                       placeholder="0000000000"
                       errors={[fieldState.error]}
