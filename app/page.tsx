@@ -881,6 +881,7 @@ export default function Home() {
                           .split("T")[0];
 
                         field.onChange(e.target.value);
+                        resetField("fimContrato");
                         setValue("fimContrato", contractEnd);
                       },
                     }}
@@ -900,7 +901,10 @@ export default function Home() {
                     id={field.name}
                     errors={[fieldState.error]}
                     invalid={fieldState.invalid}
-                    inputProps={{ type: "date", ...field }}
+                    inputProps={{
+                      type: "date",
+                      ...field,
+                    }}
                   />
                 )}
               />
