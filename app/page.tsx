@@ -108,6 +108,32 @@ export default function Home() {
             className="grid grid-cols-3 gap-5"
           >
             <Controller
+              name="cep"
+              control={control}
+              rules={{ required: "campo obrigatório" }}
+              render={({ field, fieldState }) => (
+                <PatternInputField
+                  id={field.name}
+                  label="CEP"
+                  patternProps={{
+                    ...field,
+                    name: "cep",
+                    format: "#####-###",
+                    onBlur: () => {
+                      alert("buscando cep");
+                    },
+                    onChange: (e) => {
+                      const formatted = e.target.value.trim().replace("-", "");
+                      field.onChange(formatted);
+                    },
+                  }}
+                  placeholder={"00000-000"}
+                  invalid={fieldState.invalid}
+                  errors={[fieldState.error]}
+                />
+              )}
+            />
+            <Controller
               name="logradouro"
               control={control}
               rules={{ required: "campo obrigatório" }}
@@ -116,7 +142,7 @@ export default function Home() {
                   invalid={fieldState.invalid}
                   label="endereço (logradouro e número)"
                   placeholder="Ex: Rua do Amor Perfeito, 123"
-                  className="col-span-3"
+                  className="col-span-2"
                   id={field.name}
                   inputProps={{ ...field }}
                   errors={[fieldState.error]}
@@ -176,30 +202,6 @@ export default function Home() {
             />
 
             <Controller
-              name="cep"
-              control={control}
-              rules={{ required: "campo obrigatório" }}
-              render={({ field, fieldState }) => (
-                <PatternInputField
-                  id={field.name}
-                  label="CEP"
-                  patternProps={{
-                    ...field,
-                    name: "cep",
-                    format: "#####-###",
-                    onChange: (e) => {
-                      const formatted = e.target.value.trim().replace("-", "");
-                      field.onChange(formatted);
-                    },
-                  }}
-                  placeholder={"00000-000"}
-                  invalid={fieldState.invalid}
-                  errors={[fieldState.error]}
-                />
-              )}
-            />
-
-            <Controller
               name="tipoImovel"
               control={control}
               rules={{ required: "por favor, selecione o tipo de imóvel" }}
@@ -212,7 +214,7 @@ export default function Home() {
                     options: propertyTypes,
                     nativeSelectProps: { name, onValueChange: onChange, value },
                   }}
-                  className="col-span-2"
+                  className=""
                   invalid={fieldState.invalid}
                   errors={[fieldState.error]}
                 />
