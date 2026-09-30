@@ -23,49 +23,51 @@ import {
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { rentalFormData, rentalFormSchema } from "@/schemas/rentalFormSchema";
+import { addYears } from "date-fns";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [ownerDocument, setOwnerDocument] = useState("CPF");
   const [renterDocument, setRenterDocument] = useState("CPF");
-  const { handleSubmit, control, reset, resetField } = useForm<rentalFormData>({
-    resolver: zodResolver(rentalFormSchema),
-    defaultValues: {
-      logradouro: "",
-      bairro: "",
-      cidade: "",
-      estado: "RS",
-      cep: "",
-      tipoImovel: "",
-      locadorNome: "",
-      locadorGenero: "",
-      locadorDocumento: { tipo: "CPF", valor: "" },
-      locadorNacionalidade: "",
-      locadorEstadoCivil: "",
-      locadorProfissao: "",
-      locadorUf: "RS",
-      locadorEndereco: "",
-      locadorBairro: "",
-      locadorCidade: "",
-      locadorCep: "",
-      locatarioNome: "",
-      locatarioGenero: "",
-      locatarioDocumento: { tipo: "CPF", valor: "" },
-      locatarioNacionalidade: "",
-      locatarioEstadoCivil: "",
-      locatarioProfissao: "",
-      locatarioUf: "RS",
-      locatarioEndereco: "",
-      locatarioBairro: "",
-      locatarioCidade: "",
-      locatarioCep: "",
-      valorAluguel: 1,
-      vencimentoAluguel: "5",
-      caucao: 3,
-      inicioContrato: "",
-      fimContrato: "",
-    },
-  });
+  const { handleSubmit, control, reset, resetField, setValue } =
+    useForm<rentalFormData>({
+      resolver: zodResolver(rentalFormSchema),
+      defaultValues: {
+        logradouro: "",
+        bairro: "",
+        cidade: "",
+        estado: "RS",
+        cep: "",
+        tipoImovel: "",
+        locadorNome: "",
+        locadorGenero: "",
+        locadorDocumento: { tipo: "CPF", valor: "" },
+        locadorNacionalidade: "",
+        locadorEstadoCivil: "",
+        locadorProfissao: "",
+        locadorUf: "RS",
+        locadorEndereco: "",
+        locadorBairro: "",
+        locadorCidade: "",
+        locadorCep: "",
+        locatarioNome: "",
+        locatarioGenero: "",
+        locatarioDocumento: { tipo: "CPF", valor: "" },
+        locatarioNacionalidade: "",
+        locatarioEstadoCivil: "",
+        locatarioProfissao: "",
+        locatarioUf: "RS",
+        locatarioEndereco: "",
+        locatarioBairro: "",
+        locatarioCidade: "",
+        locatarioCep: "",
+        valorAluguel: 1,
+        vencimentoAluguel: "5",
+        caucao: 3,
+        inicioContrato: "",
+        fimContrato: "",
+      },
+    });
 
   const onSubmit: SubmitHandler<rentalFormData> = (data) => {
     console.log(data);
@@ -869,7 +871,19 @@ export default function Home() {
                   <InputField
                     label="início do contrato"
                     id={field.name}
-                    inputProps={{ type: "date", ...field }}
+                    inputProps={{
+                      ...field,
+                      type: "date",
+                      onChange: (e) => {
+                        const thisDate = new Date(e.target.value);
+                        const contractEnd = addYears(thisDate, 1)
+                          .toISOString()
+                          .split("T")[0];
+
+                        field.onChange(e.target.value);
+                        setValue("fimContrato", contractEnd);
+                      },
+                    }}
                     errors={[fieldState.error]}
                     invalid={fieldState.invalid}
                   />
