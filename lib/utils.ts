@@ -1,3 +1,4 @@
+import { viaCepResponse } from "@/types/viaCepResponse";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -21,4 +22,11 @@ export function formatDateToBrazilian(dateString: string) {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+export async function fetchViaCep(cep: string) {
+  const response = await fetch(`/api/${cep}`);
+  const apiData: viaCepResponse = await response.json();
+
+  return apiData;
 }

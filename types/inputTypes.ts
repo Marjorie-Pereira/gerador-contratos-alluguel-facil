@@ -37,6 +37,7 @@ type SelectFieldProps = FieldProps & {
       onValueChange: (value: string) => void;
       value: string;
       required?: boolean;
+      disabled?: boolean;
     };
   };
 };

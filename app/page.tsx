@@ -3,7 +3,7 @@ import Image from "next/image";
 import { User } from "lucide-react";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import FormSection from "@/components/FormSection";
 import InputField from "@/components/InputField";
@@ -24,9 +24,17 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { rentalFormData, rentalFormSchema } from "@/schemas/rentalFormSchema";
 import { addYears } from "date-fns";
+import { fetchViaCep } from "@/lib/utils";
+import { viaCepResponse } from "@/types/viaCepResponse";
+
+type fieldNameToSet = {
+  name: keyof rentalFormData;
+  value: keyof viaCepResponse;
+};
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [viaCepLoading, setViaCepLoading] = useState(false);
+  const [loadingFields, setLoadingFields] = useState<string[]>([]);
   const [ownerDocument, setOwnerDocument] = useState("CPF");
   const [renterDocument, setRenterDocument] = useState("CPF");
   const { handleSubmit, control, reset, resetField, setValue } =
@@ -74,6 +82,23 @@ export default function Home() {
 
     // reset();
   };
+
+  async function setCepValues(cep: string, fieldNames: fieldNameToSet[]) {
+    setViaCepLoading(true);
+    setLoadingFields(fieldNames.map((item) => item.name));
+
+    const viaCepData = await fetchViaCep(cep);
+    setViaCepLoading(false);
+    setLoadingFields([]);
+
+    if (viaCepData.erro) return;
+
+    fieldNames.forEach((item) => {
+      resetField(item.name);
+      const newValue = viaCepData[item.value];
+      setValue(item.name, newValue || "");
+    });
+  }
   return (
     <div className="min-h-screen bg-stone-100">
       <header className="flex bg-sky-950  text-white border-b-4 border-yellow-600">
@@ -119,13 +144,24 @@ export default function Home() {
                     ...field,
                     name: "cep",
                     format: "#####-###",
-                    onBlur: () => {
-                      alert("buscando cep");
+                    onBlur: async () => {
+                      if (!fieldState.error && field.value) {
+                        const fieldNames: fieldNameToSet[] = [
+                          { name: "cep", value: "cep" },
+                          { name: "logradouro", value: "logradouro" },
+                          { name: "bairro", value: "bairro" },
+                          { name: "cidade", value: "localidade" },
+                          { name: "estado", value: "uf" },
+                        ];
+                        setCepValues(field.value, fieldNames);
+                      }
                     },
                     onChange: (e) => {
                       const formatted = e.target.value.trim().replace("-", "");
                       field.onChange(formatted);
                     },
+                    disabled:
+                      loadingFields.includes(field.name) && viaCepLoading,
                   }}
                   placeholder={"00000-000"}
                   invalid={fieldState.invalid}
@@ -144,7 +180,11 @@ export default function Home() {
                   placeholder="Ex: Rua do Amor Perfeito, 123"
                   className="col-span-2"
                   id={field.name}
-                  inputProps={{ ...field }}
+                  inputProps={{
+                    ...field,
+                    disabled:
+                      loadingFields.includes(field.name) && viaCepLoading,
+                  }}
                   errors={[fieldState.error]}
                 />
               )}
@@ -161,7 +201,11 @@ export default function Home() {
                   label="bairro"
                   id={field.name}
                   placeholder="Ex.: Capão Novo"
-                  inputProps={{ ...field }}
+                  inputProps={{
+                    ...field,
+                    disabled:
+                      loadingFields.includes(field.name) && viaCepLoading,
+                  }}
                   errors={[fieldState.error]}
                 />
               )}
@@ -176,7 +220,11 @@ export default function Home() {
                   invalid={fieldState.invalid}
                   label="cidade"
                   id={field.name}
-                  inputProps={{ ...field }}
+                  inputProps={{
+                    ...field,
+                    disabled:
+                      loadingFields.includes(field.name) && viaCepLoading,
+                  }}
                   errors={[fieldState.error]}
                 />
               )}
@@ -193,7 +241,12 @@ export default function Home() {
                   placeholder="Selecione"
                   selectProps={{
                     options: BRAZIL_STATES,
-                    nativeSelectProps: { name, onValueChange: onChange, value },
+                    nativeSelectProps: {
+                      name,
+                      onValueChange: onChange,
+                      value,
+                      disabled: loadingFields.includes(name) && viaCepLoading,
+                    },
                   }}
                   invalid={fieldState.invalid}
                   errors={[fieldState.error]}
@@ -420,6 +473,8 @@ export default function Home() {
                           .replace("-", "");
                         field.onChange(formatted);
                       },
+                      disabled:
+                        loadingFields.includes(field.name) && viaCepLoading,
                     }}
                     placeholder={"00000-000"}
                   />
