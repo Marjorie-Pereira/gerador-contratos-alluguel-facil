@@ -144,7 +144,7 @@ export default function Home() {
                     ...field,
                     name: "cep",
                     format: "#####-###",
-                    onBlur: async () => {
+                    onBlur: () => {
                       if (!fieldState.error && field.value) {
                         const fieldNames: fieldNameToSet[] = [
                           { name: "cep", value: "cep" },
@@ -473,6 +473,19 @@ export default function Home() {
                           .replace("-", "");
                         field.onChange(formatted);
                       },
+                      onBlur: () => {
+                        if (!fieldState.error && field.value) {
+                          const fieldNames: fieldNameToSet[] = [
+                            { name: "locadorCep", value: "cep" },
+                            { name: "locadorEndereco", value: "logradouro" },
+                            { name: "locadorBairro", value: "bairro" },
+                            { name: "locadorCidade", value: "localidade" },
+                            { name: "locadorUf", value: "uf" },
+                          ];
+                          setCepValues(field.value, fieldNames);
+                        }
+                      },
+
                       disabled:
                         loadingFields.includes(field.name) && viaCepLoading,
                     }}
@@ -491,7 +504,11 @@ export default function Home() {
                     id={field.name}
                     invalid={fieldState.invalid}
                     errors={[fieldState.error]}
-                    inputProps={{ ...field }}
+                    inputProps={{
+                      ...field,
+                      disabled:
+                        loadingFields.includes(field.name) && viaCepLoading,
+                    }}
                     className="col-span-2"
                   />
                 )}
@@ -506,7 +523,11 @@ export default function Home() {
                     label="bairro"
                     placeholder="Ex.: Capão Novo"
                     id={field.name}
-                    inputProps={{ ...field }}
+                    inputProps={{
+                      ...field,
+                      disabled:
+                        loadingFields.includes(field.name) && viaCepLoading,
+                    }}
                     invalid={fieldState.invalid}
                     errors={[fieldState.error]}
                   />
@@ -522,7 +543,11 @@ export default function Home() {
                     label="cidade"
                     placeholder="Cidade "
                     id={field.name}
-                    inputProps={{ ...field }}
+                    inputProps={{
+                      ...field,
+                      disabled:
+                        loadingFields.includes(field.name) && viaCepLoading,
+                    }}
                     invalid={fieldState.invalid}
                     errors={[fieldState.error]}
                   />
@@ -544,6 +569,7 @@ export default function Home() {
                         name,
                         onValueChange: onChange,
                         value,
+                        disabled: loadingFields.includes(name) && viaCepLoading,
                       },
                     }}
                     invalid={fieldState.invalid}
@@ -750,6 +776,20 @@ export default function Home() {
                           .replace("-", "");
                         field.onChange(formatted);
                       },
+                      onBlur: () => {
+                        if (!fieldState.error && field.value) {
+                          const fieldNames: fieldNameToSet[] = [
+                            { name: "locatarioCep", value: "cep" },
+                            { name: "locatarioEndereco", value: "logradouro" },
+                            { name: "locatarioBairro", value: "bairro" },
+                            { name: "locatarioCidade", value: "localidade" },
+                            { name: "locatarioUf", value: "uf" },
+                          ];
+                          setCepValues(field.value, fieldNames);
+                        }
+                      },
+                      disabled:
+                        loadingFields.includes(field.name) && viaCepLoading,
                     }}
                     placeholder={"00000-000"}
                     errors={[fieldState.error]}
@@ -766,7 +806,11 @@ export default function Home() {
                     label="logradouro e número"
                     placeholder="Rua, número"
                     id={field.name}
-                    inputProps={{ ...field }}
+                    inputProps={{
+                      ...field,
+                      disabled:
+                        loadingFields.includes(field.name) && viaCepLoading,
+                    }}
                     className="col-span-2"
                     errors={[fieldState.error]}
                     invalid={fieldState.invalid}
@@ -785,7 +829,11 @@ export default function Home() {
                     id={field.name}
                     invalid={fieldState.invalid}
                     errors={[fieldState.error]}
-                    inputProps={{ ...field }}
+                    inputProps={{
+                      ...field,
+                      disabled:
+                        loadingFields.includes(field.name) && viaCepLoading,
+                    }}
                   />
                 )}
               />
@@ -801,7 +849,11 @@ export default function Home() {
                     id={field.name}
                     invalid={fieldState.invalid}
                     errors={[fieldState.error]}
-                    inputProps={{ ...field }}
+                    inputProps={{
+                      ...field,
+                      disabled:
+                        loadingFields.includes(field.name) && viaCepLoading,
+                    }}
                   />
                 )}
               />
@@ -821,6 +873,7 @@ export default function Home() {
                         name,
                         onValueChange: onChange,
                         value,
+                        disabled: loadingFields.includes(name) && viaCepLoading,
                       },
                     }}
                     errors={[fieldState.error]}
