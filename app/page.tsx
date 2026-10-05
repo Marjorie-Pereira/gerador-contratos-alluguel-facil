@@ -3,7 +3,7 @@ import Image from "next/image";
 import { User } from "lucide-react";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FormSection from "@/components/FormSection";
 import InputField from "@/components/InputField";
@@ -147,12 +147,12 @@ export default function Home() {
                     onBlur: () => {
                       if (!fieldState.error && field.value) {
                         const fieldNames: fieldNameToSet[] = [
-                          { name: "cep", value: "cep" },
                           { name: "logradouro", value: "logradouro" },
                           { name: "bairro", value: "bairro" },
                           { name: "cidade", value: "localidade" },
                           { name: "estado", value: "uf" },
                         ];
+                        console.log("value on blur", field.value);
                         setCepValues(field.value, fieldNames);
                       }
                     },
@@ -476,7 +476,6 @@ export default function Home() {
                       onBlur: () => {
                         if (!fieldState.error && field.value) {
                           const fieldNames: fieldNameToSet[] = [
-                            { name: "locadorCep", value: "cep" },
                             { name: "locadorEndereco", value: "logradouro" },
                             { name: "locadorBairro", value: "bairro" },
                             { name: "locadorCidade", value: "localidade" },
@@ -779,7 +778,6 @@ export default function Home() {
                       onBlur: () => {
                         if (!fieldState.error && field.value) {
                           const fieldNames: fieldNameToSet[] = [
-                            { name: "locatarioCep", value: "cep" },
                             { name: "locatarioEndereco", value: "logradouro" },
                             { name: "locatarioBairro", value: "bairro" },
                             { name: "locatarioCidade", value: "localidade" },
