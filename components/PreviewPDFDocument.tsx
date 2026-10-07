@@ -22,7 +22,7 @@ export default function PreviewPDF({ url }: PreviewPDFProps) {
 
   return (
     <div className="flex flex-col items-center p-4 bg-gray-100 min-h-screen">
-      <div className="border border-gray-300 rounded shadow-lg bg-white p-2 m-4">
+      <div className="border border-gray-300 rounded shadow-lg bg-white m-4">
         <Document
           file={url}
           onLoadSuccess={onDocumentLoadSuccess}
