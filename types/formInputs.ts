@@ -33,3 +33,55 @@ export type formInputs = {
   inicioContrato: string;
   fimContrato: string;
 };
+
+export type rentalContractData = {
+  imovel: {
+    endereco: {
+      logradouro: string;
+      bairro: string;
+      cidade: string;
+      cep: string;
+      estado: string;
+    };
+    tipoImovel: string;
+  };
+  locador: {
+    nome: string;
+    genero: string;
+    documento: { tipo: string; valor: string };
+    nacionalidade: string;
+    estadoCivil: string;
+    profissao: string;
+    endereco: {
+      estado: string;
+      logradouro: string;
+      bairro: string;
+      cidade: string;
+      cep: string;
+    };
+  };
+  locatario: {
+    nome: string;
+    genero: string;
+    documento: { tipo: string; valor: string };
+    nacionalidade: string;
+    estadoCivil: string;
+    profissao: string;
+    endereco: {
+      estado: string;
+      logradouro: string;
+      bairro: string;
+      cidade: string;
+      cep: string;
+    };
+  };
+  contrato: {
+    valorCaucao: number;
+    dataContrato: string;
+    fimContrato: string;
+    inicioContrato: string;
+    caucao: number;
+    valorAluguel: number;
+    vencimentoAluguel: string;
+  };
+};
