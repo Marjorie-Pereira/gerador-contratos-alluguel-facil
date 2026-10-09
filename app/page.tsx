@@ -36,7 +36,7 @@ type fieldNameToSet = {
 
 export default function Home() {
   const [viaCepLoading, setViaCepLoading] = useState(false);
-  const [loadingFields, setLoadingFields] = useState<string[]>([]);
+  const [loadingFields, setLoadingFields] = useState<string>("");
   const [ownerDocument, setOwnerDocument] = useState("CPF");
   const [renterDocument, setRenterDocument] = useState("CPF");
   const { handleSubmit, control, reset, resetField, setValue } =
@@ -140,13 +140,17 @@ export default function Home() {
     router.replace("/preview");
   };
 
-  async function setCepValues(cep: string, fieldNames: fieldNameToSet[]) {
+  async function setCepValues(
+    cep: string,
+    fieldNames: fieldNameToSet[],
+    fieldSection: string,
+  ) {
     setViaCepLoading(true);
-    setLoadingFields(fieldNames.map((item) => item.name));
+    setLoadingFields(fieldSection);
 
     const viaCepData = await fetchViaCep(cep);
     setViaCepLoading(false);
-    setLoadingFields([]);
+    setLoadingFields("");
 
     if (viaCepData.erro) return;
 
@@ -211,15 +215,14 @@ export default function Home() {
                           { name: "estado", value: "uf" },
                         ];
 
-                        setCepValues(field.value, fieldNames);
+                        setCepValues(field.value, fieldNames, "imovel");
                       }
                     },
                     onChange: (e) => {
                       const formatted = e.target.value.trim().replace("-", "");
                       field.onChange(formatted);
                     },
-                    disabled:
-                      loadingFields.includes(field.name) && viaCepLoading,
+                    disabled: loadingFields === "imovel" && viaCepLoading,
                   }}
                   placeholder={"00000-000"}
                   invalid={fieldState.invalid}
@@ -539,12 +542,11 @@ export default function Home() {
                             { name: "locadorCidade", value: "localidade" },
                             { name: "locadorUf", value: "uf" },
                           ];
-                          setCepValues(field.value, fieldNames);
+                          setCepValues(field.value, fieldNames, "locador");
                         }
                       },
 
-                      disabled:
-                        loadingFields.includes(field.name) && viaCepLoading,
+                      disabled: loadingFields === "locador" && viaCepLoading,
                     }}
                     placeholder={"00000-000"}
                   />
@@ -841,11 +843,10 @@ export default function Home() {
                             { name: "locatarioCidade", value: "localidade" },
                             { name: "locatarioUf", value: "uf" },
                           ];
-                          setCepValues(field.value, fieldNames);
+                          setCepValues(field.value, fieldNames, "locatario");
                         }
                       },
-                      disabled:
-                        loadingFields.includes(field.name) && viaCepLoading,
+                      disabled: loadingFields === "locatario" && viaCepLoading,
                     }}
                     placeholder={"00000-000"}
                     errors={[fieldState.error]}
