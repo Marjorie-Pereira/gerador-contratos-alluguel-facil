@@ -1,7 +1,8 @@
 "use client";
 
-import { formatDateToBrazilian } from "@/lib/utils";
+import { formatDateToBrazilian, toCurrencyString } from "@/lib/utils";
 import { rentalFormData } from "@/schemas/rentalFormSchema";
+import { rentalContractData } from "@/types/formInputs";
 import {
   Document,
   Font,
@@ -14,7 +15,7 @@ import {
 import { ArrowLeft, Download } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const PreviewPDFDynamic = dynamic(
   () => import("@/components/PreviewPDFDocument"),
@@ -36,10 +37,10 @@ const BlobProvider = dynamic(
   },
 );
 
-const contractDataJson: rentalFormData & {
-  valorCaucao: number;
-  dataContrato: string;
-} = JSON.parse(sessionStorage?.getItem("contractData") || "");
+const contractDataJson: rentalContractData = JSON.parse(
+  sessionStorage?.getItem("contractData") || "{}",
+);
+const { imovel, contrato, locador, locatario } = contractDataJson;
 
 const styles = StyleSheet.create({
   page: {
@@ -129,58 +130,73 @@ const document = (
         <Text style={styles.headerTitle}>
           CONTRATO DE LOCAÇÃO DE IMÓVEL RESIDENCIAL
         </Text>
+        <Text style={styles.headerTitle}>POR TEMPO DETERMINADO</Text>
       </View>
       <View style={styles.divider} />
       <Text style={styles.sectionTitle}>1. Identificação das Partes</Text>
       <Text style={styles.paragraph}>
-        <Text style={{ fontWeight: "bold" }}>LOCADOR(A):</Text> João da Silva,
-        brasileiro(a), estado civil, portador(a) da cédula de identidade RG nº
-        00.000.000-0 e inscrito(a) no CPF sob o nº 000.000.000-00, residente e
-        domiciliado(a) na Rua Exemplo, nº 123, Bairro Centro, Cidade - UF.
+        <Text style={{ fontWeight: "bold" }}>LOCADOR(A):</Text>{" "}
+        {locador?.nome.toUpperCase()}, {locador?.nacionalidade},{" "}
+        {locador?.estadoCivil},{" "}
+        {locador?.documento.tipo === "RG"
+          ? `portador(a) da cédula de identidade RG nº ${locador?.documento.valor}`
+          : `inscrito(a) no CPF sob o nº ${locador?.documento.valor}`}
+        , residente e domiciliado(a) na {locador?.endereco.logradouro},{" "}
+        {locador?.endereco.bairro}, {locador?.endereco.cidade} -{" "}
+        {locador?.endereco.estado}.
       </Text>
       <Text style={styles.paragraph}>
-        <Text style={{ fontWeight: "bold" }}>LOCATÁRIO(A):</Text> Maria de
-        Souza, brasileira, estado civil, portadora da cédula de identidade RG nº
-        11.111.111-1 e inscrita no CPF sob o nº 111.111.111-11, residente e
-        domiciliada na Rua Modelo, nº 456, Bairro Jardim, Cidade - UF.
+        <Text style={{ fontWeight: "bold" }}>LOCATÁRIO(A): </Text>
+        {locatario?.nome.toUpperCase()}, {locatario?.nacionalidade},{" "}
+        {locatario?.estadoCivil},{" "}
+        {locatario?.documento.tipo === "RG"
+          ? `portador(a) da cédula de identidade RG nº ${locatario?.documento.valor}`
+          : `inscrito(a) no CPF sob o nº ${locatario?.documento.valor}`}
+        , residente e domiciliado(a) na {locatario?.endereco.logradouro},{" "}
+        {locatario?.endereco.bairro}, {locatario?.endereco.cidade} -{" "}
+        {locatario?.endereco.estado}.
       </Text>
       <Text style={styles.sectionTitle}>2. Do Imóvel</Text>
       <Text style={styles.paragraph}>
-        O(A) LOCADOR(A) dá em locação ao(à) LOCATÁRIO(A) o imóvel residencial
-        situado na Av. Principal, nº 789, Apto 101, Bairro Bela Vista, CEP
-        00000-000, Cidade - UF, composto por 2 quartos, sala, cozinha, banheiro
-        e 1 vaga de garagem.
+        O(A) LOCADOR(A) dá em locação ao(à) LOCATÁRIO(A) o imóvel:{" "}
+        {imovel?.tipoImovel}, situado à {imovel?.endereco.logradouro},{" "}
+        {imovel?.endereco.bairro}, {imovel?.endereco.cidade} -{" "}
+        {imovel?.endereco.estado}.
       </Text>
       <Text style={styles.sectionTitle}>3. Cláusulas e Condições Gerais</Text>
 
       <Text style={styles.clause}>
         <Text style={{ fontWeight: "bold" }}>
-          Cláusula Primeira - Valor Mensal da Locação:
+          Cláusula Primeira - Valor Mensal da Locação:{" "}
         </Text>
-        R$X.XXX,XX (POR EXTENSO REAIS). O aluguel mensal é o indicado neste
-        contrato, devendo seupagamento ser feito no numeroº. (POR EXTENSO) dia
-        de cada mês ou o primeiro dia útil subsequente ao vencimento, mediante
-        depósito bancário ao ADMINISTRADOR deste contrato.
+        {toCurrencyString(contrato?.valorAluguel)} (POR EXTENSO REAIS). O
+        aluguel mensal é o indicado neste contrato, devendo seupagamento ser
+        feito no
+        {contrato?.vencimentoAluguel}º. (POR EXTENSO) dia de cada mês ou o
+        primeiro dia útil subsequente ao vencimento, mediante depósito bancário
+        ao ADMINISTRADOR deste contrato.
       </Text>
 
       <Text style={styles.clause}>
         <Text style={{ fontWeight: "bold" }}>
           Cláusula Segunda - Prazo de Locação:
         </Text>
-        A presente locação terá início no dia XX de mês de ano e terminará
-        impreterivelmente no dia XX de mes de ano. Podendo ser renovada, com
-        acordo prévio das partes citadas neste contrato.
+        A presente locação terá início no dia{" "}
+        {formatDateToBrazilian(contrato?.inicioContrato)} e terminará
+        impreterivelmente no dia {formatDateToBrazilian(contrato?.fimContrato)}.
+        Podendo ser renovada, com acordo prévio das partes citadas neste
+        contrato.
       </Text>
 
       <Text style={styles.paragraph}>
         <Text style={[styles.paragraph, { fontWeight: "bold" }]}>
           Parágrafo A:{" "}
         </Text>
-        Será cobrado caução referente a 3 (três) meses de aluguel no valor de R$
-        5.100,00 (CINCO MIL E CEM REAIS). Sendo o primeiro mês de aluguel
-        adiantado e o segundo para fins de vistoria final. Os mesmos serão
-        devolvidos integralmente apos vistoria, caso não tenham débitos ou
-        danos, corrigidos pela poupança.
+        Será cobrado caução referente a {contrato?.caucao} (extenso) meses de
+        aluguel no valor de {toCurrencyString(contrato?.valorCaucao)} (EXTENSO).
+        Sendo o primeiro mês de aluguel adiantado e o segundo para fins de
+        vistoria final. Os mesmos serão devolvidos integralmente apos vistoria,
+        caso não tenham débitos ou danos, corrigidos pela poupança.
       </Text>
 
       <Text style={styles.paragraph}>
@@ -391,17 +407,19 @@ const document = (
         E, por estarem justos e contratados, assinam o presente contrato em duas
         vias de igual teor na presença de duas testemunhas.
       </Text>
-      <Text style={styles.paragraph}>Capão da Canoa, data</Text>
+      <Text style={styles.paragraph}>
+        Capão da Canoa, {formatDateToBrazilian(contrato?.dataContrato)}
+      </Text>
       <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Assinaturas:</Text>
       <View style={styles.signatureContainer}>
         <View style={styles.signatureBox}>
           <View style={styles.signatureLine} />
-          <Text>João da Silva</Text>
+          <Text>{locador?.nome}</Text>
           <Text style={{ fontSize: 10, color: "#555" }}>Locador(a)</Text>
         </View>
         <View style={styles.signatureBox}>
           <View style={styles.signatureLine} />
-          <Text>Maria de Souza</Text>
+          <Text>{locatario?.nome}</Text>
           <Text style={{ fontSize: 10, color: "#555" }}>Locatário(a)</Text>
         </View>
       </View>
@@ -426,7 +444,12 @@ const document = (
 );
 
 export default function PreviewPDFPage() {
-  console.log(contractDataJson);
+  useEffect(() => {
+    return () => {
+      console.log("unmount");
+      sessionStorage.clear();
+    };
+  }, []);
   return (
     <main className="p-8 bg-blue-950 text-white relative">
       <h1 className="text-2xl font-bold mb-4 text-center">
