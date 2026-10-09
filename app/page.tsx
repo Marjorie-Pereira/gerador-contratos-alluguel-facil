@@ -23,9 +23,11 @@ import {
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { rentalFormData, rentalFormSchema } from "@/schemas/rentalFormSchema";
-import { addYears } from "date-fns";
+import { addYears, format } from "date-fns";
 import { fetchViaCep } from "@/lib/utils";
 import { viaCepResponse } from "@/types/viaCepResponse";
+import { useRouter } from "next/navigation";
+import { rentalContractData } from "@/types/formInputs";
 
 type fieldNameToSet = {
   name: keyof rentalFormData;
@@ -76,11 +78,66 @@ export default function Home() {
         fimContrato: "",
       },
     });
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<rentalFormData> = (data) => {
-    console.log(data);
+    const securityDepositValue = data.caucao * data.valorAluguel;
+    const contractDate = format(new Date(), "yyyy-MM-dd");
+    const processedData: rentalContractData = {
+      imovel: {
+        endereco: {
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          cidade: data.cidade,
+          cep: data.cep,
+          estado: data.estado,
+        },
+        tipoImovel: data.tipoImovel,
+      },
+      locador: {
+        nome: data.locadorNome,
+        genero: data.locadorGenero,
+        documento: data.locadorDocumento,
+        nacionalidade: data.locadorNacionalidade,
+        estadoCivil: data.locadorEstadoCivil,
+        profissao: data.locadorProfissao,
+        endereco: {
+          estado: data.locadorUf,
+          logradouro: data.locadorEndereco,
+          bairro: data.locadorBairro,
+          cidade: data.locadorCidade,
+          cep: data.locadorCep,
+        },
+      },
+      locatario: {
+        nome: data.locatarioNome,
+        genero: data.locatarioGenero,
+        documento: data.locatarioDocumento,
+        nacionalidade: data.locatarioNacionalidade,
+        estadoCivil: data.locatarioEstadoCivil,
+        profissao: data.locatarioProfissao,
+        endereco: {
+          estado: data.locatarioUf,
+          logradouro: data.locatarioEndereco,
+          bairro: data.locatarioBairro,
+          cidade: data.locatarioCidade,
+          cep: data.locatarioCep,
+        },
+      },
+      contrato: {
+        valorCaucao: securityDepositValue,
+        dataContrato: contractDate,
+        fimContrato: data.fimContrato,
+        inicioContrato: data.inicioContrato,
+        caucao: data.caucao,
+        valorAluguel: data.valorAluguel,
+        vencimentoAluguel: data.vencimentoAluguel,
+      },
+    };
+    sessionStorage.setItem("contractData", JSON.stringify(processedData));
 
-    // reset();
+    reset();
+    router.push("/preview");
   };
 
   async function setCepValues(cep: string, fieldNames: fieldNameToSet[]) {
