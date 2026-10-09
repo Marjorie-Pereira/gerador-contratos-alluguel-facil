@@ -137,7 +137,7 @@ export default function Home() {
     sessionStorage.setItem("contractData", JSON.stringify(processedData));
 
     reset();
-    router.replace("/preview");
+    router.push("/preview");
   };
 
   async function setCepValues(cep: string, fieldNames: fieldNameToSet[]) {
@@ -156,6 +156,7 @@ export default function Home() {
       setValue(item.name, newValue || "");
     });
   }
+
   return (
     <div className="min-h-screen bg-stone-100">
       <header className="flex bg-sky-950  text-white border-b-4 border-yellow-600">
@@ -209,7 +210,7 @@ export default function Home() {
                           { name: "cidade", value: "localidade" },
                           { name: "estado", value: "uf" },
                         ];
-                        console.log("value on blur", field.value);
+
                         setCepValues(field.value, fieldNames);
                       }
                     },

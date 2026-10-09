@@ -12,7 +12,7 @@ import {
 } from "@react-pdf/renderer";
 import { ArrowLeft, Download } from "lucide-react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const PreviewPDFDynamic = dynamic(
@@ -417,12 +417,12 @@ function fillAndCreateDocument(data: rentalContractData) {
         <View style={styles.signatureContainer}>
           <View style={styles.signatureBox}>
             <View style={styles.signatureLine} />
-            <Text>{locador?.nome}</Text>
+            <Text>{locador?.nome.toUpperCase()}</Text>
             <Text style={{ fontSize: 10, color: "#555" }}>Locador(a)</Text>
           </View>
           <View style={styles.signatureBox}>
             <View style={styles.signatureLine} />
-            <Text>{locatario?.nome}</Text>
+            <Text>{locatario?.nome.toUpperCase()}</Text>
             <Text style={{ fontSize: 10, color: "#555" }}>Locatário(a)</Text>
           </View>
         </View>
@@ -450,11 +450,11 @@ function fillAndCreateDocument(data: rentalContractData) {
 }
 
 export default function PreviewPDFPage() {
+  const router = useRouter();
   const data = JSON.parse(sessionStorage.getItem("contractData") || "{}");
   const document = fillAndCreateDocument(data);
   useEffect(() => {
     return () => {
-      console.log("unmount");
       sessionStorage.clear();
     };
   }, []);
@@ -483,14 +483,14 @@ export default function PreviewPDFPage() {
         </PDFDownloadLink>
       )}
 
-      <Link
-        href={"/"}
+      <button
+        onClick={() => router.back()}
         className="absolute top-3 left-8 bg-yellow-600 p-4 flex items-center gap-2 hover:opacity-80 hover:cursor-pointer"
       >
         {" "}
         <ArrowLeft />
         Voltar
-      </Link>
+      </button>
 
       {document && (
         <BlobProvider document={document}>
