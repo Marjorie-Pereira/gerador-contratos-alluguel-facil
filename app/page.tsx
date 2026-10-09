@@ -3,7 +3,7 @@ import Image from "next/image";
 import { User } from "lucide-react";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import FormSection from "@/components/FormSection";
 import InputField from "@/components/InputField";
@@ -137,7 +137,7 @@ export default function Home() {
     sessionStorage.setItem("contractData", JSON.stringify(processedData));
 
     reset();
-    router.push("/preview");
+    router.replace("/preview");
   };
 
   async function setCepValues(cep: string, fieldNames: fieldNameToSet[]) {
