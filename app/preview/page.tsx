@@ -490,7 +490,7 @@ export default function PreviewPDFPage() {
       )}
 
       <button
-        onClick={() => router.back()}
+        onClick={() => router.replace("/")}
         className="absolute top-3 left-8 bg-yellow-600 p-4 flex items-center gap-2 hover:opacity-80 hover:cursor-pointer"
       >
         {" "}

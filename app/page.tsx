@@ -137,7 +137,7 @@ export default function Home() {
     sessionStorage.setItem("contractData", JSON.stringify(processedData));
 
     reset();
-    router.push("/preview");
+    router.replace("/preview");
   };
 
   async function setCepValues(cep: string, fieldNames: fieldNameToSet[]) {
