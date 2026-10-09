@@ -2,6 +2,7 @@
 
 import { formatDateToBrazilian, toCurrencyString } from "@/lib/utils";
 import { rentalContractData } from "@/types/formInputs";
+import extenso from "extenso";
 import {
   Document,
   Image,
@@ -14,6 +15,7 @@ import { ArrowLeft, Download } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { mockData } from "@/lib/constants/mockContractData";
 
 const PreviewPDFDynamic = dynamic(
   () => import("@/components/PreviewPDFDocument"),
@@ -166,12 +168,13 @@ function fillAndCreateDocument(data: rentalContractData) {
           <Text style={{ fontWeight: "bold" }}>
             Cláusula Primeira - Valor Mensal da Locação:{" "}
           </Text>
-          {toCurrencyString(contrato?.valorAluguel)} (POR EXTENSO REAIS). O
-          aluguel mensal é o indicado neste contrato, devendo seupagamento ser
-          feito no
-          {contrato?.vencimentoAluguel}º. (POR EXTENSO) dia de cada mês ou o
-          primeiro dia útil subsequente ao vencimento, mediante depósito
-          bancário ao ADMINISTRADOR deste contrato.
+          {toCurrencyString(contrato?.valorAluguel)} (
+          {extenso(contrato.valorAluguel, { mode: "currency" })}). O aluguel
+          mensal é o indicado neste contrato, devendo seupagamento ser feito no
+          {contrato?.vencimentoAluguel}º. (
+          {extenso(contrato?.vencimentoAluguel, { number: { ordinal: true } })})
+          dia de cada mês ou o primeiro dia útil subsequente ao vencimento,
+          mediante depósito bancário ao ADMINISTRADOR deste contrato.
         </Text>
 
         <Text style={styles.clause}>
@@ -189,11 +192,13 @@ function fillAndCreateDocument(data: rentalContractData) {
           <Text style={[styles.paragraph, { fontWeight: "bold" }]}>
             Parágrafo A:{" "}
           </Text>
-          Será cobrado caução referente a {contrato?.caucao} (extenso) meses de
-          aluguel no valor de {toCurrencyString(contrato?.valorCaucao)}{" "}
-          (EXTENSO). Sendo o primeiro mês de aluguel adiantado e o segundo para
-          fins de vistoria final. Os mesmos serão devolvidos integralmente apos
-          vistoria, caso não tenham débitos ou danos, corrigidos pela poupança.
+          Será cobrado caução referente a {contrato?.caucao} (
+          {extenso(contrato.caucao)}) meses de aluguel no valor de{" "}
+          {toCurrencyString(contrato?.valorCaucao)} (
+          {extenso(contrato.valorCaucao, { mode: "currency" })}). Sendo o
+          primeiro mês de aluguel adiantado e o segundo para fins de vistoria
+          final. Os mesmos serão devolvidos integralmente apos vistoria, caso
+          não tenham débitos ou danos, corrigidos pela poupança.
         </Text>
 
         <Text style={styles.paragraph}>
@@ -409,7 +414,7 @@ function fillAndCreateDocument(data: rentalContractData) {
           duas vias de igual teor na presença de duas testemunhas.
         </Text>
         <Text style={styles.paragraph}>
-          Capão da Canoa, {formatDateToBrazilian(contrato?.dataContrato)}
+          Capão da Canoa, {formatDateToBrazilian(contrato?.dataContrato)}.
         </Text>
         <Text style={[styles.sectionTitle, { marginTop: 20 }]}>
           Assinaturas:
@@ -451,8 +456,9 @@ function fillAndCreateDocument(data: rentalContractData) {
 
 export default function PreviewPDFPage() {
   const router = useRouter();
-  const data = JSON.parse(sessionStorage.getItem("contractData") || "{}");
-  const document = fillAndCreateDocument(data);
+  const data = sessionStorage?.getItem("contractData");
+  const dataObj = data ? JSON.parse(data) : mockData;
+  const document = fillAndCreateDocument(dataObj);
   useEffect(() => {
     return () => {
       sessionStorage.clear();
