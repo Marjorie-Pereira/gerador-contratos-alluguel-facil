@@ -9,19 +9,19 @@ import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { signUpFormData, signUpFormSchema } from "@/schemas/signUpFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loginFormData, loginFormSchema } from "@/schemas/signUpFormSchema";
 
-export default function SignUpForm() {
-  const { handleSubmit, control } = useForm<signUpFormData>({
-    resolver: zodResolver(signUpFormSchema),
+export default function LoginForm() {
+  const { handleSubmit, control } = useForm<loginFormData>({
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
       password: "",
       keepLogged: false,
     },
   });
-  const onSubmit: SubmitHandler<signUpFormData> = (data) => {
+  const onSubmit: SubmitHandler<loginFormData> = (data) => {
     console.log("submitting");
     console.log(data);
   };
