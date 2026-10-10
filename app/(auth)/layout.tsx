@@ -23,7 +23,7 @@ export default function AuthLayout({
           </div>
         </div>
       </header>
-      <main> {children}</main>
+      <main className="bg-zinc-100 min-h-screen pt-10"> {children}</main>
 
       <footer className="bg-zinc-100">
         <p className="text-center text-sm text-zinc-500 py-4">
