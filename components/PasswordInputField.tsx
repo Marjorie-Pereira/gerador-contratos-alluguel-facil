@@ -16,11 +16,12 @@ export default function PasswordInputField({
   required = true,
   inputProps,
   invalid = false,
+  errors,
 }: InputGroupFieldProps) {
   const [show, setShow] = useState(false);
 
   return (
-    <Field className={cn("flex flex-col ", className)}>
+    <Field className={cn("flex flex-col ", className)} data-invalid={invalid}>
       <FieldLabel
         htmlFor={id}
         className="text-sm font-medium text-amber-700 uppercase tracking-wide m-0 gap-1"
@@ -30,15 +31,15 @@ export default function PasswordInputField({
       </FieldLabel>
       <InputGroup
         className={cn(
-          "w-full px-2 py-6 text-base! border border-gray-300 bg-zinc-100 rounded-lg placeholder-gray-400 focus:ring-2 focus:ring-amber-500! focus:border-amber-500! outline-none transition-all",
+          "w-full px-2 py-6 text-base! border border-gray-300 bg-zinc-100 rounded-lg placeholder-gray-400 focus:ring-2 outline-none transition-all aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
 
           inputProps?.className,
         )}
       >
         <InputGroupInput
+          aria-invalid={invalid}
           id={id}
           placeholder={placeholder}
-          required={required}
           type={show ? "text" : "password"}
           {...inputProps}
         />
@@ -57,7 +58,7 @@ export default function PasswordInputField({
         </InputGroupAddon>
       </InputGroup>
 
-      {invalid && <FieldError>Validation message.</FieldError>}
+      {invalid && <FieldError errors={errors} />}
     </Field>
   );
 }
