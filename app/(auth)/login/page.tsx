@@ -74,9 +74,6 @@ export default function Login() {
           </p>
         </div>
       </main>
-      <p className="text-center text-sm text-zinc-500 py-4">
-        Alluguel Fácil - CNPJ: 12.345.678/0001-90 - Todos os direitos reservados
-      </p>
     </div>
   );
 }
