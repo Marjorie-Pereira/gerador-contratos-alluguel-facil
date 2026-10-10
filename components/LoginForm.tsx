@@ -61,7 +61,13 @@ export default function LoginForm() {
               <PasswordInputField
                 icon={<Lock />}
                 id={field.name}
-                inputProps={{ ...field }}
+                inputProps={{
+                  ...field,
+                  onChange: (e) => {
+                    const newValue = e.target.value.replace(/\s/g, "");
+                    field.onChange(newValue);
+                  },
+                }}
                 label="senha"
                 placeholder="Senha forte com 8 caracteres"
                 className="mb-4"
