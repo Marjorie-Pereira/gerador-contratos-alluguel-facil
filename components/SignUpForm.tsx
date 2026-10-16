@@ -11,8 +11,15 @@ import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpFormData, signUpFormSchema } from "@/schemas/signUpFormSchema";
+import { signUp } from "@/actions/auth";
+import { createClient } from "@/lib/supabase/client";
+import { useState } from "react";
+import { AuthError } from "@supabase/supabase-js";
+import { ZodNull } from "zod/v3";
 
 export default function SignUpForm() {
+  const [authError, setAuthError] = useState<AuthError | null>();
+  const [alertMessage, setAlertMessage] = useState<string>();
   const { handleSubmit, control } = useForm<signUpFormData>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
@@ -22,13 +29,35 @@ export default function SignUpForm() {
       confirmPassword: "",
     },
   });
-  const onSubmit: SubmitHandler<signUpFormData> = (data) => {
-    console.log("submitting");
-    console.log(data);
+  const supabase = createClient();
+  const onSubmit: SubmitHandler<signUpFormData> = async (data) => {
+    const userName = data.username.trim();
+    const { error, data: authData } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: {
+          first_name: userName.split(" ")[0],
+          last_name: userName.split(" ")[1],
+        },
+      },
+    });
+
+    if (error) {
+      setAuthError(error);
+      setAlertMessage("");
+      console.log(error);
+    } else {
+      console.log(authData);
+      setAlertMessage("Signed Up Successfully");
+      setAuthError(null);
+    }
   };
   return (
     <>
       <div className="m-auto bg-white max-w-1/3 shadow-md p-10 border-b border-zinc-300">
+        {authError && <p>{authError.message}</p>}
+        {alertMessage && <p>{alertMessage}</p>}
         <p className="text-sm uppercase text-yellow-600 font-semibold">
           novo usuário
         </p>
