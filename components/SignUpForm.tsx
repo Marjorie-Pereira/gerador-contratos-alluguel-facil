@@ -11,24 +11,25 @@ import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpFormData, signUpFormSchema } from "@/schemas/signUpFormSchema";
-import { signUp } from "@/actions/auth";
 import { createClient } from "@/lib/supabase/client";
-import { useState } from "react";
-import { AuthError } from "@supabase/supabase-js";
-import { ZodNull } from "zod/v3";
+
+import { useRouter } from "next/navigation";
+import { authErrorCodes } from "@/types/authErrorCodes";
 
 export default function SignUpForm() {
-  const [authError, setAuthError] = useState<AuthError | null>();
-  const [alertMessage, setAlertMessage] = useState<string>();
-  const { handleSubmit, control } = useForm<signUpFormData>({
-    resolver: zodResolver(signUpFormSchema),
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
+  const { handleSubmit, control, setError, clearErrors } =
+    useForm<signUpFormData>({
+      resolver: zodResolver(signUpFormSchema),
+      defaultValues: {
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+    });
+
+  const router = useRouter();
+
   const supabase = createClient();
   const onSubmit: SubmitHandler<signUpFormData> = async (data) => {
     const userName = data.username.trim();
@@ -44,20 +45,19 @@ export default function SignUpForm() {
     });
 
     if (error) {
-      setAuthError(error);
-      setAlertMessage("");
-      console.log(error);
+      const errorMessage =
+        (error.code as authErrorCodes) === "email_address_invalid"
+          ? "E-mail inváido"
+          : "E-mail já cadastrado";
+      setError("email", { type: error.code, message: errorMessage });
     } else {
-      console.log(authData);
-      setAlertMessage("Signed Up Successfully");
-      setAuthError(null);
+      clearErrors();
+      router.refresh();
     }
   };
   return (
     <>
       <div className="m-auto bg-white max-w-1/3 shadow-md p-10 border-b border-zinc-300">
-        {authError && <p>{authError.message}</p>}
-        {alertMessage && <p>{alertMessage}</p>}
         <p className="text-sm uppercase text-yellow-600 font-semibold">
           novo usuário
         </p>
@@ -175,7 +175,7 @@ export default function SignUpForm() {
       <div className="bg-stone-100 w-1/3 m-auto mb-10 shadow-md py-4 ">
         <p className="text-sm text-blue-950 text-center py-4">
           Já possui uma conta?{" "}
-          <Link href="/login" className="text-yellow-600 font-semibold">
+          <Link href="./login" className="text-yellow-600 font-semibold">
             ENTRAR
           </Link>
         </p>
