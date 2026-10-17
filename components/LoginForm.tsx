@@ -11,19 +11,38 @@ import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormData, loginFormSchema } from "@/schemas/signUpFormSchema";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const { handleSubmit, control } = useForm<loginFormData>({
-    resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      keepLogged: false,
-    },
-  });
-  const onSubmit: SubmitHandler<loginFormData> = (data) => {
-    console.log("submitting");
-    console.log(data);
+  const { handleSubmit, control, setError, clearErrors } =
+    useForm<loginFormData>({
+      resolver: zodResolver(loginFormSchema),
+      defaultValues: {
+        email: "",
+        password: "",
+        keepLogged: false,
+      },
+    });
+  const router = useRouter();
+
+  const supabase = createClient();
+
+  const onSubmit: SubmitHandler<loginFormData> = async (data) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
+    if (error) {
+      setError("email", { type: error.code, message: "Credenciais invalidas" });
+      setError("password", {
+        type: error.code,
+        message: "Credenciais invalidas",
+      });
+    } else {
+      clearErrors();
+      router.refresh();
+    }
   };
   return (
     <>
@@ -67,6 +86,7 @@ export default function LoginForm() {
                     const newValue = e.target.value.replace(/\s/g, "");
                     field.onChange(newValue);
                   },
+                  autoComplete: "current-password",
                 }}
                 label="senha"
                 placeholder="Senha forte com 8 caracteres"
@@ -117,7 +137,7 @@ export default function LoginForm() {
       <div className="bg-stone-100 w-1/3  mx-auto mb-10 shadow-md ">
         <p className="text-sm text-blue-950 text-center py-4">
           Não possui uma conta?{" "}
-          <Link href="/register" className="text-yellow-600 font-semibold">
+          <Link href="./register" className="text-yellow-600 font-semibold">
             Cadastre-se
           </Link>
         </p>
