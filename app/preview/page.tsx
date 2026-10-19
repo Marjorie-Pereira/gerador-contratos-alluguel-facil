@@ -149,7 +149,7 @@ async function getUserRole() {
 }
 
 async function getAdminData(role: "admin") {
-  if (role != "admin") return;
+  if (role != "admin") return adminData;
   const { data } = await supabase.from("contract_admins").select("*");
   const contractAdminData = data?.at(0) || adminData;
   return contractAdminData;
