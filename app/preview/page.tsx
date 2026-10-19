@@ -14,8 +14,10 @@ import {
 import { ArrowLeft, Download } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { mockData } from "@/lib/constants/mockContractData";
+import { JSX, useEffect, useState } from "react";
+import { adminData, mockData } from "@/lib/constants/mockContractData";
+import { createClient } from "@/lib/supabase/client";
+import { useErrorOverlayReducer } from "next/dist/next-devtools/dev-overlay/shared";
 
 const PreviewPDFDynamic = dynamic(
   () => import("@/components/PreviewPDFDocument"),
@@ -36,6 +38,8 @@ const BlobProvider = dynamic(
     ssr: false,
   },
 );
+
+const supabase = createClient();
 
 const styles = StyleSheet.create({
   page: {
@@ -102,7 +106,7 @@ const styles = StyleSheet.create({
     textIndent: 20,
   },
   signatureContainer: {
-    marginTop: 50,
+    marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -118,7 +122,44 @@ const styles = StyleSheet.create({
   },
 });
 
-function fillAndCreateDocument(data: rentalContractData) {
+async function getUserRole() {
+  let userRole;
+
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user?.id)
+      .limit(1);
+
+    userRole = data?.at(0)?.role;
+  }
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  return userRole;
+}
+
+async function getAdminData(role: "admin") {
+  if (role != "admin") return;
+  const { data } = await supabase.from("contract_admins").select("*");
+  const contractAdminData = data?.at(0) || adminData;
+  return contractAdminData;
+}
+
+async function fillAndCreateDocument(data: rentalContractData) {
+  const userRole = await getUserRole();
+  const contractAdminData =
+    userRole === "admin" ? await getAdminData(userRole) : adminData;
+
   if (!Object.entries(data).length) return;
   const { imovel, contrato, locador, locatario } = data;
   return (
@@ -154,6 +195,14 @@ function fillAndCreateDocument(data: rentalContractData) {
           , residente e domiciliado(a) na {locatario?.endereco.logradouro},{" "}
           {locatario?.endereco.bairro}, {locatario?.endereco.cidade} -{" "}
           {locatario?.endereco.estado}.
+        </Text>
+        <Text style={styles.paragraph}>
+          <Text style={{ fontWeight: "bold" }}>ADMINISTRADOR(A):</Text>{" "}
+          {contractAdminData?.nome?.toUpperCase()},{" "}
+          {contractAdminData?.nacionalidade}, {contractAdminData?.estadoCivil},
+          inscrito(a) no CPF sob nº.
+          {contractAdminData?.cpf}, residente e domiciliado(a) na{" "}
+          {contractAdminData?.endereco}.
         </Text>
         <Text style={styles.sectionTitle}>2. Do Imóvel</Text>
         <Text style={styles.paragraph}>
@@ -416,7 +465,7 @@ function fillAndCreateDocument(data: rentalContractData) {
         <Text style={styles.paragraph}>
           Capão da Canoa, {formatDateToBrazilian(contrato?.dataContrato)}.
         </Text>
-        <Text style={[styles.sectionTitle, { marginTop: 20 }]}>
+        <Text style={[styles.sectionTitle, { marginTop: 10 }]}>
           Assinaturas:
         </Text>
         <View style={styles.signatureContainer}>
@@ -430,6 +479,11 @@ function fillAndCreateDocument(data: rentalContractData) {
             <Text>{locatario?.nome.toUpperCase()}</Text>
             <Text style={{ fontSize: 10, color: "#555" }}>Locatário(a)</Text>
           </View>
+        </View>
+        <View style={styles.signatureBox}>
+          <View style={styles.signatureLine} />
+          <Text>{contractAdminData?.nome?.toUpperCase()}</Text>
+          <Text style={{ fontSize: 10, color: "#555" }}>Administrador(a)</Text>
         </View>
         <Text style={[styles.sectionTitle, { marginTop: 20 }]}>
           Testemunhas:
@@ -455,15 +509,19 @@ function fillAndCreateDocument(data: rentalContractData) {
 }
 
 export default function PreviewPDFPage() {
+  const [document, setDocument] = useState<JSX.Element>();
   const router = useRouter();
+
   const data = sessionStorage?.getItem("contractData");
   const dataObj = data ? JSON.parse(data) : mockData;
-  const document = fillAndCreateDocument(dataObj);
+
   useEffect(() => {
+    fillAndCreateDocument(dataObj).then((data) => setDocument(data));
     return () => {
       sessionStorage.clear();
     };
   }, []);
+
   return (
     <main className="p-8 bg-blue-950 text-white relative">
       <h1 className="text-2xl font-bold mb-4 text-center">

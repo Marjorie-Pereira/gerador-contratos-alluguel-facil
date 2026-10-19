@@ -57,3 +57,12 @@ export const mockData: rentalContractData = {
     vencimentoAluguel: "10",
   },
 };
+
+export const adminData = {
+  nome: "Maria Helena da Silva",
+  estadoCivil: "Casada",
+  nacionalidade: "Brasileira",
+  profissao: "Corretora de Imóveis",
+  cpf: "123.456.789-00",
+  endereco: "Avenida Paulista, 1000, Apto 42, Bela Vista, São Paulo - SP",
+};
