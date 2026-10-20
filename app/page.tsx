@@ -1,8 +1,6 @@
 "use client";
 import Image from "next/image";
-import { User } from "lucide-react";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import FormSection from "@/components/FormSection";
@@ -28,6 +26,18 @@ import { fetchViaCep } from "@/lib/utils";
 import { viaCepResponse } from "@/types/viaCepResponse";
 import { useRouter } from "next/navigation";
 import { rentalContractData } from "@/types/formInputs";
+import { createClient } from "@/lib/supabase/client";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { User } from "lucide-react";
 
 type fieldNameToSet = {
   name: keyof rentalFormData;
@@ -35,10 +45,14 @@ type fieldNameToSet = {
 };
 
 export default function Home() {
+  const supabase = createClient();
+
   const [viaCepLoading, setViaCepLoading] = useState(false);
   const [loadingFields, setLoadingFields] = useState<string>("");
   const [ownerDocument, setOwnerDocument] = useState("CPF");
   const [renterDocument, setRenterDocument] = useState("CPF");
+  const [userData, setUserData] = useState<any>();
+
   const { handleSubmit, control, reset, resetField, setValue } =
     useForm<rentalFormData>({
       resolver: zodResolver(rentalFormSchema),
@@ -79,6 +93,10 @@ export default function Home() {
       },
     });
   const router = useRouter();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUserData(data.user));
+  }, []);
 
   const onSubmit: SubmitHandler<rentalFormData> = (data) => {
     const securityDepositValue = data.caucao * data.valorAluguel;
@@ -161,6 +179,12 @@ export default function Home() {
     });
   }
 
+  const logOut = async () => {
+    console.log("saindo");
+    await supabase.auth.signOut();
+    router.refresh();
+  };
+
   return (
     <div className="min-h-screen bg-stone-100">
       <header className="flex bg-sky-950  text-white border-b-4 border-yellow-600">
@@ -181,10 +205,27 @@ export default function Home() {
             Preencha todos os campos obrigatórios para gerar o contrato
           </p>
         </div>
-        <Link href={"/login"}>
-          {" "}
-          <User size={28} className="mt-6 mr-6" />
-        </Link>
+        {userData && (
+          <Drawer direction="right">
+            <DrawerTrigger className="cursor-pointer">
+              <User size={28} className="mr-10" />
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>
+                  {userData?.user_metadata?.first_name ?? ""}{" "}
+                  {userData?.user_metadata?.last_name ?? ""}
+                </DrawerTitle>
+                <DrawerDescription>{userData?.email}</DrawerDescription>
+              </DrawerHeader>
+
+              <DrawerFooter>
+                <Button onClick={logOut}>Sair</Button>
+                <DrawerClose>Fechar</DrawerClose>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+        )}
       </header>
       <main className="pt-10 px-48 ">
         <form onSubmit={handleSubmit(onSubmit)}>
