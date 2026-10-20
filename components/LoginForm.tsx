@@ -15,15 +15,20 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const { handleSubmit, control, setError, clearErrors } =
-    useForm<loginFormData>({
-      resolver: zodResolver(loginFormSchema),
-      defaultValues: {
-        email: "",
-        password: "",
-        keepLogged: false,
-      },
-    });
+  const {
+    handleSubmit,
+    control,
+    setError,
+    clearErrors,
+    formState: { isSubmitting },
+  } = useForm<loginFormData>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      keepLogged: false,
+    },
+  });
   const router = useRouter();
 
   const supabase = createClient();
@@ -33,6 +38,7 @@ export default function LoginForm() {
       email: data.email,
       password: data.password,
     });
+
     if (error) {
       setError("email", { type: error.code, message: "Credenciais invalidas" });
       setError("password", {
@@ -44,6 +50,7 @@ export default function LoginForm() {
       router.refresh();
     }
   };
+
   return (
     <>
       <div className="m-auto bg-white max-w-1/3 shadow-md px-10 py-10 border-b border-zinc-300">
@@ -121,7 +128,7 @@ export default function LoginForm() {
             )}
           />
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
             entrar no sistema
             <ArrowRight />
           </Button>
