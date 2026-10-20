@@ -13,27 +13,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpFormData, signUpFormSchema } from "@/schemas/signUpFormSchema";
 import { createClient } from "@/lib/supabase/client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authErrorCodes } from "@/types/authErrorCodes";
+import { useState } from "react";
+import VerifyEmail from "./VerifyEmail";
 
 export default function SignUpForm() {
-  const { handleSubmit, control, setError, clearErrors } =
-    useForm<signUpFormData>({
-      resolver: zodResolver(signUpFormSchema),
-      defaultValues: {
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      },
-    });
-
+  const {
+    handleSubmit,
+    control,
+    setError,
+    clearErrors,
+    formState: { isSubmitting },
+  } = useForm<signUpFormData>({
+    resolver: zodResolver(signUpFormSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
   const router = useRouter();
+  const [emailSent, setEmailSent] = useState(false);
 
   const supabase = createClient();
+
   const onSubmit: SubmitHandler<signUpFormData> = async (data) => {
     const userName = data.username.trim();
-    const { error, data: authData } = await supabase.auth.signUp({
+    const {
+      error,
+      data: { user },
+    } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -45,17 +56,19 @@ export default function SignUpForm() {
     });
 
     if (error) {
+      console.error(error);
       const errorMessage =
         (error.code as authErrorCodes) === "email_address_invalid"
           ? "E-mail inváido"
           : "E-mail já cadastrado";
       setError("email", { type: error.code, message: errorMessage });
     } else {
+      console.log(user);
       clearErrors();
-      router.refresh();
+      setEmailSent(true);
     }
   };
-  return (
+  return !emailSent ? (
     <>
       <div className="m-auto bg-white max-w-1/3 shadow-md p-10 border-b border-zinc-300">
         <p className="text-sm uppercase text-yellow-600 font-semibold">
@@ -166,6 +179,7 @@ export default function SignUpForm() {
           <Button
             type="submit"
             className="uppercase text-white bg-blue-950 py-4 px-6 w-full mt-6 hover:opacity-90 flex justify-center gap-6 text-center"
+            disabled={isSubmitting}
           >
             criar minha conta
             <ArrowRight />
@@ -181,5 +195,7 @@ export default function SignUpForm() {
         </p>
       </div>
     </>
+  ) : (
+    <VerifyEmail />
   );
 }
