@@ -133,12 +133,12 @@ export default function LoginForm() {
             <ArrowRight />
           </Button>
 
-          <a
-            href="#"
+          <Link
+            href="/auth/forgot-password"
             className="text-md text-blue-950 text-center block underline mt-5"
           >
             Esqueci a senha
-          </a>
+          </Link>
         </form>
       </div>
       <div className="bg-stone-100 w-1/3  mx-auto mb-10 shadow-md ">
