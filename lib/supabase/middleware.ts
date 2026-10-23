@@ -41,6 +41,13 @@ export async function updateSession(request: NextRequest) {
   const user = data?.claims;
 
   if (
+    request.nextUrl.pathname === "/update-password" &&
+    request.headers.get("referer")
+  ) {
+    return NextResponse.next();
+  }
+
+  if (
     !user &&
     !request.nextUrl.pathname.startsWith("/login") &&
     !request.nextUrl.pathname.startsWith("/auth") &&
