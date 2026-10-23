@@ -3,8 +3,11 @@ import InputField from "@/components/InputField";
 import InputGroupField from "@/components/InputGroupField";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthError } from "@supabase/supabase-js";
 import { Mail } from "lucide-react";
+import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
 
@@ -13,6 +16,7 @@ const resetPasswordSchema = z.object({
 });
 
 export default function ForgotPassword() {
+  const [authError, setAuthError] = useState<AuthError | null>();
   const {
     control,
     handleSubmit,
@@ -24,16 +28,24 @@ export default function ForgotPassword() {
   const resetPassword: SubmitHandler<
     z.infer<typeof resetPasswordSchema>
   > = async ({ email }) => {
-    console.log(email);
     const supabase = createClient();
-    await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: "http://localhost:3000/update-password",
     });
+
+    setAuthError(error);
   };
   return isSubmitted ? (
     <div className="m-auto max-w-1/3 text-center">
-      <h1 className="text-blue-950 text-xl font-semibold mb-10">
-        Verifique sua caixa de entrada e siga as instruções
+      <h1
+        className={cn(
+          "text-xl font-semibold mb-10",
+          authError ? "text-red-600" : "text-blue-950",
+        )}
+      >
+        {authError
+          ? "Um erro inesperado ocorreu. Tente novamente mais tarde"
+          : "Verifique sua caixa de entrada e siga as instruções"}
       </h1>
     </div>
   ) : (
