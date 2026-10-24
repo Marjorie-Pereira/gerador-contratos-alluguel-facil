@@ -71,7 +71,7 @@ export default function ForgotPassword() {
           )}
         />
 
-        <Button type="submit" className="w-full mt-6" disabled={isSubmitting}>
+        <Button type="submit" className="w-full mt-6" disabled={true}>
           ENVIAR
         </Button>
       </form>

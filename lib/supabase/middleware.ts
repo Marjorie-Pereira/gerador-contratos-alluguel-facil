@@ -40,12 +40,13 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  if (
-    request.nextUrl.pathname === "/update-password" &&
-    request.headers.get("referer")
-  ) {
-    return NextResponse.next();
-  }
+  // TODO: add custom SMTP to handle reset password
+  // if (
+  //   request.nextUrl.pathname === "/update-password" &&
+  //   request.headers.get("referer")
+  // ) {
+  //   return NextResponse.next();
+  // }
 
   if (
     !user &&
