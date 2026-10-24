@@ -104,7 +104,7 @@ export default function LoginForm() {
             )}
           />
 
-          <Controller
+          {/* <Controller
             name="keepLogged"
             control={control}
             render={({ field: { name, ref, onChange, value } }) => (
@@ -126,7 +126,7 @@ export default function LoginForm() {
                 </FieldLabel>
               </Field>
             )}
-          />
+          /> */}
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             entrar no sistema
