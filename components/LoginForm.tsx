@@ -31,9 +31,8 @@ export default function LoginForm() {
   });
   const router = useRouter();
 
-  const supabase = createClient();
-
   const onSubmit: SubmitHandler<loginFormData> = async (data) => {
+    const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
@@ -104,6 +103,7 @@ export default function LoginForm() {
             )}
           />
 
+          {/* TODO: Manage user sessions  */}
           {/* <Controller
             name="keepLogged"
             control={control}

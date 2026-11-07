@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpFormData, signUpFormSchema } from "@/schemas/signUpFormSchema";
 import { createClient } from "@/lib/supabase/client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { authErrorCodes } from "@/types/authErrorCodes";
 import { useState } from "react";
 import VerifyEmail from "./VerifyEmail";
@@ -37,9 +37,8 @@ export default function SignUpForm() {
   const router = useRouter();
   const [emailSent, setEmailSent] = useState(false);
 
-  const supabase = createClient();
-
   const onSubmit: SubmitHandler<signUpFormData> = async (data) => {
+    const supabase = createClient();
     const userName = data.username.trim();
     const {
       error,
