@@ -4,15 +4,12 @@ import { ArrowRight, Lock, Mail } from "lucide-react";
 import InputGroupField from "./InputGroupField";
 import { Separator } from "./ui/separator";
 import PasswordInputField from "./PasswordInputField";
-import { Field, FieldLabel } from "./ui/field";
-import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormData, loginFormSchema } from "@/schemas/signUpFormSchema";
-import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import login from "@/app/actions/auth";
 
 export default function LoginForm() {
   const {
@@ -29,24 +26,21 @@ export default function LoginForm() {
       keepLogged: false,
     },
   });
-  const router = useRouter();
 
   const onSubmit: SubmitHandler<loginFormData> = async (data) => {
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    });
+    clearErrors();
 
-    if (error) {
-      setError("email", { type: error.code, message: "Credenciais invalidas" });
-      setError("password", {
-        type: error.code,
-        message: "Credenciais invalidas",
+    const result = await login(data);
+
+    if (!result.success) {
+      setError("email", {
+        type: result.code,
+        message: "Credenciais inválidas",
       });
-    } else {
-      clearErrors();
-      router.refresh();
+      setError("password", {
+        type: result.code,
+        message: "Credenciais inválidas",
+      });
     }
   };
 
