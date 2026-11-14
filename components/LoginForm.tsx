@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormData, loginFormSchema } from "@/schemas/signUpFormSchema";
-import login from "@/app/actions/auth";
+import { login } from "@/app/actions/auth";
 
 export default function LoginForm() {
   const {
@@ -122,7 +122,12 @@ export default function LoginForm() {
             )}
           /> */}
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isSubmitting}
+            role="button"
+          >
             entrar no sistema
             <ArrowRight />
           </Button>

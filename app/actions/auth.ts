@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { loginFormData } from "@/schemas/signUpFormSchema";
 import { redirect } from "next/navigation";
 
-export default async function login(payload: loginFormData) {
+export async function login(payload: loginFormData) {
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({
     email: payload.email,

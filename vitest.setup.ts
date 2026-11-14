@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import { loadEnvConfig } from "@next/env";
+import "@testing-library/jest-dom/vitest";
 
 loadEnvConfig(process.cwd());
 // Mock global para o App Router do Next.js
