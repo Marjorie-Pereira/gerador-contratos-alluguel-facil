@@ -38,7 +38,6 @@ async function fillAndCreateDocument(data: rentalContractData) {
   const contractAdminData =
     userRole === "admin" ? await getAdminData(userRole) : adminData;
 
-  if (!Object.entries(data).length) return;
   const { imovel, contrato, locador, locatario } = data;
   return (
     <Document>
