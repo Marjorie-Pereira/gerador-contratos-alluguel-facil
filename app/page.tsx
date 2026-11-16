@@ -35,8 +35,6 @@ type fieldNameToSet = {
 };
 
 export default function Home() {
-  const supabase = createClient();
-
   const [viaCepLoading, setViaCepLoading] = useState(false);
   const [loadingFields, setLoadingFields] = useState<string>("");
   const [ownerDocument, setOwnerDocument] = useState("CPF");
@@ -236,8 +234,7 @@ export default function Home() {
                   id={field.name}
                   inputProps={{
                     ...field,
-                    disabled:
-                      loadingFields.includes(field.name) && viaCepLoading,
+                    disabled: loadingFields === "imovel" && viaCepLoading,
                   }}
                   errors={[fieldState.error]}
                 />
@@ -257,8 +254,7 @@ export default function Home() {
                   placeholder="Ex.: Capão Novo"
                   inputProps={{
                     ...field,
-                    disabled:
-                      loadingFields.includes(field.name) && viaCepLoading,
+                    disabled: loadingFields === "imovel" && viaCepLoading,
                   }}
                   errors={[fieldState.error]}
                 />
@@ -276,8 +272,7 @@ export default function Home() {
                   id={field.name}
                   inputProps={{
                     ...field,
-                    disabled:
-                      loadingFields.includes(field.name) && viaCepLoading,
+                    disabled: loadingFields === "imovel" && viaCepLoading,
                   }}
                   errors={[fieldState.error]}
                 />
@@ -299,7 +294,7 @@ export default function Home() {
                       name,
                       onValueChange: onChange,
                       value,
-                      disabled: loadingFields.includes(name) && viaCepLoading,
+                      disabled: loadingFields === "imovel" && viaCepLoading,
                     },
                   }}
                   invalid={fieldState.invalid}
@@ -558,8 +553,7 @@ export default function Home() {
                     errors={[fieldState.error]}
                     inputProps={{
                       ...field,
-                      disabled:
-                        loadingFields.includes(field.name) && viaCepLoading,
+                      disabled: loadingFields === "locador" && viaCepLoading,
                     }}
                     className="col-span-2"
                   />
@@ -577,8 +571,7 @@ export default function Home() {
                     id={field.name}
                     inputProps={{
                       ...field,
-                      disabled:
-                        loadingFields.includes(field.name) && viaCepLoading,
+                      disabled: loadingFields === "locador" && viaCepLoading,
                     }}
                     invalid={fieldState.invalid}
                     errors={[fieldState.error]}
@@ -597,8 +590,7 @@ export default function Home() {
                     id={field.name}
                     inputProps={{
                       ...field,
-                      disabled:
-                        loadingFields.includes(field.name) && viaCepLoading,
+                      disabled: loadingFields === "locador" && viaCepLoading,
                     }}
                     invalid={fieldState.invalid}
                     errors={[fieldState.error]}
@@ -621,7 +613,7 @@ export default function Home() {
                         name,
                         onValueChange: onChange,
                         value,
-                        disabled: loadingFields.includes(name) && viaCepLoading,
+                        disabled: loadingFields === "locador" && viaCepLoading,
                       },
                     }}
                     invalid={fieldState.invalid}
@@ -858,8 +850,7 @@ export default function Home() {
                     id={field.name}
                     inputProps={{
                       ...field,
-                      disabled:
-                        loadingFields.includes(field.name) && viaCepLoading,
+                      disabled: loadingFields === "locatario" && viaCepLoading,
                     }}
                     className="col-span-2"
                     errors={[fieldState.error]}
@@ -881,8 +872,7 @@ export default function Home() {
                     errors={[fieldState.error]}
                     inputProps={{
                       ...field,
-                      disabled:
-                        loadingFields.includes(field.name) && viaCepLoading,
+                      disabled: loadingFields === "locatario" && viaCepLoading,
                     }}
                   />
                 )}
@@ -901,8 +891,7 @@ export default function Home() {
                     errors={[fieldState.error]}
                     inputProps={{
                       ...field,
-                      disabled:
-                        loadingFields.includes(field.name) && viaCepLoading,
+                      disabled: loadingFields === "locatario" && viaCepLoading,
                     }}
                   />
                 )}
@@ -923,7 +912,8 @@ export default function Home() {
                         name,
                         onValueChange: onChange,
                         value,
-                        disabled: loadingFields.includes(name) && viaCepLoading,
+                        disabled:
+                          loadingFields === "locatario" && viaCepLoading,
                       },
                     }}
                     errors={[fieldState.error]}
