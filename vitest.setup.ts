@@ -1,6 +1,7 @@
 import { vi } from "vitest";
 import { loadEnvConfig } from "@next/env";
 import "@testing-library/jest-dom/vitest";
+import { beforeAll } from "vitest";
 
 loadEnvConfig(process.cwd());
 // Mock global para o App Router do Next.js
@@ -18,5 +19,19 @@ vi.mock("next/navigation", async (importOriginal) => {
     }),
     usePathname: () => "",
     useSearchParams: () => new URLSearchParams(),
+  };
+});
+
+beforeAll(() => {
+  global.ResizeObserver = class ResizeObserver {
+    observe() {
+      // do nothing
+    }
+    unobserve() {
+      // do nothing
+    }
+    disconnect() {
+      // do nothing
+    }
   };
 });
