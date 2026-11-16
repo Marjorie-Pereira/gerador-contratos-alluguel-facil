@@ -122,12 +122,7 @@ export default function LoginForm() {
             )}
           /> */}
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isSubmitting}
-            role="button"
-          >
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
             entrar no sistema
             <ArrowRight />
           </Button>
