@@ -18,6 +18,10 @@ import { JSX, useEffect, useState } from "react";
 import { adminData, mockData } from "@/lib/constants/mockContractData";
 import { createClient } from "@/lib/supabase/client";
 import { useErrorOverlayReducer } from "next/dist/next-devtools/dev-overlay/shared";
+import { styles } from "@/lib/constants/stylesheet";
+import { getUserRole } from "../actions/auth";
+import getAdminData from "../actions/getAdminData";
+import LoadingOverlay from "@/components/LoadingOverlay";
 
 const PreviewPDFDynamic = dynamic(
   () => import("@/components/PreviewPDFDocument"),
@@ -38,122 +42,6 @@ const BlobProvider = dynamic(
     ssr: false,
   },
 );
-
-const supabase = createClient();
-
-const styles = StyleSheet.create({
-  page: {
-    padding: 50,
-    fontFamily: "Times-Roman",
-    fontSize: 12,
-    lineHeight: 1.5,
-    color: "#000000",
-    backgroundColor: "#ffffff",
-  },
-  headerContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  headerImage: {
-    width: 80,
-    height: 80,
-    marginBottom: 10,
-    objectFit: "contain",
-  },
-  headerTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 5,
-  },
-
-  divider: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-    marginVertical: 15,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginTop: 15,
-    marginBottom: 10,
-  },
-  paragraph: {
-    textAlign: "justify",
-    marginBottom: 10,
-    textIndent: 30,
-  },
-  list: {
-    textAlign: "justify",
-    marginBottom: 10,
-    marginLeft: 30,
-  },
-  footer: {
-    position: "absolute",
-    bottom: 30,
-    left: 50,
-    right: 50,
-    textAlign: "center",
-    fontSize: 10,
-    color: "#777777",
-    borderTopWidth: 0.5,
-    borderTopColor: "#dddddd",
-    paddingTop: 5,
-  },
-  clause: {
-    textAlign: "justify",
-    marginBottom: 10,
-    textIndent: 20,
-  },
-  signatureContainer: {
-    marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  signatureBox: {
-    width: "45%",
-    textAlign: "center",
-  },
-  signatureLine: {
-    borderTopWidth: 1,
-    borderTopColor: "#000",
-    marginBottom: 5,
-    marginTop: 40,
-  },
-});
-
-async function getUserRole() {
-  let userRole;
-
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-
-  if (user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user?.id)
-      .limit(1);
-
-    userRole = data?.at(0)?.role;
-  }
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  return userRole;
-}
-
-async function getAdminData(role: "admin") {
-  if (role != "admin") return adminData;
-  const { data } = await supabase.from("contract_admins").select("*");
-  const contractAdminData = data?.at(0) || adminData;
-  return contractAdminData;
-}
 
 async function fillAndCreateDocument(data: rentalContractData) {
   const userRole = await getUserRole();
@@ -527,7 +415,7 @@ export default function PreviewPDFPage() {
       <h1 className="text-2xl font-bold mb-4 text-center">
         Visualizar Documento
       </h1>
-      {document && (
+      {document ? (
         <PDFDownloadLink
           className="absolute top-3 right-8 bg-yellow-600 p-4 flex items-center gap-2 hover:opacity-80 hover:cursor-pointer"
           document={document}
@@ -545,6 +433,8 @@ export default function PreviewPDFPage() {
             )
           }
         </PDFDownloadLink>
+      ) : (
+        <LoadingOverlay isOpen={true} />
       )}
 
       <button
