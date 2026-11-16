@@ -33,14 +33,21 @@ export default function LoginForm() {
     const result = await login(data);
 
     if (!result.success) {
-      setError("email", {
-        type: result.code,
-        message: "Credenciais inválidas",
-      });
-      setError("password", {
-        type: result.code,
-        message: "Credenciais inválidas",
-      });
+      if (result.code === "email_not_confirmed") {
+        setError("email", {
+          type: result.code,
+          message: "E-mail não confirmado!",
+        });
+      } else {
+        setError("email", {
+          type: result.code,
+          message: "Credenciais inválidas",
+        });
+        setError("password", {
+          type: result.code,
+          message: "Credenciais inválidas",
+        });
+      }
     }
   };
 
