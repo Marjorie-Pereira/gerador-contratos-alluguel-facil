@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -27,17 +26,8 @@ import { viaCepResponse } from "@/types/viaCepResponse";
 import { useRouter } from "next/navigation";
 import { rentalContractData } from "@/types/formInputs";
 import { createClient } from "@/lib/supabase/client";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { User } from "lucide-react";
+import FormPageHeader from "@/components/FormPageHeader";
+import getUserData from "./actions/getUserData";
 
 type fieldNameToSet = {
   name: keyof rentalFormData;
@@ -51,7 +41,14 @@ export default function Home() {
   const [loadingFields, setLoadingFields] = useState<string>("");
   const [ownerDocument, setOwnerDocument] = useState("CPF");
   const [renterDocument, setRenterDocument] = useState("CPF");
-  const [userData, setUserData] = useState<any>();
+  const [userData, setUserData] = useState<
+    | {
+        email: string | undefined;
+        first_name: string | null;
+        last_name: string | null;
+      }
+    | undefined
+  >();
 
   const { handleSubmit, control, reset, resetField, setValue } =
     useForm<rentalFormData>({
@@ -95,7 +92,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUserData(data.user));
+    getUserData().then((res) => setUserData(res));
   }, []);
 
   const onSubmit: SubmitHandler<rentalFormData> = (data) => {
@@ -179,54 +176,9 @@ export default function Home() {
     });
   }
 
-  const logOut = async () => {
-    console.log("saindo");
-    await supabase.auth.signOut();
-    router.refresh();
-  };
-
   return (
     <div className="min-h-screen bg-stone-100">
-      <header className="flex bg-sky-950  text-white border-b-4 border-yellow-600">
-        <div className="w-48 p-10">
-          <Image
-            src={"/logoo.svg"}
-            width={640}
-            height={640}
-            alt={"Logo Alluguel Fácil"}
-            className="w-auto"
-          />
-        </div>
-        <div className="mt-5 flex-1 pt-10 pb-8">
-          <h1 className="font-bold text-3xl mb-2">
-            Contrato de Locação de Imóvel
-          </h1>
-          <p className="text-lg">
-            Preencha todos os campos obrigatórios para gerar o contrato
-          </p>
-        </div>
-        {userData && (
-          <Drawer direction="right">
-            <DrawerTrigger className="cursor-pointer">
-              <User size={28} className="mr-10" />
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle>
-                  {userData?.user_metadata?.first_name ?? ""}{" "}
-                  {userData?.user_metadata?.last_name ?? ""}
-                </DrawerTitle>
-                <DrawerDescription>{userData?.email}</DrawerDescription>
-              </DrawerHeader>
-
-              <DrawerFooter>
-                <Button onClick={logOut}>Sair</Button>
-                <DrawerClose>Fechar</DrawerClose>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
-        )}
-      </header>
+      <FormPageHeader userData={userData} />
       <main className="pt-10 px-48 ">
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormSection
