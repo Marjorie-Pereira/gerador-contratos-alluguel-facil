@@ -12,16 +12,10 @@ import {
 import { User } from "lucide-react";
 import { Button } from "./ui/button";
 import { logout } from "@/app/actions/auth";
+import getUserData from "@/app/actions/getUserData";
 
-export default function FormPageHeader({
-  userData,
-}: {
-  userData?: {
-    email: string | undefined;
-    first_name: string | null;
-    last_name: string | null;
-  };
-}) {
+export default async function FormPageHeader({}) {
+  const userData = await getUserData();
   return (
     <header className="flex bg-sky-950  text-white border-b-4 border-yellow-600">
       <div className="w-48 p-10">
