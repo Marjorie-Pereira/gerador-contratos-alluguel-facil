@@ -35,7 +35,6 @@ export async function signup(payload: signUpFormData) {
   });
 
   if (error) {
-    console.error(error);
     return {
       success: false,
       code: error.code,
