@@ -78,5 +78,20 @@ export async function logout() {
   const { error } = await supabase.auth.signOut();
   if (error) {
     console.error(error);
-  } else redirect("/login");
+  } else redirect("/auth/login");
+}
+
+export async function getUser() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return user;
 }
