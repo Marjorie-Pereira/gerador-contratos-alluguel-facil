@@ -3,21 +3,11 @@
 import { formatDateToBrazilian, toCurrencyString } from "@/lib/utils";
 import { rentalContractData } from "@/types/formInputs";
 import extenso from "extenso";
-import {
-  Document,
-  Image,
-  Page,
-  StyleSheet,
-  Text,
-  View,
-} from "@react-pdf/renderer";
-import { ArrowLeft, Download } from "lucide-react";
+import { Document, Image, Page, Text, View } from "@react-pdf/renderer";
+import { Download } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
 import { JSX, useEffect, useState } from "react";
 import { adminData, mockData } from "@/lib/constants/mockContractData";
-import { createClient } from "@/lib/supabase/client";
-import { useErrorOverlayReducer } from "next/dist/next-devtools/dev-overlay/shared";
 import { styles } from "@/lib/constants/stylesheet";
 import { getUserRole } from "../actions/auth";
 import getAdminData from "../actions/getAdminData";
@@ -398,9 +388,8 @@ async function fillAndCreateDocument(data: rentalContractData) {
 
 export default function PreviewPDFPage() {
   const [document, setDocument] = useState<JSX.Element>();
-  const router = useRouter();
 
-  const data = sessionStorage?.getItem("contractData");
+  const data = sessionStorage && sessionStorage?.getItem("contractData");
   const dataObj = data ? JSON.parse(data) : mockData;
 
   useEffect(() => {
@@ -436,15 +425,6 @@ export default function PreviewPDFPage() {
       ) : (
         <LoadingOverlay isOpen={true} />
       )}
-
-      <button
-        onClick={() => router.replace("/")}
-        className="absolute top-3 left-8 bg-yellow-600 p-4 flex items-center gap-2 hover:opacity-80 hover:cursor-pointer"
-      >
-        {" "}
-        <ArrowLeft />
-        Voltar
-      </button>
 
       {document && (
         <BlobProvider document={document}>
