@@ -7,7 +7,10 @@ export const rentalFormSchema = z
     logradouro: z.string().nonempty("Preencha este campo"),
     bairro: z.string("Preencha este campo").nonempty(),
     cidade: z.string("Preencha este campo").nonempty(),
-    cep: z.string("Preencha este campo").length(8, "Insira o CEP corretamente"),
+    cep: z
+      .string("Preencha este campo")
+      .length(8, "Insira o CEP completo")
+      .regex(/^\d+$/, "Informe apenas números"),
     estado: z.string().nonempty(),
     tipoImovel: z.string("Selecione uma opção").nonempty(),
     locadorNome: z.string("Preencha este campo").nonempty(),
@@ -30,7 +33,8 @@ export const rentalFormSchema = z
     locadorCidade: z.string("Preencha este campo").nonempty(),
     locadorCep: z
       .string("Preencha este campo")
-      .length(8, "Insira o CEP corretamente"),
+      .length(8, "Insira o CEP corretamente")
+      .regex(/^\d+$/, "Informe apenas números"),
     locatarioNome: z.string("Preencha este campo").nonempty(),
     locatarioGenero: z.string("Selecione uma opção").nonempty(),
     locatarioDocumento: z
@@ -51,7 +55,8 @@ export const rentalFormSchema = z
     locatarioUf: z.string("Preencha este campo").nonempty(),
     locatarioCep: z
       .string("Preencha este campo")
-      .length(8, "Insira o CEP corretamente"),
+      .length(8, "Insira o CEP corretamente")
+      .regex(/^\d+$/, "Informe apenas números"),
     valorAluguel: z.coerce
       .number<number>("Preencha este campo")
       .gt(0, "Deve ser maior que zero!"),
