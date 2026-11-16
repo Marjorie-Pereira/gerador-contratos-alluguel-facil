@@ -11,12 +11,10 @@ import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpFormData, signUpFormSchema } from "@/schemas/signUpFormSchema";
-import { createClient } from "@/lib/supabase/client";
 
-import { useRouter } from "next/navigation";
-import { authErrorCodes } from "@/types/authErrorCodes";
 import { useState } from "react";
 import VerifyEmail from "./VerifyEmail";
+import { signup } from "@/app/actions/auth";
 
 export default function SignUpForm() {
   const {
@@ -34,36 +32,21 @@ export default function SignUpForm() {
       confirmPassword: "",
     },
   });
-  const router = useRouter();
+
   const [emailSent, setEmailSent] = useState(false);
 
   const onSubmit: SubmitHandler<signUpFormData> = async (data) => {
-    const supabase = createClient();
-    const userName = data.username.trim();
-    const {
-      error,
-      data: { user },
-    } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: {
-        data: {
-          first_name: userName.split(" ")[0],
-          last_name: userName.split(" ")[1],
-        },
-      },
-    });
+    clearErrors();
 
-    if (error) {
-      console.error(error);
+    const result = await signup(data);
+
+    if (!result.success) {
       const errorMessage =
-        (error.code as authErrorCodes) === "email_address_invalid"
-          ? "E-mail inváido"
+        result.code === "email_address_invalid"
+          ? "E-mail inválido"
           : "E-mail já cadastrado";
-      setError("email", { type: error.code, message: errorMessage });
+      setError("email", { type: result.code, message: errorMessage });
     } else {
-      console.log(user);
-      clearErrors();
       setEmailSent(true);
     }
   };
