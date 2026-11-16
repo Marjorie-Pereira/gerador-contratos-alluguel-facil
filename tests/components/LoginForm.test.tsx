@@ -36,6 +36,33 @@ describe("LoginForm", () => {
     });
   });
 
+  it("should display an error message for email not confirmed", async () => {
+    const user = userEvent.setup();
+
+    vi.mocked(login).mockResolvedValue({
+      success: false,
+      code: "email_not_confirmed",
+    });
+
+    render(<LoginForm />);
+
+    await user.type(screen.getByLabelText(/e-mail/i), "test@email.com");
+    await user.type(screen.getByLabelText(/senha/i), "12345678");
+
+    await user.click(
+      screen.getByRole("button", { name: /entrar no sistema/i }),
+    );
+
+    expect((await screen.findAllByRole("alert")).at(0)).toHaveTextContent(
+      "E-mail não confirmado!",
+    );
+    expect(login).toHaveBeenCalledWith({
+      email: "test@email.com",
+      password: "12345678",
+      keepLogged: false,
+    });
+  });
+
   it("should display error message when user inputs invalid email address", async () => {
     const user = userEvent.setup();
 
