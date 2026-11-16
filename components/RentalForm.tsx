@@ -134,6 +134,7 @@ export default function RentalForm() {
       },
     };
     sessionStorage.setItem("contractData", JSON.stringify(processedData));
+    reset();
     router.replace("/preview");
   };
 
