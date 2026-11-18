@@ -405,11 +405,13 @@ export default function PreviewPDFPage() {
 
   useEffect(() => {
     async function setDocumentData() {
-      const data = sessionStorage && sessionStorage?.getItem("contractData");
-      const dataObj = data ? JSON.parse(data) : mockData;
+      const data = sessionStorage?.getItem("contractData");
+      if (!data) return;
+      const dataObj = JSON.parse(data);
       const document = await fillAndCreateDocument(dataObj);
       setDocument(document);
     }
+
     setDocumentData();
 
     return () => {
