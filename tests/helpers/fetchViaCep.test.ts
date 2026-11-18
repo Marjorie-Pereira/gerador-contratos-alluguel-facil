@@ -1,5 +1,4 @@
 import { fetchViaCep } from "@/lib/utils";
-import { log } from "node:console";
 import { describe, expect, it } from "vitest";
 
 describe("fetchViaCep", () => {
