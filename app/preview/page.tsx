@@ -12,6 +12,7 @@ import { styles } from "@/lib/constants/stylesheet";
 import { getUserRole } from "../actions/auth";
 import getAdminData from "../actions/getAdminData";
 import LoadingOverlay from "@/components/LoadingOverlay";
+import { useRouter } from "next/navigation";
 
 const PreviewPDFDynamic = dynamic(
   () => import("@/components/PreviewPDFDocument"),
@@ -35,7 +36,7 @@ const BlobProvider = dynamic(
 
 export default function PreviewPDFPage() {
   const [document, setDocument] = useState<JSX.Element>();
-
+  const router = useRouter();
   async function fillAndCreateDocument(data: rentalContractData) {
     const userRole = await getUserRole();
     const contractAdminData =
@@ -395,6 +396,12 @@ export default function PreviewPDFPage() {
       </Document>
     );
   }
+
+  useEffect(() => {
+    if (!sessionStorage || !sessionStorage.getItem("contractData")) {
+      router.replace("/");
+    }
+  }, [router]);
 
   useEffect(() => {
     async function setDocumentData() {
