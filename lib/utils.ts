@@ -26,7 +26,7 @@ export function formatDateToBrazilian(dateString: string) {
 
 export async function fetchViaCep(cep: string) {
   const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-  const data: viaCepResponse = await res.json();
+  const data: viaCepResponse | { erro: string } = await res.json();
 
   return data;
 }
