@@ -16,7 +16,7 @@ describe("test functions to used fill pdf document with correct data", () => {
     expect(valueString).toBe("R$\u00A02.000,00");
   });
   it("should return ISO date string in portuguese long format", () => {
-    const dateString = format(new Date(), "yyy-MM-dd");
+    const dateString = format(new Date(2026, 10, 18), "yyy-MM-dd");
 
     const formatted = formatDateToBrazilian(dateString);
 
