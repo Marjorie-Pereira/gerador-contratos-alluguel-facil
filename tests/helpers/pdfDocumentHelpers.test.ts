@@ -1,6 +1,7 @@
 import getAdminData from "@/app/actions/getAdminData";
 import { adminData } from "@/lib/constants/mockContractData";
 import { formatDateToBrazilian, toCurrencyString } from "@/lib/utils";
+import { format } from "date-fns";
 import { describe, expect, it } from "vitest";
 describe("test functions to used fill pdf document with correct data", () => {
   it("should return mock admin data for demo user", async () => {
@@ -15,7 +16,7 @@ describe("test functions to used fill pdf document with correct data", () => {
     expect(valueString).toBe("R$\u00A02.000,00");
   });
   it("should return ISO date string in portuguese long format", () => {
-    const dateString = new Date().toISOString().split("T")[0];
+    const dateString = format(new Date(), "yyy-MM-dd");
 
     const formatted = formatDateToBrazilian(dateString);
 
