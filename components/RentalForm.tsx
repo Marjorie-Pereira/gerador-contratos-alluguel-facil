@@ -152,9 +152,11 @@ export default function RentalForm() {
 
     if (viaCepData.erro) return;
 
+    const cepResponse = viaCepData as viaCepResponse;
+
     fieldNames.forEach((item) => {
       resetField(item.name);
-      const newValue = viaCepData[item.value as keyof viaCepResponse];
+      const newValue = cepResponse[item.value as keyof viaCepResponse];
       setValue(item.name, newValue || "");
     });
   }
