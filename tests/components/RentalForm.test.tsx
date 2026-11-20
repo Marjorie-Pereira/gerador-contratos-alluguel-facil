@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { fetchViaCep } from "@/lib/utils";
 import RentalForm from "@/components/RentalForm";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { en } from "zod/v4/locales";
 
 vi.mock("@/lib/utils", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/utils")>();
@@ -177,5 +178,33 @@ describe("RentalForm", () => {
       "",
     );
     expect(fetchViaCep).toHaveBeenCalledWith("12345678");
+  });
+
+  it("should display error message if fimContrato date is before inicioContrato", async () => {
+    const user = userEvent.setup();
+    render(
+      <TooltipProvider>
+        <RentalForm />
+      </TooltipProvider>,
+    );
+
+    await user.type(screen.getByLabelText(/início do contrato/i), "2026-11-19");
+
+    await user.type(
+      screen.getByLabelText(/término do contrato/i),
+      "2026-10-19",
+    );
+
+    const endDate = screen.getByLabelText(/término do contrato/i);
+
+    await user.clear(endDate);
+    await user.type(endDate, "2026-10-19");
+
+    user.keyboard("{Enter}");
+    const error = (await screen.findAllByRole("alert")).at(-1);
+
+    expect(error?.textContent).toBe(
+      "A data de fim do contrato deve ser posterior à data de início do contrato",
+    );
   });
 });
