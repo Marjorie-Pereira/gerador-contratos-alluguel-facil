@@ -14,16 +14,7 @@ describe("fetchViaCep", () => {
 
     const response = await fetchViaCep(testCep);
 
-    const { cep, logradouro, bairro, localidade, uf } = response;
-    const filteredResponse = {
-      cep,
-      localidade,
-      logradouro,
-      bairro,
-      uf,
-    };
-
-    expect(filteredResponse).toEqual(expectedResponse);
+    expect(response).toEqual(expectedResponse);
   });
   it("should return error when cep not found", async () => {
     const testCep = "12345678";
