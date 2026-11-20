@@ -28,5 +28,10 @@ export async function fetchViaCep(cep: string) {
   const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
   const data: viaCepResponse | { erro: string } = await res.json();
 
+  if (!data.erro) {
+    const { bairro, cep, localidade, logradouro, uf } = data as viaCepResponse;
+    return { cep, logradouro, bairro, localidade, uf };
+  }
+
   return data;
 }
