@@ -207,4 +207,23 @@ describe("RentalForm", () => {
       "A data de fim do contrato deve ser posterior à data de início do contrato",
     );
   });
+
+  it("should display all error messages when submitting with empty fields", async () => {
+    const user = userEvent.setup();
+    render(
+      <TooltipProvider>
+        <RentalForm />
+      </TooltipProvider>,
+    );
+
+    const expectedNumberOfErrors = 27;
+
+    await user.click(
+      await screen.findByRole("button", { name: "gerar contrato" }),
+    );
+
+    const errors = await screen.findAllByRole("alert");
+
+    expect(errors.length).toBe(expectedNumberOfErrors);
+  });
 });
