@@ -12,4 +12,16 @@ describe("Login", () => {
       "be.visible",
     );
   });
+
+  it("should display error messages for invalid credentials", () => {
+    cy.visit("/auth/login");
+    cy.contains("acesso ao sistema").should("be.visible");
+    cy.get("form").within(() => {
+      cy.get("#email").type("teste@teste.com");
+      cy.get("#password").type("wrongpassword");
+      cy.get("button").click();
+    });
+
+    cy.contains("Credenciais inválidas").should("be.visible");
+  });
 });
