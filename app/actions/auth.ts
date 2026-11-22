@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { loginFormData, signUpFormData } from "@/schemas/signUpFormSchema";
+import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function login(payload: loginFormData) {
@@ -78,7 +79,7 @@ export async function logout() {
   const { error } = await supabase.auth.signOut();
   if (error) {
     console.error(error);
-  } else redirect("/auth/login");
+  } else refresh();
 }
 
 export async function getUser() {
@@ -89,8 +90,7 @@ export async function getUser() {
   } = await supabase.auth.getUser();
 
   if (error) {
-    console.error(error);
-    return null;
+    throw error;
   }
 
   return user;
