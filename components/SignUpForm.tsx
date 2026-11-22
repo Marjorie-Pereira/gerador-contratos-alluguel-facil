@@ -44,7 +44,9 @@ export default function SignUpForm() {
       const errorMessage =
         result.code === "email_address_invalid"
           ? "E-mail inválido"
-          : "E-mail já cadastrado";
+          : result.code === "email_exists"
+            ? "E-mail já cadastrado"
+            : "Erro ao criar conta";
       setError("email", { type: result.code, message: errorMessage });
     } else {
       setEmailSent(true);
