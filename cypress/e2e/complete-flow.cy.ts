@@ -1,8 +1,17 @@
+import { formatDateToBrazilian } from "../../lib/utils";
 import { mockData } from "../../lib/constants/mockContractData";
+import { format } from "date-fns";
+
+after(() => {
+  cy.task("deleteFile", "cypress/downloads/contrato.pdf");
+});
 
 describe("Complete expected user flow of the app", () => {
   it("should submit form with success", () => {
     const formData = mockData;
+    const contractDate = format(new Date(), "yyy-MM-dd");
+    const documentPages = 3;
+    const genArr = Array.from({ length: documentPages }, (v, k) => k + 1);
 
     // login
     cy.visit("/auth/login");
@@ -33,13 +42,33 @@ describe("Complete expected user flow of the app", () => {
     cy.get('[role="option"]').contains("Apartamento").click();
 
     //   property owner fields
-    cy.get("#locadorNome").type(formData.locador.nome);
-    cy.get("#locadorNacionalidade").type(formData.locador.nacionalidade);
+    cy.get("#locadorNome")
+      .should("be.visible")
+      .should("be.enabled")
+      .type(formData.locador.nome);
+    cy.get("#locadorNome").should("have.value", formData.locador.nome);
+
+    cy.get("#locadorNacionalidade")
+      .should("be.visible")
+      .should("be.enabled")
+      .type(formData.locador.nacionalidade);
+    cy.get("#locadorNacionalidade").should(
+      "have.value",
+      formData.locador.nacionalidade,
+    );
 
     cy.get("#locadorGenero").click();
     cy.get('[role="option"]').contains("Masculino").click();
 
-    cy.get("#locadorProfissao").type(formData.locador.profissao);
+    cy.get("#locadorProfissao")
+      .should("be.visible")
+      .should("be.enabled")
+      .type(formData.locador.profissao);
+
+    cy.get("#locadorProfissao").should(
+      "have.value",
+      formData.locador.profissao,
+    );
 
     cy.get("#locadorEstadoCivil").click();
     cy.get('[role="option"]').contains("Casado(a)").click();
@@ -70,10 +99,29 @@ describe("Complete expected user flow of the app", () => {
     cy.get("#locadorUf").should("contain.text", "Rio Grande do Sul (RS)");
 
     //   renter fields
-    cy.get("#locatarioNome").type(formData.locatario.nome);
-    cy.get("#locatarioNacionalidade").type(formData.locatario.nacionalidade);
+    cy.get("#locatarioNome")
+      .should("be.visible")
+      .should("be.enabled")
+      .type(formData.locatario.nome);
+    cy.get("#locatarioNome").should("have.value", formData.locatario.nome);
 
-    cy.get("#locatarioProfissao").type(formData.locatario.profissao);
+    cy.get("#locatarioNacionalidade")
+      .should("be.visible")
+      .should("be.enabled")
+      .type(formData.locatario.nacionalidade);
+    cy.get("#locatarioNacionalidade").should(
+      "have.value",
+      formData.locatario.nacionalidade,
+    );
+
+    cy.get("#locatarioProfissao")
+      .should("be.visible")
+      .should("be.enabled")
+      .type(formData.locatario.profissao);
+    cy.get("#locatarioProfissao").should(
+      "have.value",
+      formData.locatario.profissao,
+    );
 
     cy.get("#locatarioGenero").click();
     cy.get('[role="option"]').contains("Feminino").click();
@@ -81,7 +129,15 @@ describe("Complete expected user flow of the app", () => {
     cy.get("#locatarioEstadoCivil").click();
     cy.get('[role="option"]').contains("Solteiro(a)").click();
 
-    cy.get("#locatarioDocumento").type(formData.locatario.documento.valor);
+    cy.get("#locatarioDocumento")
+      .should("be.visible")
+      .should("be.enabled")
+      .type(formData.locatario.documento.valor);
+    cy.get("#locatarioDocumento").should(
+      "have.value",
+      formData.locatario.documento.valor,
+    );
+
     cy.get("#locatarioCep").type(formData.locatario.endereco.cep);
     cy.get("#locatarioCep").blur();
 
@@ -114,5 +170,50 @@ describe("Complete expected user flow of the app", () => {
 
     // assert the generated document has the correct data
     cy.url().should("contain", "/preview");
+    cy.get(".react-pdf__Document").should("exist");
+    cy.get(".react-pdf__Page").should("be.visible");
+    cy.contains(".react-pdf__Page", formData.imovel.endereco.logradouro).should(
+      "exist",
+    );
+    cy.contains(".react-pdf__Page", formData.locador.nome.toUpperCase()).should(
+      "exist",
+    );
+    cy.contains(
+      ".react-pdf__Page",
+      formData.locatario.nome.toUpperCase(),
+    ).should("exist");
+
+    cy.contains(
+      ".react-pdf__Page",
+      formatDateToBrazilian(formData.contrato.inicioContrato),
+    ).should("exist");
+
+    cy.contains(
+      ".react-pdf__Page",
+      formatDateToBrazilian(formData.contrato.fimContrato),
+    ).should("exist");
+
+    cy.wrap(genArr).each((_) => {
+      cy.contains("Próxima").click();
+    });
+
+    cy.contains(".react-pdf__Page", formatDateToBrazilian(contractDate)).should(
+      "exist",
+    );
+
+    cy.contains("Download").click();
+    cy.readFile("cypress/downloads/contrato.pdf");
+
+    // sign user out
+    cy.visit("/");
+    cy.contains("contrato de locação de imóvel", { matchCase: false }).should(
+      "be.visible",
+    );
+
+    cy.get("[data-slot=drawer-trigger]").click();
+    cy.contains("Usuário Teste").should("be.visible");
+    cy.contains("sair", { matchCase: false }).click();
+
+    cy.url().should("include", "/auth/login");
   });
 });
