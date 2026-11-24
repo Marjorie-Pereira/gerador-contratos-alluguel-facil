@@ -25,7 +25,7 @@ describe("signup form schema", () => {
       confirmPassword: "differentpassword",
     };
     const result = signUpFormSchema.safeParse(input);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+    const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
     const errorPath: string[] = error.path;
 
@@ -40,7 +40,7 @@ describe("signup form schema", () => {
       confirmPassword: "123",
     };
     const result = signUpFormSchema.safeParse(input);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+    const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
     expect(result.success).toBe(false);
     expect(error.code).toBe("too_small");
@@ -54,7 +54,7 @@ describe("signup form schema", () => {
     };
 
     const result = signUpFormSchema.safeParse(input);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+    const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
     expect(result.success).toBe(false);
     expect(error.path.includes("email")).toBe(true);
@@ -68,7 +68,6 @@ describe("signup form schema", () => {
     };
 
     const result = signUpFormSchema.safeParse(input);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
 
     expect(result.success).toBe(false);
   });

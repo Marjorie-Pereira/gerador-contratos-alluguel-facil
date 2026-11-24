@@ -203,7 +203,7 @@ describe("Complete expected user flow of the app", () => {
       formatDateToBrazilian(formData.contrato.fimContrato),
     ).should("exist");
 
-    cy.wrap(genArr).each((_) => {
+    cy.wrap(genArr).each(() => {
       cy.contains("Próxima").click();
     });
 

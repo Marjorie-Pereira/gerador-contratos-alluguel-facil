@@ -1,5 +1,4 @@
 "use client";
-import InputField from "@/components/InputField";
 import InputGroupField from "@/components/InputGroupField";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";

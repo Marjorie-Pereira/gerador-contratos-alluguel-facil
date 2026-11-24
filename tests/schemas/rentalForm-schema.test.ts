@@ -48,7 +48,7 @@ describe("rental form schema", () => {
     const testInput = { ...input, cep: "1234-567" };
 
     const result = rentalFormSchema.safeParse(testInput);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+    const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
     expect(result.success).toBe(false);
     expect(error.code).toBe("invalid_format");
@@ -57,7 +57,7 @@ describe("rental form schema", () => {
   it("should return error if CEP field is less than 8 characters long", () => {
     const testInput = { ...input, cep: "9555000" };
     const result = rentalFormSchema.safeParse(testInput);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+    const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
     expect(result.success).toBe(false);
     expect(error.code).toBe("too_small");
@@ -71,7 +71,7 @@ describe("rental form schema", () => {
         locadorDocumento: { tipo: "CPF", valor: "123" },
       };
       const result = rentalFormSchema.safeParse(testInput);
-      const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+      const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
       expect(result.success).toBe(false);
       expect(error.path.includes("locadorDocumento")).toBe(true);
@@ -83,7 +83,7 @@ describe("rental form schema", () => {
         locadorDocumento: { tipo: "CPF", valor: "123.456.789-01" },
       };
       const result = rentalFormSchema.safeParse(testInput);
-      const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+      const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
       expect(result.success).toBe(false);
       expect(error.path.includes("locadorDocumento")).toBe(true);
@@ -95,7 +95,7 @@ describe("rental form schema", () => {
         locatarioDocumento: { tipo: "CPF", valor: "123" },
       };
       const result = rentalFormSchema.safeParse(testInput);
-      const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+      const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
       expect(result.success).toBe(false);
       expect(error.path.includes("locatarioDocumento")).toBe(true);
@@ -107,7 +107,7 @@ describe("rental form schema", () => {
         locatarioDocumento: { tipo: "CPF", valor: "123.456.789-01" },
       };
       const result = rentalFormSchema.safeParse(testInput);
-      const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+      const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
       expect(result.success).toBe(false);
       expect(error.path.includes("locatarioDocumento")).toBe(true);
@@ -121,7 +121,7 @@ describe("rental form schema", () => {
         locadorDocumento: { tipo: "RG", valor: "123" },
       };
       const result = rentalFormSchema.safeParse(testInput);
-      const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+      const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
       expect(result.success).toBe(false);
       expect(error.path.includes("locadorDocumento")).toBe(true);
@@ -133,7 +133,7 @@ describe("rental form schema", () => {
         locatarioDocumento: { tipo: "RG", valor: "123" },
       };
       const result = rentalFormSchema.safeParse(testInput);
-      const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+      const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
       expect(result.success).toBe(false);
       expect(error.path.includes("locatarioDocumento")).toBe(true);
@@ -143,7 +143,7 @@ describe("rental form schema", () => {
   it("should return error if valorAluguel is equal to 0", () => {
     const testInput = { ...input, valorAluguel: 0 };
     const result = rentalFormSchema.safeParse(testInput);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+    const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
     expect(result.success).toBe(false);
     expect(error.code).toBe("too_small");
@@ -157,7 +157,7 @@ describe("rental form schema", () => {
       fimContrato: "2025-11-14",
     };
     const result = rentalFormSchema.safeParse(testInput);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
+    const error: zodErrorMessage = JSON.parse(result.error?.message || "")[0];
 
     expect(result.success).toBe(false);
     expect(error.path.includes("fimContrato")).toBe(true);
@@ -169,7 +169,6 @@ describe("rental form schema", () => {
       logradouro: "",
     };
     const result = rentalFormSchema.safeParse(testInput);
-    const error: zodErrorMessage = JSON.parse(result.error?.message!)[0];
 
     expect(result.success).toBe(false);
   });

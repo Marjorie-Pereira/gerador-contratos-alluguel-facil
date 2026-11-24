@@ -9,6 +9,7 @@ export default async function Home() {
   try {
     userData = await getUserData();
   } catch (error) {
+    console.error("Error fetching user data:", error);
     await logout();
   }
 

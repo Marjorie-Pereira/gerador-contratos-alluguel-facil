@@ -1,10 +1,9 @@
 import { vi, describe, it, expect } from "vitest";
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { fetchViaCep } from "@/lib/utils";
 import RentalForm from "@/components/RentalForm";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { en } from "zod/v4/locales";
 
 vi.mock("@/lib/utils", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/utils")>();
@@ -144,12 +143,9 @@ describe("RentalForm", () => {
         <RentalForm />
       </TooltipProvider>,
     );
-    let resolvePromise: (value: any) => void;
+
     vi.mocked(fetchViaCep).mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          resolvePromise = resolve;
-        }),
+      () => new Promise((resolve) => resolve),
     );
 
     const cepInputField = screen.getAllByLabelText(/cep/i)[0];

@@ -7,7 +7,7 @@ import { Document, Image, Page, Text, View } from "@react-pdf/renderer";
 import { Download } from "lucide-react";
 import dynamic from "next/dynamic";
 import { JSX, useEffect, useState } from "react";
-import { adminData, mockData } from "@/lib/constants/mockContractData";
+import { adminData } from "@/lib/constants/mockContractData";
 import { styles } from "@/lib/constants/stylesheet";
 import { getUserRole } from "../actions/auth";
 import getAdminData from "../actions/getAdminData";
@@ -446,7 +446,7 @@ export default function PreviewPDFPage() {
 
       {document ? (
         <BlobProvider document={document}>
-          {({ url, loading }) => <PreviewPDFDynamic url={url!} />}
+          {({ url }) => <PreviewPDFDynamic url={url!} />}
         </BlobProvider>
       ) : (
         <LoadingOverlay isOpen={true} />
