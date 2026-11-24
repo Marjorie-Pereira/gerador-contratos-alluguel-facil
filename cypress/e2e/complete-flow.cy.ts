@@ -27,8 +27,12 @@ describe("Complete expected user flow of the app", () => {
     );
 
     // fill the form
+    cy.intercept("GET", "https://viacep.com.br/ws/**").as("viaCep");
+
     cy.get("#cep").type(formData.imovel.endereco.cep);
     cy.get("#cep").blur();
+
+    cy.wait("@viaCep");
 
     cy.get("#logradouro").should(
       "have.value",
@@ -40,13 +44,15 @@ describe("Complete expected user flow of the app", () => {
 
     cy.get("#tipoImovel").click();
     cy.get('[role="option"]').contains("Apartamento").click();
+    cy.get("#tipoImovel").should("contain.text", "Apartamento");
 
     //   property owner fields
     cy.get("#locadorNome")
       .should("be.visible")
-      .should("be.enabled")
-      .type(formData.locador.nome);
-    cy.get("#locadorNome").should("have.value", formData.locador.nome);
+      .and("be.enabled")
+      .click()
+      .type(formData.locador.nome)
+      .should("have.value", formData.locador.nome);
 
     cy.get("#locadorNacionalidade")
       .should("be.visible")
@@ -58,17 +64,17 @@ describe("Complete expected user flow of the app", () => {
     );
 
     cy.get("#locadorGenero").click();
+
     cy.get('[role="option"]').contains("Masculino").click();
+
+    cy.get("#locadorGenero").should("contain.text", "Masculino");
 
     cy.get("#locadorProfissao")
       .should("be.visible")
-      .should("be.enabled")
-      .type(formData.locador.profissao);
-
-    cy.get("#locadorProfissao").should(
-      "have.value",
-      formData.locador.profissao,
-    );
+      .and("be.enabled")
+      .click()
+      .type(formData.locador.profissao)
+      .should("have.value", formData.locador.profissao);
 
     cy.get("#locadorEstadoCivil").click();
     cy.get('[role="option"]').contains("Casado(a)").click();
@@ -80,8 +86,11 @@ describe("Complete expected user flow of the app", () => {
     cy.get('input[placeholder="0000000000"]').type(
       formData.locador.documento.valor,
     );
+
+    cy.intercept("GET", "https://viacep.com.br/ws/**").as("viaCep");
     cy.get("#locadorCep").type(formData.locador.endereco.cep);
     cy.get("#locadorCep").blur();
+    cy.wait("@viaCep");
 
     cy.get("#locadorEndereco").should(
       "have.value",
@@ -101,9 +110,10 @@ describe("Complete expected user flow of the app", () => {
     //   renter fields
     cy.get("#locatarioNome")
       .should("be.visible")
-      .should("be.enabled")
-      .type(formData.locatario.nome);
-    cy.get("#locatarioNome").should("have.value", formData.locatario.nome);
+      .and("be.enabled")
+      .click()
+      .type(formData.locatario.nome)
+      .should("have.value", formData.locatario.nome);
 
     cy.get("#locatarioNacionalidade")
       .should("be.visible")
@@ -131,15 +141,15 @@ describe("Complete expected user flow of the app", () => {
 
     cy.get("#locatarioDocumento")
       .should("be.visible")
-      .should("be.enabled")
-      .type(formData.locatario.documento.valor);
-    cy.get("#locatarioDocumento").should(
-      "have.value",
-      formData.locatario.documento.valor,
-    );
+      .and("be.enabled")
+      .click()
+      .type(formData.locatario.documento.valor)
+      .should("have.value", formData.locatario.documento.valor);
 
+    cy.intercept("GET", "https://viacep.com.br/ws/**").as("viaCep");
     cy.get("#locatarioCep").type(formData.locatario.endereco.cep);
     cy.get("#locatarioCep").blur();
+    cy.wait("@viaCep");
 
     cy.get("#locatarioEndereco").should(
       "have.value",
